@@ -17,9 +17,8 @@ body {
     overflow-x:hidden;
 }
 
-nav {
-    width:1200px;
-    height:1080px;
+main {
+    margin-top: 50px;
 }
 
 .icon-bar {
