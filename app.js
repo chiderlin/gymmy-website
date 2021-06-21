@@ -32,4 +32,8 @@ app.get('/backstage', (req, res) => {
     return res.render('backstage');
 });
 
+app.get('/login', (req,res)=>{
+    return res.render('login');
+});
+
 app.listen(3001);

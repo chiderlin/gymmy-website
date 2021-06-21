@@ -1,0 +1,19 @@
+.container-footer {
+    width:200px;
+    height:auto;
+}
+@media(max-width:768px) {
+    .container-footer {
+        width:auto;
+        height:auto;
+    }
+}
+
+.center-controll{
+    display:flex;
+    justify-content:center;
+}
+
+.link-secondary{
+    color: #b9b5b5;
+}
