@@ -21,6 +21,6 @@ for i in classes:
     else:
         class_data += i.contents[0].strip("\n") + ","
 
-# print(class_data)
-with open("class_info", "w", encoding="utf-8") as f:
-    data = f.write(class_data)
+print(class_data)
+# with open("class_info", "w", encoding="utf-8") as f:
+#     data = f.write(class_data)
