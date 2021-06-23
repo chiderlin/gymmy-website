@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-
+import json
 class_time_list = []
 zh_data_list = []
 english_data_list = []
@@ -21,7 +21,7 @@ def cralwer_all_classes(locate):
     headers = {
         'Host': 'www.worldgymtaiwan.com',
         'Connection': 'keep-alive',
-        'Content-Length': '92',
+        'Content-Length': '74',
         'sec-ch-ua': '"Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
         'Accept': '*/*',
         'X-CSRF-TOKEN': 'ijADr5ucAXyXagfYL52skNILTxRJpx06k9X49RZP',
@@ -36,7 +36,7 @@ def cralwer_all_classes(locate):
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7,zh-CN;q=0.6,ja;q=0.5',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
-        'Cookie': '_gcl_au=1.1.1141961007.1622602850; _fbp=fb.1.1622602850217.952793108; __lt__cid=49a53eed-5a75-4655-b9e6-a3af4149e307; _CEFT=Q%3D%3D%3D; __hstc=22651108.aa7ddc39cbe5e3d3751c3d3305cd4a7a.1622604047055.1622604047055.1622604047055.1; hubspotutk=aa7ddc39cbe5e3d3751c3d3305cd4a7a; __atssc=trello%3B1%2Cgoogle%3B2; _gcl_aw=GCL.1623552690.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gac_UA-52977744-1=1.1623552690.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gac_UA-132963325-17=1.1623552691.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gid=GA1.2.382333975.1624345452; __lt__sid=e7ea5fef-f519905e; _ga=GA1.1.1184336498.1622602851; __atuvc=19%7C22%2C45%7C23%2C4%7C24%2C47%7C25; __atuvs=60d2a32581b3330c004; XSRF-TOKEN=eyJpdiI6IjZPblNLRU14bU45bmpQV1BpZlNrdHc9PSIsInZhbHVlIjoieWZ5dEVDSHdsamFOXC9ydXpBSlpxUGFwTHBMRnVWb2tWR2VLN2g5aVFYV3REaXk5ZlhJc1pHSktSSTJWK3RtK3giLCJtYWMiOiI2YTIxNTQxOWNiMWE2M2UyNDUyNWVmOTA4MzQ1NzY3ZmNiZTNiOWMxNDk0YjYzN2IwYTMwNTY3ZDk1MGI1ZWYxIn0%3D; laravel_session=eyJpdiI6ImphTjRpMkRGVkhCVWVYNW1TSUFQWnc9PSIsInZhbHVlIjoibDB4SHBRV242endVUFZuQ2hoMTVkdGFoYzFobmFQYnFmQjlYTHZ6M3N6ODZ2WXRMVUpnb2t2bVVVdHFUcGhMTyIsIm1hYyI6ImZiM2FhYzUyOGYyZjBiZTRkYzBlZDMwN2IxYmRkNmU5NWVmYzI4MTRjYmNiNTkxZmUzODAzYTEyYjdkZTdhY2YifQ%3D%3D; _ga_JYDVKLW8PC=GS1.1.1624417060.29.1.1624417214.60',
+        'Cookie': '_gcl_au=1.1.1141961007.1622602850; _fbp=fb.1.1622602850217.952793108; __lt__cid=49a53eed-5a75-4655-b9e6-a3af4149e307; _CEFT=Q%3D%3D%3D; __hstc=22651108.aa7ddc39cbe5e3d3751c3d3305cd4a7a.1622604047055.1622604047055.1622604047055.1; hubspotutk=aa7ddc39cbe5e3d3751c3d3305cd4a7a; __atssc=trello%3B1%2Cgoogle%3B2; _gcl_aw=GCL.1623552690.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gac_UA-52977744-1=1.1623552690.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gac_UA-132963325-17=1.1623552691.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gid=GA1.2.382333975.1624345452; __lt__sid=e7ea5fef-3521ba39; _gat_gtag_UA_52977744_1=1; _gat_gtag_UA_132963325_17=1; __atuvc=19%7C22%2C45%7C23%2C4%7C24%2C65%7C25; __atuvs=60d2c30cad56db0d005; XSRF-TOKEN=eyJpdiI6InAzUFEyOWlvV01JV2p0TU5tRkZnSXc9PSIsInZhbHVlIjoiMDAzNXJ4SjZEU2R4N2JoK0JsT2hrellveGcrODVOWEIxYnAxeGhndUk4NHp5cEVnQlpBdDFmODhwbmZSaThOUyIsIm1hYyI6IjUxMjAzZjgzMWNjNTVmOTc1MzRjYjRmMGViYjNkNWU5MGU5ZmExYzFiMTdmN2FjYTgwZDRmZDU2ODM5ZWFhZjQifQ%3D%3D; laravel_session=eyJpdiI6ImhJU0NOS0p2SG9ZUXpDWFdUdXpoWWc9PSIsInZhbHVlIjoiaDhMQVwvYUxLbDNUVVRHNWtWYnN6ZjJNRmJqNzZ2TGdtajgxa0lYU3c0c0UzYnJKXC92NWoyMnpsTCtVU0MwZVNqIiwibWFjIjoiY2UyMjQzMmNkNDBkM2FiODMzNTJiNWUyYzc4NzIwZDFhNDRhMmZkMjg2ZTYxNWMzNTkxNGI3MzExZjkzN2Q3ZSJ9; _ga_JYDVKLW8PC=GS1.1.1624425227.31.1.1624426683.4; _ga=GA1.2.1184336498.1622602851',
     }
     data = {
         'vType': 'Store',
@@ -117,7 +117,7 @@ def cralwer_per_class_page(link_lists):
 
 
 # TODO:把三個資料分別放到json裡面 再把json放到list
-def transfer_json():
+def transfer_json(locate):
     print('transfer to json')
     data_record = 0
     
@@ -137,17 +137,16 @@ def transfer_json():
     data = {
         "data": all_clean_class_data
     }
-    with open('all_classes.txt', 'w', encoding='utf-8') as f:
-        f.write(data)
+    with open(f'{locate}', 'w', encoding='utf-8') as f:
+        f.write(json.dumps(data))
         print("all done!!")
 
 
 
 
 if __name__ == "__main__":
-    cralwer_all_classes('new-taipei-banqiao-shuangshi')
-    # cralwer_per_class_page(link_list)
-    transfer_json()
+    cralwer_all_classes('taipei-101')
+    transfer_json('taipei-101')
 
 
 
