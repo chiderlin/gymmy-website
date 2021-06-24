@@ -9,7 +9,6 @@ class_instructor_list = []
 link_list = []
 desc_list = []
 all_class_imgs = []
-
 all_clean_class_data = []
 
 
@@ -18,13 +17,14 @@ def cralwer_all_classes(locate):
     url = "https://www.worldgymtaiwan.com/getStoreClass"
 
     # request Headers
+    # Cookie & X-CSRF-TOKEN 會常變化 要注意
     headers = {
         'Host': 'www.worldgymtaiwan.com',
         'Connection': 'keep-alive',
         'Content-Length': '74',
         'sec-ch-ua': '"Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
         'Accept': '*/*',
-        'X-CSRF-TOKEN': 'ijADr5ucAXyXagfYL52skNILTxRJpx06k9X49RZP',
+        'X-CSRF-TOKEN': 'RgIbMVJhkCitDuis1sYHDMeXO7eB9Oztq6aogMk2',
         'X-Requested-With': 'XMLHttpRequest',
         'sec-ch-ua-mobile': '?0',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -36,7 +36,7 @@ def cralwer_all_classes(locate):
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7,zh-CN;q=0.6,ja;q=0.5',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
-        'Cookie': '_gcl_au=1.1.1141961007.1622602850; _fbp=fb.1.1622602850217.952793108; __lt__cid=49a53eed-5a75-4655-b9e6-a3af4149e307; _CEFT=Q%3D%3D%3D; __hstc=22651108.aa7ddc39cbe5e3d3751c3d3305cd4a7a.1622604047055.1622604047055.1622604047055.1; hubspotutk=aa7ddc39cbe5e3d3751c3d3305cd4a7a; __atssc=trello%3B1%2Cgoogle%3B2; _gcl_aw=GCL.1623552690.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gac_UA-52977744-1=1.1623552690.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gac_UA-132963325-17=1.1623552691.CjwKCAjwtpGGBhBJEiwAyRZX2tPJlSoLvxykefSq-ZvzhWiEepcZkJzsdOhRiI1HLKmZvpqL1-kX3BoCEikQAvD_BwE; _gid=GA1.2.382333975.1624345452; __lt__sid=e7ea5fef-3521ba39; _gat_gtag_UA_52977744_1=1; _gat_gtag_UA_132963325_17=1; __atuvc=19%7C22%2C45%7C23%2C4%7C24%2C65%7C25; __atuvs=60d2c30cad56db0d005; XSRF-TOKEN=eyJpdiI6InAzUFEyOWlvV01JV2p0TU5tRkZnSXc9PSIsInZhbHVlIjoiMDAzNXJ4SjZEU2R4N2JoK0JsT2hrellveGcrODVOWEIxYnAxeGhndUk4NHp5cEVnQlpBdDFmODhwbmZSaThOUyIsIm1hYyI6IjUxMjAzZjgzMWNjNTVmOTc1MzRjYjRmMGViYjNkNWU5MGU5ZmExYzFiMTdmN2FjYTgwZDRmZDU2ODM5ZWFhZjQifQ%3D%3D; laravel_session=eyJpdiI6ImhJU0NOS0p2SG9ZUXpDWFdUdXpoWWc9PSIsInZhbHVlIjoiaDhMQVwvYUxLbDNUVVRHNWtWYnN6ZjJNRmJqNzZ2TGdtajgxa0lYU3c0c0UzYnJKXC92NWoyMnpsTCtVU0MwZVNqIiwibWFjIjoiY2UyMjQzMmNkNDBkM2FiODMzNTJiNWUyYzc4NzIwZDFhNDRhMmZkMjg2ZTYxNWMzNTkxNGI3MzExZjkzN2Q3ZSJ9; _ga_JYDVKLW8PC=GS1.1.1624425227.31.1.1624426683.4; _ga=GA1.2.1184336498.1622602851',
+        'Cookie': '_gcl_au=1.1.260799095.1624429057; _gid=GA1.2.946078649.1624429058; __lt__cid=20c49732-6a7e-4284-9e2b-f4d417beea5c; _CEFT=Q%3D%3D%3D; _fbp=fb.1.1624429058322.797826781; _gat_gtag_UA_52977744_1=1; _gat_gtag_UA_132963325_17=1; __lt__sid=0d890edf-cc857045; _ga=GA1.2.223963477.1624429058; __atuvc=7%7C25; __atuvs=60d31166bc8fc8d3002; XSRF-TOKEN=eyJpdiI6InN4UzFKejZLbm5scTQ1d1FEa2dacmc9PSIsInZhbHVlIjoiZ0FxZ2xHaFhMcGcxcG1GYmxxWEdJUVpwdHVPWEdCVkxIMG9sbDFsSFZ2MGx6dzhOYUtST0xKdXVCMDd4em9CTSIsIm1hYyI6IjA4NzljYjI1YTEwZTFiYzJhMjlhYThiNWVkMTg2MGVhMjY5ODcxNzUyYjBjNjFlYzMwODdkZGM0NDIzYjdiOWMifQ%3D%3D; laravel_session=eyJpdiI6IjYzaFwvYU5wWHhzWjgzSjMrcVJSNG9nPT0iLCJ2YWx1ZSI6IjNJUjNGOG55T01uZ2NMMm81aVRHV2RvZ1JlYjdBeEJ1SEdvYzJzV1BjMVBaSkx3UXJrTU9Sa1lKeWpmXC92QXhzIiwibWFjIjoiMjdjNzM0NzNhMjM3YjhkY2U3NzQ2Mzc2NjQ2NWI5ZGRkYzRmN2UzODUwYWJiOTBiMzIwMTEyN2M2OTIzZDhkMCJ9; _ga_JYDVKLW8PC=GS1.1.1624445286.2.1.1624445325.21',
     }
     data = {
         'vType': 'Store',
@@ -84,6 +84,16 @@ def clean_needed_data(html_text):
 
 # 寫入desc&images
 def cralwer_per_class_page(link_lists):
+    # url = f"https://www.worldgymtaiwan.com/aerobic-class-detail/move-lohas"
+    # res = requests.get(url)
+    # soup = BeautifulSoup(res.text, "html.parser")
+    # images = soup.find_all('img')
+    # one_class_img = []
+    # for img in images:
+    #     if '/aerobic-class/inside/' in img.get('src'):
+    #         one_class_img.append(f"https://www.worldgymtaiwan.com{img.get('src')}")
+    # print(one_class_img)
+
 
     for link in link_lists:  #0~97
         url = f"https://www.worldgymtaiwan.com/{link}"
@@ -99,7 +109,7 @@ def cralwer_per_class_page(link_lists):
             for img in images:
                 if '/aerobic-class/inside/' in img.get('src'):
                     check_file_name = True
-                    one_class_img.append(img.get('src'))
+                    one_class_img.append(f"https://www.worldgymtaiwan.com/{img.get('src')}")
 
             if check_file_name:
                 all_class_imgs.append(one_class_img)
@@ -126,8 +136,8 @@ def transfer_json(locate):
             'class_time': class_time_list[i],
             'class_name_zh': zh_data_list[i],
             'class_name_eng': english_data_list[i],
-            'class_teacher': classroom_list[i],
-            'class_room': class_instructor_list[i],
+            'class_teacher': class_instructor_list[i],
+            'class_room': classroom_list[i],
             'desc': desc_list[i],
             'img': all_class_imgs[i],
         }
@@ -147,6 +157,7 @@ def transfer_json(locate):
 if __name__ == "__main__":
     cralwer_all_classes('taipei-101')
     transfer_json('taipei-101')
+    # cralwer_per_class_page(link_list)
 
 
 

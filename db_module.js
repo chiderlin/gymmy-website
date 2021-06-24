@@ -1,0 +1,107 @@
+
+require('dotenv/config');
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env.DB_PWD, {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    pool: process.env.DB_POOL,
+    timezone: '+08:00',
+});
+
+// 建立user model => 會印出db裡面的table name
+const Classes = sequelize.define('Classes', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    class_time: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    class_name_zh: {
+        type: Sequelize.STRING(50),
+    },
+    class_name_eng: {
+        type: Sequelize.STRING(50),
+    },
+    class_teacher: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    class_room: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    desc: {
+        type: Sequelize.STRING(1000),
+        allowNull: false,
+    },
+    img: {
+        type: Sequelize.STRING(1000),
+    }
+},{ // 設定時間要不要有
+    timestamps: true,
+    createdAt: true,
+    updatedAt: false,
+});
+
+// 執行程式，在資料庫建立欄位，回傳promise，用then接
+function insert_data(table, inputdata){
+    sequelize.sync().then(()=>{
+        // 在這邊新增資料
+        table.create(inputdata).then(()=>{
+            // 執行成功印出
+            // console.log('Successful')
+        })
+    })
+};
+function delete_data(table,row,value){
+    sequelize.sync().then(()=>{
+        table.findOne({
+            where: {
+                row: value
+            }
+        }).then(user=>{
+            user.destroy().then(()=>{
+                console.log('delete done');
+            })
+        })
+    })
+};
+
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+db.Classes = Classes;
+db.insert_data = insert_data;
+db.delete_data = delete_data;
+module.exports = db; 
+
+
+
+
+
+
+
+// sequelize.sync().then(()=>{
+//     User.findAll().then((users)=>{
+//         // 用JSON.stringfy()來格式化輸出
+//         // console.log('all users:', JSON.stringify(users, null, 4))
+//         console.log(users[0].firstName)
+//     })
+// });
+
+// =======================
+
+// 練習用sequelize-cli 時的寫法
+// const db = require('./models');
+// const User = db.User;
+// const Comment = db.Comment; 
+
+// User.create({
+//     firstName: 'Hello',
+//     lastName: 'World'
+// }).then(()=>{
+//     console.log('done');
+// })
