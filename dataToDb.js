@@ -5,7 +5,6 @@ const insert = db.insert_data;
 
 function readFile(filename, callback) {
     fs.readFile(filename, function (err, data) {
-        // if (err) throw err;
         const class_data = JSON.parse(data);
         return callback(class_data)
     });

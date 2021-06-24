@@ -7,6 +7,8 @@ app.set('views','./templates');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/static'));
 
+const classes = require('./apis/classes');
+app.use('/api', classes);
 
 app.get('/', (req, res) => {
     return res.render('index');
