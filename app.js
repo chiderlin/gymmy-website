@@ -22,7 +22,11 @@ app.get('/booking', (req, res) => {
     return res.render('booking');
 });
 
-app.get('/class/<id>', (req, res) => {
+app.get('/classes', (req,res)=>{
+    return res.render('classes');
+})
+
+app.get('/class/:id', (req, res) => {
     return res.render('class');
 });
 
