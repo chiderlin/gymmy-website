@@ -10,7 +10,10 @@ router.get('/class',(req,res)=>{
     get_data(Classes, function(data){
         data = data.replace(/(?:\\[rn])+/g, ''); // 把\r\n replace
         data = JSON.parse(data);
-        return res.json(data);
+        const all_data = {
+            "data": data
+        }
+        return res.json(all_data);
 
     });
 });

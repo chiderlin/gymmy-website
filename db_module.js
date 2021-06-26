@@ -52,7 +52,8 @@ function insert_data(table, inputdata) {
         // 在這邊新增資料
         table.create(inputdata).then(() => {
             // 執行成功印出
-            // console.log('Successful')
+            
+            // return callback('Successful');
         })
     })
 };
