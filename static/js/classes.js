@@ -16,48 +16,24 @@ function getClassList(){
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
+        console.log(api_data);
         const data = api_data.data;
-        console.log(data);
         for(let i=0; i<data.length; i++) {
-            const id = data[i].id;
-            const class_time = data[i].class_time;
-            const class_name_zh = data[i].class_name_zh;
-            const class_name_eng = data[i].class_name_eng;
-            const class_teacher = data[i].class_teacher;
-            const class_room = data[i].class_room;
-            renderBigClass(class_time,class_name_zh,class_name_eng,class_teacher,class_room);
-            renderSmallClass(class_time,class_name_zh,class_name_eng,class_teacher,class_room);
+            const weekday = data[i].weekday;
+            const time = data[i].class_time;
+            const title_zh = data[i].class_name_zh;
+            const title_en = data[i].class_name_eng;
+            const teacher = data[i].class_teacher;
+            const room = data[i].class_room;
+            renderBigClass(weekday,time,title_zh,title_en,teacher,room);
+            renderSmallClass(weekday, time,title_zh,title_en,teacher,room);
         }
     })
 };
-let column = document.getElementById("Mon");
-// view
-function renderBigClass(class_time,class_name_zh,class_name_eng,class_teacher,class_room) {
-    let time_text = class_time.slice(5,9);
-    let compare_time = '';
 
-    for(let i=0; i<time_text.length; i++) {
-        if(i===2) {
-            compare_time += ':'+ time_text[i];
-        }else {
-            compare_time += time_text[i];
-        }
-    }
-    let compareTime = new Date(`2021-06-26T${compare_time}`);
-    
-    if(tmp === undefined){
-        tmp = compareTime
-    } else {
-        if(compareTime<tmp){
-            column = document.createElement('div');
-            column.className = 'column'
-            tmp = compareTime
-        } else if (compareTime>tmp){
-            tmp = compareTime
-        }
-    }
-    
-    
+// view
+function renderBigClass(weekday,class_time,class_name_zh,class_name_eng,class_teacher,class_room) {
+    const column = document.getElementById(weekday);
     const container = document.getElementById('class-plan-big');
     const class_block = document.createElement('div');
     const time = document.createElement('div');
@@ -85,6 +61,48 @@ function renderBigClass(class_time,class_name_zh,class_name_eng,class_teacher,cl
     container.appendChild(column);
 };
 
-function renderSmallClass(class_time,class_name_zh,class_name_eng,class_teacher,class_room){
+function renderSmallClass(weekday, class_time,class_name_zh,class_name_eng,class_teacher,class_room){
+    if(weekday === 1){
+        weekday = "Mon";
+    } else if (weekday === 2) {
+        weekday = "Tue";
+    } else if (weekday === 3) {
+        weekday = "Wed";
+    } else if (weekday === 4) {
+        weekday = "Thu";
+    } else if (weekday === 5) {
+        weekday = "Fri";
+    } else if (weekday === 6) {
+        weekday = "Sat";
+    } else if (weekday === 7) {
+        weekday = "Sun";
+    }
+    const row = document.getElementById(weekday);
+    const col_6 = document.createElement('div');
+    const col_12 = document.createElement('div');
+    const time = document.createElement('div');
+    const title_zh = document.createElement('div');
+    const title_en = document.createElement('div');
+    const teacher = document.createElement('div');
+    const classroom = document.createElement('div');
 
+    col_6.className = 'col-6';
+    col_12.className = 'col-sm-12 class-format'
+    time.className = 'time';
+    title_zh.className = 'title-zh';
+    title_en.className = 'title-en';
+    teacher.className = 'teacher';
+    classroom.className = 'class-room';
+    time.appendChild(document.createTextNode(class_time));
+    title_zh.appendChild(document.createTextNode(class_name_zh));
+    title_en.appendChild(document.createTextNode(class_name_eng));
+    teacher.appendChild(document.createTextNode(class_teacher));
+    classroom.appendChild(document.createTextNode(class_room));
+    col_12.appendChild(time);
+    col_12.appendChild(title_zh);
+    col_12.appendChild(title_en);
+    col_12.appendChild(teacher);
+    col_12.appendChild(classroom);
+    col_6.appendChild(col_12);
+    row.appendChild(col_6);
 };

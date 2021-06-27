@@ -126,10 +126,11 @@ def cralwer_per_class_page(link_list,day):
 def transfer_json(link_list, day):
     global check_amount
     print('transfer to json')
-    weekday = []
+    class_ = []
     try:
         for i in range(len(link_list)):
             classes_info = {
+                'weekday': day,
                 'class_time': class_time_list[check_amount],
                 'class_name_zh': zh_data_list[check_amount],
                 'class_name_eng': english_data_list[check_amount],
@@ -138,10 +139,10 @@ def transfer_json(link_list, day):
                 'desc': desc_list[check_amount],
                 'img': all_class_imgs[check_amount],
             }
-            weekday.append(classes_info)
+            class_.append(classes_info)
             print(f"finish {check_amount} record")
             check_amount += 1
-        all_clean_class_data.append({day: weekday})
+        all_clean_class_data.append({"class": class_})
         print(len(all_clean_class_data))
     except IndexError as e:
         print(e)

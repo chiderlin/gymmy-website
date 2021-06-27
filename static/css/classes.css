@@ -77,6 +77,11 @@
     }
 }
 
+.small-weekday-hover:hover {
+    background-color:#FF9224;
+}
+
+
 .time {
     padding:5px;
     background-color: #F75000;

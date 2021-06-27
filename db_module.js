@@ -15,6 +15,18 @@ const Classes = sequelize.define('Classes', {
         primaryKey: true,
         autoIncrement: true,
     },
+    weekday: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    start_time: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    end_time:{
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
     class_time: {
         type: Sequelize.STRING(50),
         allowNull: false,
@@ -74,11 +86,35 @@ function delete_data(table, value) {
 
 function get_data(table, callback) {
     sequelize.sync().then(() => {
-        table.findAll().then(data => {
+        table.findAll({
+            where: {
+
+            },
+            order:[
+                ['weekday', 'asc'],
+                ['start_time', 'asc']
+            ]
+        }).then(data => {
             return callback(JSON.stringify(data, null, 4));
         })
     })
 };
+function get_data_class(day, callback){
+    sequelize.sync().then(() => {
+        Classes.findAll({
+            where: {
+                weekday: day
+            },
+            order:[
+                ['start_time', 'ASC'] //ASC小到大      DESC大到小
+            ]
+        }).then(data => {
+            return callback(JSON.stringify(data, null, 4));
+        })
+    })
+};
+
+
 function get_per_data(table, value, callback) {
     sequelize.sync().then(() => {
         table.findOne({
@@ -100,6 +136,7 @@ db.Classes = Classes;
 db.insert_data = insert_data;
 db.delete_data = delete_data;
 db.get_data = get_data;
+db.get_data_class = get_data_class;
 db.get_per_data = get_per_data;
 module.exports = db;
 
