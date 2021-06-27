@@ -106,3 +106,4 @@ function renderSmallClass(weekday, class_time,class_name_zh,class_name_eng,class
     col_6.appendChild(col_12);
     row.appendChild(col_6);
 };
+
