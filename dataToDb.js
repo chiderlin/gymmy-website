@@ -33,6 +33,7 @@ readFile('./data/taipei-101', function (class_data) { // callback回來的json d
 
                 }
             }
+            
             let weekday = class_[i].weekday
             if(weekday === 'monday') {
                 weekday = 1;
@@ -49,6 +50,7 @@ readFile('./data/taipei-101', function (class_data) { // callback回來的json d
             } else if (weekday === 'sunday') {
                 weekday = 7;
             }
+
             start_time = new Date(`2021-06-26T${start_time_str}`)
             end_time = new Date(`2021-06-26T${end_time_str}`);
             const class_name_zh = class_[i].class_name_zh
