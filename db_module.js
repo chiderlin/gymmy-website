@@ -15,6 +15,18 @@ const Classes = sequelize.define('Classes', {
         primaryKey: true,
         autoIncrement: true,
     },
+    weekday: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    start_time: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    end_time:{
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
     class_time: {
         type: Sequelize.STRING(50),
         allowNull: false,
