@@ -36,16 +36,16 @@ app.get('/class/:id', (req, res) => {
 
 
 // 註冊頁面
-app.get('/signup/info', (req, res) => {
+app.get('/signup-info', (req, res) => {
     return res.render('signup_info');
 });
-app.get('/signup/payment', (req, res) => {
+app.get('/signup-payment', (req, res) => {
     return res.render('signup_payment');
 });
 
 
 // 會員中心頁面
-app.get('/member/<username>', (req, res) => {
+app.get('/member/:username', (req, res) => {
     return res.render('member');
 });
 
