@@ -17,6 +17,8 @@ function get_class_data(){
         console.log(desc);
         console.log(img);
         render(class_name_zh, desc, img);
+    }).catch((err)=>{
+        console.log(err);
     });
 };
 

@@ -1,0 +1,113 @@
+<%- include('./partials/head.ejs') %>
+    <link rel="stylesheet" href="/css/signup.css">
+
+    <body>
+        <%- include('./partials/navbar.ejs') %>
+            <h1 class="title-name">Sign Up For Gymmy</h1>
+            <!-- 大 -->
+            <div class="div-block">
+                <div class="info-block shadow">
+                    <div class="row g-3 p-4 size-control">
+                        <div class="border-for">
+                            <p class="desc-style d-flex justify-content-center">成為Gymmy會員，一起展開健身之旅</p>
+                            <p class="desc-style d-flex justify-content-center">一起成為更好的自己</p>
+                            <div class="div-block">
+                                <div class="email-img-block">
+                                    <img src="/png/email.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="row g-3 p-4 size-control">
+                        <h3>基本資料</h3>
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">電子郵件</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">密碼</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">使用者名稱</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">手機</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">地址1</label>
+                            <input type="text" class="form-control" value="1234 Main St">
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress2" class="form-label">地址2</label>
+                            <input type="text" class="form-control" value="Apartment, studio, or floor">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputCity" class="form-label">城市</label>
+                            <input type="text" class="form-control" value="Taipei">
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-hover">下一步(1/2)</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 小 -->
+            <div class="div-small-block">
+                <div class="info-small-block">
+                    <div class="row g-3 p-4">
+                        <p class="desc-style d-flex justify-content-center">成為Gymmy會員，一起展開健身之旅</p>
+                        <p class="desc-style d-flex justify-content-center">一起成為更好的自己</p>
+                        <div class="div-block">
+                            <div class="email-img-block">
+                                <img src="/png/email.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="row g-3 p-4 size-control shadow">
+                        <h3>基本資料</h3>
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">電子郵件</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">密碼</label>
+                            <input type="password" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">使用者名稱</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">手機</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress" class="form-label">地址1</label>
+                            <input type="text" class="form-control" value="1234 Main St">
+                        </div>
+                        <div class="col-12">
+                            <label for="inputAddress2" class="form-label">地址2</label>
+                            <input type="text" class="form-control" value="Apartment, studio, or floor">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputCity" class="form-label">城市</label>
+                            <input type="text" class="form-control" value="Taipei">
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-hover">下一步(1/2)</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+    </body>
+    <script src="/js/signup.js"></script>
+    <%- include('./partials/footer.ejs') %>

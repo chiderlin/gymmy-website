@@ -24,6 +24,8 @@ function getClassList() {
             renderBigClass(weekday, id, time, title_zh, title_en, teacher, room);
             renderSmallClass(weekday, id, time, title_zh, title_en, teacher, room);
         }
+    }).then((err)=>{
+        console.log(err);
     })
 };
 

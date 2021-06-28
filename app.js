@@ -30,8 +30,11 @@ app.get('/class/:id', (req, res) => {
     return res.render('class');
 });
 
-app.get('/signup', (req, res) => {
-    return res.render('signup');
+app.get('/signup/info', (req, res) => {
+    return res.render('signup_info');
+});
+app.get('/signup/payment', (req, res) => {
+    return res.render('signup_payment');
 });
 
 app.get('/member/<username>', (req, res) => {
