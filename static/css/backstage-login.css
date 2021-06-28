@@ -22,12 +22,16 @@ body{
     margin: auto;
 }
 
-.btn-primary{
+/* 登入按鈕 */
+.btn-hover{
     background-color:#FFA042;
     border-color: #FFA042;
+    color: #ffffff;
 }
 
-.btn-primary:hover{
+.btn-hover:hover{
     background-color:#EA7500;
     border-color: #EA7500;
+    color: #ffffff;
 }
+

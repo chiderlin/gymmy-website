@@ -39,6 +39,9 @@
     height:200px;
     background-color: bisque;
 }
+.class-block:hover {
+    opacity: 0.7;
+}
 @media(max-width:1200px) {
     .class-plan {
 
@@ -107,4 +110,9 @@
     padding: 10px;
     font-size: 14px;
     text-align: center;
+}
+
+/* a連結效果 */
+.col-6:hover {
+    opacity: 0.7;
 }

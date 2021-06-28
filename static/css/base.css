@@ -22,9 +22,21 @@ main {
 }
 
 .icon-bar {
+    position: relative;
     width: 100%;
     height: 40px;
     background-color:#FFA042;
+}
+.img-block {
+    position: absolute;
+    top:5px;
+    right:30px;
+    width:50px;
+    height:30px;
+
+}
+.img-fluid{
+    max-width: 60%;
 }
 
 

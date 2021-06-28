@@ -25,7 +25,7 @@ def cralwer_all_classes(locate, day):
         'Content-Length': '74',
         'sec-ch-ua': '"Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
         'Accept': '*/*',
-        'X-CSRF-TOKEN': 'mznD6VZfXywbr5qcpeuyZxPW9F1hpqAqHqkunUBg',
+        'X-CSRF-TOKEN': 'qjTsEpsI0m9qCluzPgvPOPIAJDokXT3X87UlGNGX',
         'X-Requested-With': 'XMLHttpRequest',
         'sec-ch-ua-mobile': '?0',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -37,7 +37,7 @@ def cralwer_all_classes(locate, day):
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7,zh-CN;q=0.6,ja;q=0.5',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
-        'Cookie': '_gcl_au=1.1.260799095.1624429057; _gid=GA1.2.946078649.1624429058; __lt__cid=20c49732-6a7e-4284-9e2b-f4d417beea5c; _CEFT=Q%3D%3D%3D; _fbp=fb.1.1624429058322.797826781; __lt__sid=0d890edf-af845f62; _gat_gtag_UA_52977744_1=1; _gat_gtag_UA_132963325_17=1; XSRF-TOKEN=eyJpdiI6Imt2bnFOMDB2RjhSRmswSUN6WnY3MWc9PSIsInZhbHVlIjoiN3UrOEtleUZrc1pnTTZ1NXZFTGhmSmtLY1BtWUNsOUZyQ0gwUFdGNHo2Nk90ZVhCSEU0dHhBMjVvanllTVU4aSIsIm1hYyI6Ijg4Y2ZiNzFhNWYxZjkzOGMzYTM1YzI4NzE2NzM0YTc1ZWVlMmFkYWQ2ZmVjNzlhMTFiNDEzNzhjNzc2OTUyZWEifQ%3D%3D; laravel_session=eyJpdiI6IjllVlwvSk5aR1ZCUlVvK0VXNGNJTTlBPT0iLCJ2YWx1ZSI6Ijhjb29CV3hkcExDRHo3WTRpdlBEWEI4bHpBU2NoVGROZVUyeGRpR0ZIajMwYlM1N1JCUnlidnc4RjBrZmwwZDciLCJtYWMiOiIzMWY2MTkzZWU2ZTBjYjk0MzFiNDZlOWU4MjNhOTNkZjk4N2QyMDQzZmEwN2FkMjc1YWE2ODMwNWVhY2ZmNTgyIn0%3D; _ga_JYDVKLW8PC=GS1.1.1624755347.16.1.1624755385.22; _ga=GA1.1.223963477.1624429058; __atuvc=27%7C25%2C9%7C26; __atuvs=60d7cc9443a71696003',
+        'Cookie': '_gcl_au=1.1.260799095.1624429057; _gid=GA1.2.946078649.1624429058; __lt__cid=20c49732-6a7e-4284-9e2b-f4d417beea5c; _CEFT=Q%3D%3D%3D; _fbp=fb.1.1624429058322.797826781; __lt__sid=0d890edf-9ce02b52; _ga=GA1.2.223963477.1624429058; __atuvc=27%7C25%2C26%7C26; __atuvs=60d95c6e4579fe48002; XSRF-TOKEN=eyJpdiI6IkQ2cTVQNkFvcVVFZHZBZmFnbDBYNGc9PSIsInZhbHVlIjoic3R2K2RHdVV4bm5iWGhrQmtyM1NtbVZWeTREMk5sSTBsOTdpVnQ4NDVZTVZZWU1STjRzWElBVzd6NGc4alwvN00iLCJtYWMiOiIzZWU4YWE5OGUxODUyZTliMmZmNGMzMjk4YzBiZGU2NzliMDQ2MDA3N2E1N2U2M2YwOTc2MzUyM2QzMDA4NWVlIn0%3D; laravel_session=eyJpdiI6IlFNZFlVSHlCMDJBYktDaCtuV0hjTnc9PSIsInZhbHVlIjoiTFdCUEFkUlRDaUROUnBkNjZuTk10Rjc0SzVcL2JkV2FaZ1RyTVk5VlpQQUZsN1wvXC80dGpKZjRlZnlsUitKZXN4aSIsIm1hYyI6IjdjNDg3NGJkZDcyOGEyMzQ4ZGM4ZWVjNjI2NTdkNjJmODJkOWJlYTc5M2ViMDFmNDQ0NDc3ZGNmYTRiM2NmOTIifQ%3D%3D; _ga_JYDVKLW8PC=GS1.1.1624857710.25.1.1624859445.60',
     }
     data = {
         'vType': 'Store',
@@ -95,15 +95,15 @@ def cralwer_per_class_page(link_list,day):
         res = requests.get(url)
         soup = BeautifulSoup(res.text, "html.parser")
         try:
-            desc = soup.find('section')
-            desc_list.append(desc.text)
-        except AttributeError as e:  # 94沒有<section>
             desc = soup.find('div', 'container narrow editor editor-style')
             p = desc.find_all('p')
             p_str = ''
             for per_p in p:
                 p_str += per_p.text
             desc_list.append(p_str)
+        except Exception as e:
+            print(p)
+            print(e)
         
         images = soup.find_all('img')
         one_class_img = []
@@ -112,7 +112,7 @@ def cralwer_per_class_page(link_list,day):
             if '/aerobic-class/inside/' in img.get('src'):
                 check_file_name = True
                 one_class_img.append(
-                    f"https://www.worldgymtaiwan.com/{img.get('src')}")
+                    f"https://www.worldgymtaiwan.com{img.get('src')}")
 
         if check_file_name:
             all_class_imgs.append(one_class_img)

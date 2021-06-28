@@ -1,9 +1,20 @@
-
 <%- include('./partials/head.ejs') %>
+    <link rel="stylesheet" href="/css/class.css">
+    <body>
+        <%- include('./partials/navbar.ejs') %>
+        <h1 class="title-name"></h1>
+        <div class="block">
+            <div class="desc-block">
+                <div class="desc-box">
+                </div>
+            </div>
+        </div>
+        <div class="class-img-block">
+        </div>
+        <div class="class-booking">
+            <button class="btn btn-lg btn-hover" type="submit">預定課程</button>
+        </div>
 
-<body>
-    <%- include('./partials/navbar.ejs') %>
-    <h1>class</h1>
-
-</body>
-<%- include('./partials/footer.ejs') %>
+    </body>
+    <script src="/js/class.js"></script>
+    <%- include('./partials/footer.ejs') %>

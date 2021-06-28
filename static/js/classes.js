@@ -1,47 +1,45 @@
-const Tue = document.getElementById('Tue');
-const Wed = document.getElementById('Wed');
-const Thu = document.getElementById('Thu');
-const Fri = document.getElementById('Fri');
-const Sat = document.getElementById('Sat');
-const Sun = document.getElementById('Sun');
+
 let tmp;
 
 init();
-function init(){
+function init() {
     getClassList();
 };
 
-function getClassList(){
+function getClassList() {
     const url = '/api/class';
-    fetch(url).then((res)=>{
+    fetch(url).then((res) => {
         return res.json();
-    }).then((api_data)=>{
+    }).then((api_data) => {
         console.log(api_data);
         const data = api_data.data;
-        for(let i=0; i<data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
+            const id = data[i].id;
             const weekday = data[i].weekday;
             const time = data[i].class_time;
             const title_zh = data[i].class_name_zh;
             const title_en = data[i].class_name_eng;
             const teacher = data[i].class_teacher;
             const room = data[i].class_room;
-            renderBigClass(weekday,time,title_zh,title_en,teacher,room);
-            renderSmallClass(weekday, time,title_zh,title_en,teacher,room);
+            renderBigClass(weekday, id, time, title_zh, title_en, teacher, room);
+            renderSmallClass(weekday, id, time, title_zh, title_en, teacher, room);
         }
     })
 };
 
 // view
-function renderBigClass(weekday,class_time,class_name_zh,class_name_eng,class_teacher,class_room) {
+function renderBigClass(weekday, id, class_time, class_name_zh, class_name_eng, class_teacher, class_room) {
     const column = document.getElementById(weekday);
     const container = document.getElementById('class-plan-big');
     const class_block = document.createElement('div');
+    const link = document.createElement('a');
     const time = document.createElement('div');
     const title_zh = document.createElement('div');
     const title_en = document.createElement('div');
     const teacher = document.createElement('div');
     const classroom = document.createElement('div');
     class_block.className = 'class-block';
+    link.setAttribute('href', `/class/${id}`)
     time.className = 'time';
     title_zh.className = 'title-zh';
     title_en.className = 'title-en';
@@ -57,12 +55,13 @@ function renderBigClass(weekday,class_time,class_name_zh,class_name_eng,class_te
     class_block.appendChild(title_en);
     class_block.appendChild(teacher);
     class_block.appendChild(classroom);
-    column.appendChild(class_block);
+    link.appendChild(class_block);
+    column.appendChild(link);
     container.appendChild(column);
 };
 
-function renderSmallClass(weekday, class_time,class_name_zh,class_name_eng,class_teacher,class_room){
-    if(weekday === 1){
+function renderSmallClass(weekday, id, class_time, class_name_zh, class_name_eng, class_teacher, class_room) {
+    if (weekday === 1) {
         weekday = "Mon";
     } else if (weekday === 2) {
         weekday = "Tue";
@@ -79,13 +78,14 @@ function renderSmallClass(weekday, class_time,class_name_zh,class_name_eng,class
     }
     const row = document.getElementById(weekday);
     const col_6 = document.createElement('div');
+    const link = document.createElement('a');
     const col_12 = document.createElement('div');
     const time = document.createElement('div');
     const title_zh = document.createElement('div');
     const title_en = document.createElement('div');
     const teacher = document.createElement('div');
     const classroom = document.createElement('div');
-
+    link.setAttribute('href', `/class/${id}`);
     col_6.className = 'col-6';
     col_12.className = 'col-sm-12 class-format'
     time.className = 'time';
@@ -103,6 +103,7 @@ function renderSmallClass(weekday, class_time,class_name_zh,class_name_eng,class
     col_12.appendChild(title_en);
     col_12.appendChild(teacher);
     col_12.appendChild(classroom);
-    col_6.appendChild(col_12);
+    link.appendChild(col_12);
+    col_6.appendChild(link);
     row.appendChild(col_6);
 };
