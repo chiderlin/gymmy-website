@@ -1,14 +1,27 @@
 const express = require('express');
 const app = express();
 require('dotenv/config');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 
 app.set('views', './templates');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/static'));
+app.use(express.json()); // for server receive json data
+// app.use(session({
+//     secret: process.env.SECRET_KEY,
+//     name: 'sessionId',
+//     resave: true, // store sets an expiration date on stored sessions
+//     saveUninitialized: true, //useful for implementing login sessions reducing server storage usage
+//     cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 week
+//     })
+// )
 
 const classes = require('./apis/classes');
+const user = require('./apis/user');
 app.use('/api', classes);
+app.use('/api', user);
 
 app.get('/', (req, res) => {
     return res.render('index');

@@ -58,14 +58,43 @@ const Classes = sequelize.define('Classes', {
     updatedAt: false,
 });
 
+const User = sequelize.define('User',{
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    name: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    email: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+        unique: true,
+    },
+    password: {
+        type: Sequelize.STRING(200),
+        allowNull: false,
+    },
+    phone: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    auth: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    }
+})
+
+// function
 // 執行程式，在資料庫建立欄位，回傳promise，用then接
-function insert_data(table, inputdata) {
+function insert_data(table, inputdata, callback) {
     sequelize.sync().then(() => {
         // 在這邊新增資料
         table.create(inputdata).then(() => {
             // 執行成功印出
-            
-            // return callback('Successful');
+            return callback('ok');
         })
     })
 };
@@ -114,7 +143,7 @@ function get_data(table, callback) {
 //     })
 // };
 
-
+// for classes
 function get_per_data(table, value, callback) {
     sequelize.sync().then(() => {
         table.findOne({
@@ -127,17 +156,30 @@ function get_per_data(table, value, callback) {
     })
 };
 
-
+// for user
+function user_check_data(table, value, callback) {
+    sequelize.sync().then(() => {
+        table.findOne({
+            where: {
+                email: value,
+            }
+        }).then(data => {
+            return callback(JSON.stringify(data, null, 4));
+        })
+    })
+};
 
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.Classes = Classes;
+db.User = User;
 db.insert_data = insert_data;
 db.delete_data = delete_data;
 db.get_data = get_data;
 // db.get_data_class = get_data_class;
-db.get_per_data = get_per_data;
+db.user_check_data = user_check_data; //user
+db.get_per_data = get_per_data; // classes
 module.exports = db;
 
 

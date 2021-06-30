@@ -1,0 +1,167 @@
+
+.title-name {
+    text-align: center;
+    margin-top: 50px;
+    color: #FFA042;
+    font-weight: bold;
+}
+.div-block {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    
+}
+.info-block {
+    display: flex;
+    width:1200px;
+    border-radius: 3%;
+}
+
+.desc-block {
+    width:45%;
+}
+
+.size-control {
+    width: 50%;
+
+}
+.border-for {
+    width: 100%;
+    border-right: 1px solid #e7e7e7;
+}
+.desc-style {
+    color: #777777;
+}
+
+img {
+    max-width: 100%;
+}
+
+.email-img-block{
+    width:150px;
+    height:150px;
+    display: flex;
+    justify-content: center;
+}
+
+
+.btn-hover{
+    height:38px;
+    background-color:#FFA042;
+    border-color: #FFA042;
+    color: #ffffff;
+}
+
+.btn-hover:hover{
+    background-color:#EA7500;
+    border-color: #EA7500;
+    color: #ffffff;
+}
+
+
+/* 小螢幕 */
+.div-small-block {
+    display: none;
+    margin-top: 50px;
+}
+.info-small-block {
+    width:100%;
+    height:auto;
+}
+
+@media(max-width:768px) {
+    .div-block {
+        display: none;
+    }
+    .size-control {
+        width:100%;
+    }
+    .div-small-block {
+        display: block;
+    }
+}
+
+/* payment 頁面 */
+
+.price-card {
+    display: flex;
+    justify-content: center;
+}
+
+
+.price-card-format {
+    width:150px;
+    height: 150px;
+}
+
+.form-check-input:checked {
+    background-color:#777777 ;
+    border-color: #777777;
+}
+
+.form-control {
+    height: 37.53px;
+}
+
+#big-tappay {
+    display: none;
+}
+#big-paypal {
+    display: none;
+}
+
+.pay-uption {
+    display: flex;
+    justify-content: center;
+}
+
+.list-style {
+    width:300px;
+    height:150px;
+}
+.format {
+    border-bottom: 1px solid rgba(0,0,0,0.125);
+    width:95%;
+    padding:30px;
+}
+.payment-format {
+    /* width: 50%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.payment-block {
+    width:400px;
+    height:300px;
+    /* background-color: #e7e7e7; */
+    text-align: center;
+}
+
+.payment-img-block {
+    display: flex;
+    justify-content: center;
+}
+
+.img-box {
+    width:100px;
+    height: 100px;
+}
+img {
+    max-width: 100%;
+}
+
+#small-tappay {
+    display: none;
+}
+
+#small-paypal {
+    display: none;
+}
+
+/* #flexRadioDefault4 input[type="radio"]:nth-of-type(1):checked ~ #small-tappay {
+    display: block;
+}
+
+#flexRadioDefault4 input[type="radio"]:nth-of-type(2):checked ~ #small-paypal {
+    display: block;
+} */
