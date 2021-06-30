@@ -50,6 +50,10 @@ function login(email, pwd) {
         },
         body: JSON.stringify(login_info),
     }).then((res)=>{
-        console.log(res); 
+        return res.json(); 
+    }).then((data)=>{
+        console.log(data);
+    }).catch((err)=>{
+        console.log(err);
     })
 };

@@ -9,14 +9,15 @@ app.set('views', './templates');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/static'));
 app.use(express.json()); // for server receive json data
-// app.use(session({
-//     secret: process.env.SECRET_KEY,
-//     name: 'sessionId',
-//     resave: true, // store sets an expiration date on stored sessions
-//     saveUninitialized: true, //useful for implementing login sessions reducing server storage usage
-//     cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 week
-//     })
-// )
+app.use(cookieParser());
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    name: 'sessionId',
+    resave: true, // store sets an expiration date on stored sessions
+    saveUninitialized: true, //useful for implementing login sessions reducing server storage usage
+    cookie: { maxAge: 1000 * 60 }, // 1 week
+    })
+)
 
 const classes = require('./apis/classes');
 const user = require('./apis/user');
