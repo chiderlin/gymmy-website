@@ -5,7 +5,7 @@ const burger_menu = document.querySelectorAll('.menu-format');
 const big_menu = document.querySelectorAll('li');
 let login_status = false;
 let login_user_info;
-console.log(big_menu);
+
 init();
 function init(){
     checkLogIn()
@@ -67,7 +67,6 @@ function checkLogIn(){
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        console.log(api_data);
         initRenderMenu(api_data);
         if(api_data.data !== null) {
             login_status = true;

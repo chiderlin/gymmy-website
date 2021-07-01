@@ -87,6 +87,28 @@ const User = sequelize.define('User',{
     }
 })
 
+const Payment = sequelize.define('Payment',{
+    id:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    card_key: {
+        type: Sequelize.STRING(200),
+        allowNull: false,
+        unique: true,
+    },
+    card_token:{
+        type: Sequelize.STRING(200),
+        allowNull: false,
+        unique: true,
+    },
+});
+// 雙向關聯
+User.hasOne(Payment);
+Payment.belongsTo(User);
+
+
 // function
 // 執行程式，在資料庫建立欄位，回傳promise，用then接
 function insert_data(table, inputdata, callback) {
@@ -128,28 +150,16 @@ function get_data(table, callback) {
         })
     })
 };
-// function get_data_class(day, callback){
-//     sequelize.sync().then(() => {
-//         Classes.findAll({
-//             where: {
-//                 weekday: day
-//             },
-//             order:[
-//                 ['start_time', 'ASC'] //ASC小到大      DESC大到小
-//             ]
-//         }).then(data => {
-//             return callback(JSON.stringify(data, null, 4));
-//         })
-//     })
-// };
+
 
 // for classes
-function get_per_data(table, value, callback) {
+function get_id_data(table, value, callback) {
     sequelize.sync().then(() => {
         table.findOne({
             where: {
                 id: value,
-            }
+            },
+            include: Payment
         }).then(data => {
             return callback(JSON.stringify(data, null, 4));
         })
@@ -174,12 +184,18 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.Classes = Classes;
 db.User = User;
+db.Payment = Payment;
+
+
 db.insert_data = insert_data;
 db.delete_data = delete_data;
 db.get_data = get_data;
-// db.get_data_class = get_data_class;
+
+
 db.user_check_data = user_check_data; //user
-db.get_per_data = get_per_data; // classes
+db.get_id_data = get_id_data; // classes
+
+
 module.exports = db;
 
 

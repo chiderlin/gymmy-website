@@ -41,14 +41,33 @@ big_tappay.addEventListener('submit', (event)=>{
     event.preventDefault();
     TPDirect.card.getPrime((res)=>{
         if(res.status !== 0){
-
+            // render錯誤訊息
+            return;
         }
-        const prime = result.card.prime;
-        const email = document.getElementById();
-        const 
+        const prime = res.card.prime;
+        console.log(prime);
+        sendPrime(prime);
+        // const email = document.getElementById();
+        // const 
     })
 })
+function sendPrime(prime){
+    const prime_data = {'prime':prime}
+    const url = '/api/pay-by-prime';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json',
+        },
+        body: JSON.stringify(prime_data),
+    }).then((res)=>{
+        console.log(res);
+        return res.json();
 
+    }).then((data)=>{
+        console.log(data);
+    })
+};
 
 // paypal
 paypal.Buttons({

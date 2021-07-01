@@ -14,8 +14,8 @@ register_form_big.addEventListener('submit',(event)=>{
     const pwd_big = document.getElementById('pwd-big').value;
     const phone_big = document.getElementById('phone-big').value;
     user_register(name_big, email_big, pwd_big, phone_big);
-    // window.location.href = '/signup-payment'
 });
+
 register_form_small.addEventListener('submit',(event)=>{
     event.preventDefault();
     const name_sma = document.getElementById('name-small').value;
@@ -23,7 +23,7 @@ register_form_small.addEventListener('submit',(event)=>{
     const pwd_sma = document.getElementById('pwd-small').value;
     const phone_sma = document.getElementById('phone-small').value;
     user_register(name_sma, email_sma, pwd_sma, phone_sma);
-    // window.location.href = '/signup-payment'
+    
 })
 
 function user_register(name, email, pwd, phone) {
@@ -39,5 +39,6 @@ function user_register(name, email, pwd, phone) {
         return res.json();
     }).then((msg)=>{
         console.log(msg);
+        window.location.href = '/signup-payment'
     })
 };

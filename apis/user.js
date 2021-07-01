@@ -60,6 +60,7 @@ router.post('/user', async (req, res) => {
                     phone: phone,
                     auth: 2,
                 }, (ok) => {
+                    req.session.email = email; // 為了for付款時抓得到資料
                     return res.json({ 'ok': true });
                 });
             } else {

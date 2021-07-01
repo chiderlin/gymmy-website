@@ -28,8 +28,10 @@ app.use(session({
 )
 const classes = require('./apis/classes');
 const user = require('./apis/user');
+const payment = require('./apis/payment');
 app.use('/api', classes);
 app.use('/api', user);
+app.use('/api', payment);
 
 app.get('/', (req, res) => {
     return res.render('index');
