@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv/config');
 const session = require('express-session');
+const MemoryStore = session.MemoryStore;
 const cookieParser = require('cookie-parser');
 
 
@@ -10,15 +11,21 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/static'));
 app.use(express.json()); // for server receive json data
 app.use(cookieParser());
+
+// 設data 不能用
+// let expiryDate = new Date(Date.now() + 1000 * 60 * 60 * 24).toLocaleString('chinese',{hour12: false});
 app.use(session({
     secret: process.env.SECRET_KEY,
     name: 'sessionId',
     resave: true, // store sets an expiration date on stored sessions
     saveUninitialized: true, //useful for implementing login sessions reducing server storage usage
-    cookie: { maxAge: 1000 * 60 }, // 1 week
+    store: new MemoryStore(),
+    cookie: {
+        secure: false,
+        httpOnly: true,
+        }, 
     })
 )
-
 const classes = require('./apis/classes');
 const user = require('./apis/user');
 app.use('/api', classes);
@@ -62,7 +69,10 @@ app.get('/signup-payment', (req, res) => {
 app.get('/member/:username', (req, res) => {
     return res.render('member');
 });
-
+// 最新消息頁面
+app.get('/news', (req, res) => {
+    return res.render('news');
+});
 
 // 後台頁面
 app.get('/backstage', (req, res) => {

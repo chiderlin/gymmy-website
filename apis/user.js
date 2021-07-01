@@ -14,26 +14,31 @@ router.get('/user', (req, res) => {
         return res.json({ 'data': null });
     } else {
         // 查詢db比對
-        try {
-            check_data(User, req.session.email, (data) => {
-                data = JSON.parse(data);
-                const id = data.id;
-                const name = data.name;
-                const email = data.email;
-                const auth = data.auth;
-                const mem_info = {
-                    'data': {
-                        'id': id,
-                        'name': name,
-                        'email': email,
-                        'auth': auth,
+        if (req.session.email === null) {
+            return res.json({ 'data': null });
+        } else {
+            try {
+                check_data(User, req.session.email, (data) => {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    const id = data.id;
+                    const name = data.name;
+                    const email = data.email;
+                    const auth = data.auth;
+                    const mem_info = {
+                        'data': {
+                            'id': id,
+                            'name': name,
+                            'email': email,
+                            'auth': auth,
+                        }
                     }
-                }
-                return res.json(mem_info);
-            })
-        } catch (e) {
-            e = e.toString();
-            return res.status(500).json({ 'error': true, 'message': e });
+                    return res.json(mem_info);
+                })
+            } catch (e) {
+                e = e.toString();
+                return res.status(500).json({ 'error': true, 'message': e });
+            }
         }
     }
 });
@@ -100,13 +105,11 @@ router.patch('/user', (req, res) => {
 
 // LOGOUT
 router.delete('/user', (req, res) => {
+    // req.session.email = null;
+    // res.clearCookie('sessionId');
     req.session.destroy((err) => {
-        if (err) {
-            throw err;
-        } else {
-            res.clearCookie('sessionId');
-            return res.json({ 'ok': true });
-        }
+        res.clearCookie('session');
+        return res.json({ 'ok': true });
     })
 });
 

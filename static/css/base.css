@@ -216,3 +216,8 @@ main {
 .bottom-color {
     background-color: #424242;
 }
+
+/* navbar切換 */
+.hide {
+    display: none;
+}
