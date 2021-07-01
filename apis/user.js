@@ -5,15 +5,36 @@ const db = require('../db_module.js');
 const User = db.User;
 const insert_data = db.insert_data;
 const check_data = db.user_check_data;
-;
+
+
 // CHECK STATUS
-router.get('/user',(req,res)=>{
-    console.log(req.session.email)
-    if(req.session.email === null){
-        return res.json({'data': null});
+router.get('/user', (req, res) => {
+    // console.log(req.session.email)
+    if (req.session.email === undefined) {
+        return res.json({ 'data': null });
     } else {
         // 查詢db比對
-        // return user data
+        try {
+            check_data(User, req.session.email, (data) => {
+                data = JSON.parse(data);
+                const id = data.id;
+                const name = data.name;
+                const email = data.email;
+                const auth = data.auth;
+                const mem_info = {
+                    'data': {
+                        'id': id,
+                        'name': name,
+                        'email': email,
+                        'auth': auth,
+                    }
+                }
+                return res.json(mem_info);
+            })
+        } catch (e) {
+            e = e.toString();
+            return res.status(500).json({ 'error': true, 'message': e });
+        }
     }
 });
 
@@ -41,53 +62,50 @@ router.post('/user', async (req, res) => {
             }
         });
     } catch (e) {
+        e = e.toString();
         return res.status(500).json({ 'error': true, 'message': e });
     }
 });
 
 // LOGIN
-router.patch('/user',(req,res)=>{
+router.patch('/user', (req, res) => {
     console.log(req.body);
     const email = req.body.email;
     const pwd = req.body.password;
-    try{
-        check_data(User, email, (data)=>{
+    try {
+        check_data(User, email, (data) => {
             data = JSON.parse(data);
-            if(data === null) {
-                return res.status(400).json({'error':true, 'message': '帳號或密碼錯誤'});
+            if (data === null) {
+                return res.status(400).json({ 'error': true, 'message': '帳號或密碼錯誤' });
             } else {
                 const comparePwd = data.password
-                bcrypt.compare(pwd, comparePwd).then((compare)=>{
+                bcrypt.compare(pwd, comparePwd).then((compare) => {
                     // console.log(res); bool
-                    if(compare){
+                    if (compare) {
                         req.session.email = email;
-                        return res.json({'ok': true});
+                        return res.json({ 'ok': true });
                     } else {
-                        return res.status(400).json({'error':true, 'message': '帳號或密碼錯誤'});
+                        return res.status(400).json({ 'error': true, 'message': '帳號或密碼錯誤' });
                     }
                 })
-                
+
             }
         })
-    } catch(e){
-        return res.status(500).json({'error':true, 'message': e});
+    } catch (e) {
+        e = e.toString();
+        return res.status(500).json({ 'error': true, 'message': e });
     }
-
-    // 比對帳號 跟 解密後的密碼
-    // 通過
-    // 帳號或密碼錯誤
-    // 此帳號無註冊過
 });
 
 
 // LOGOUT
-router.delete('/user',(req,res)=>{
-    req.session.destroy((err)=>{
-        if(err) {
+router.delete('/user', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
             throw err;
         } else {
             res.clearCookie('sessionId');
-            return res.json({'ok': true});
+            return res.json({ 'ok': true });
         }
     })
 });

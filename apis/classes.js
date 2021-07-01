@@ -24,6 +24,7 @@ router.get('/class', (req, res) => {
             return res.json(all_data);
         });
     } catch (e) {
+        e = e.toString();
         return res.status(500).json({ 'error': true, 'message': e });
     }
 
@@ -62,6 +63,7 @@ router.get('/class/:classId', (req, res) => {
             }
         })
     } catch (e) {
+        e = e.toString();
         return res.status(500).json({ 'error': true, 'message': e });
     }
 
