@@ -18,7 +18,8 @@ exports.handler = (event, context, callback) => {
         url: 'https://www.sandbox.paypal.com/cgi-bin/webscr',
         method: 'POST',
         headers: {
-            'Connection': 'close'
+            'user-agent': 'Nodejs-IPN-VerificationScript',
+
         },
         body: body,
         strictSSL: true,
