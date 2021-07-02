@@ -6,11 +6,14 @@ const MemoryStore = session.MemoryStore;
 const cookieParser = require('cookie-parser');
 
 
+
 app.set('views', './templates');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/static'));
-app.use(express.json()); // for server receive json data
+app.use(express.json()); // Parse application/json
 app.use(cookieParser());
+app.use(express.bodyParser());
+app.use(express.urlencoded({extended: false})); // Parse application/x-www-form-urlencoded
 
 // 設data 不能用
 // let expiryDate = new Date(Date.now() + 1000 * 60 * 60 * 24).toLocaleString('chinese',{hour12: false});
