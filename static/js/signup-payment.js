@@ -36,7 +36,8 @@ if(big_tappay_radio.checked === true) {
     big_paypal.style.display = 'none';
     big_tappay.style.display = 'block';
 }
-// 串接tappay金流
+
+// 串接tappay金流 => 付款
 big_tappay.addEventListener('submit', (event)=>{
     event.preventDefault();
     TPDirect.card.getPrime((res)=>{
@@ -66,6 +67,7 @@ function sendPrime(prime){
 
     }).then((data)=>{
         console.log(data);
+        window.location.href = '/thankyou'
     })
 };
 

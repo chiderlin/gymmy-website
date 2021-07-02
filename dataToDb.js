@@ -70,6 +70,8 @@ readFile('./data/taipei-101', function (class_data) { // callback回來的json d
                 class_room: class_room,
                 desc: desc,
                 img: img.toString(),
+            }, (success)=>{
+                console.log(success);
             })
         }
     }

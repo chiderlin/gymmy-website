@@ -10,12 +10,9 @@ function get_class_data(){
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        console.log(api_data);
         const class_name_zh = api_data.class_name_zh;
         const desc = api_data.desc;
         const img = api_data.img;
-        console.log(desc);
-        console.log(img);
         render(class_name_zh, desc, img);
     }).catch((err)=>{
         console.log(err);

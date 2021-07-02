@@ -66,6 +66,10 @@ app.get('/signup-payment', (req, res) => {
     return res.render('signup_payment');
 });
 
+app.get('/thankyou',(req,res)=>{
+    return res.render('thankyou');
+})
+
 
 // 會員中心頁面
 app.get('/member/:username', (req, res) => {
