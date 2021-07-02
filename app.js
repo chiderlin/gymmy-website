@@ -5,7 +5,7 @@ const session = require('express-session');
 const MemoryStore = session.MemoryStore;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const ipn = require('express-ipn');
+// const ipn = require('express-ipn');
 
 app.set('views', './templates');
 app.set('view engine', 'ejs');
@@ -33,12 +33,12 @@ app.use(session({
 const classes = require('./apis/classes');
 const user = require('./apis/user');
 const payment = require('./apis/payment');
-// const ipn = require('./apis/ipn_listener')
+const ipn = require('./apis/ipn_listener')
 app.use('/api', classes);
 app.use('/api', user);
 app.use('/api', payment);
-// app.use('/ipn', ipn);
-app.post('/ipn', ipn.validator(validationHanler));
+app.use('/ipn', ipn);
+// app.post('/ipn', ipn.validator(validationHanler));
 
 
 function validationHanler(err, ipnContent){
