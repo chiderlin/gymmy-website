@@ -54,6 +54,7 @@ router.get('/class/:classId', (req, res) => {
             }).then((res) => {
                 return JSON.stringify(res, null, 4);
             }).then((data)=>{
+                console.log(data);
                 if (data === 'null') {
                     return res.json({ 'data': null });
                 } else {
