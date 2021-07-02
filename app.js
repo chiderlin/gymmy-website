@@ -4,7 +4,7 @@ require('dotenv/config');
 const session = require('express-session');
 const MemoryStore = session.MemoryStore;
 const cookieParser = require('cookie-parser');
-
+const bodyParser = require('body-parser');
 
 
 app.set('views', './templates');
@@ -12,8 +12,9 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/static'));
 app.use(express.json()); // Parse application/json
 app.use(cookieParser());
-app.use(express.bodyParser());
-app.use(express.urlencoded({extended: false})); // Parse application/x-www-form-urlencoded
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }));
 
 // 設data 不能用
 // let expiryDate = new Date(Date.now() + 1000 * 60 * 60 * 24).toLocaleString('chinese',{hour12: false});
@@ -32,7 +33,7 @@ app.use(session({
 const classes = require('./apis/classes');
 const user = require('./apis/user');
 const payment = require('./apis/payment');
-const ipn_listener = require('./apis/ipn_listener.js')
+const ipn_listener = require('./apis/ipn_listener')
 app.use('/api', classes);
 app.use('/api', user);
 app.use('/api', payment);
