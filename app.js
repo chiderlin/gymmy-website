@@ -29,9 +29,12 @@ app.use(session({
 const classes = require('./apis/classes');
 const user = require('./apis/user');
 const payment = require('./apis/payment');
+const ipn_listener = require('./apis/ipn_listener.js')
 app.use('/api', classes);
 app.use('/api', user);
 app.use('/api', payment);
+app.use('/api', ipn_listener);
+
 
 app.get('/', (req, res) => {
     return res.render('index');
