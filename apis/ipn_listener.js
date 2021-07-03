@@ -62,8 +62,8 @@ function validate(body={}){
 
         axios.post(url, postreq, {
             headers:{
-                'user-agent': 'Nodejs-IPN-VerificationScript',
-                'content-type': 'application/x-www-form-urlencoded',
+                'cache-control': 'max-age=0, no-cache, no-store, must-revalidate',
+                'content-type': 'text/html; charset=iso-8859-1',
                 'Connection': 'close',
             },
             strictSSL: true,
