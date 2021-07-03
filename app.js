@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 // const ipn = require('express-ipn');
 
+
 app.set('views', './templates');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/static'));
@@ -41,14 +42,15 @@ app.use('/ipn', ipn);
 // app.post('/ipn', ipn.validator(validationHanler));
 
 
-function validationHanler(err, ipnContent){
-    if (err) {
-        console.error("IPN invalid"); // The IPN was invalid
-    } else {
-        console.log(ipnContent); // The IPN was valid.
-        // Process the IPN data
-    }
-};
+
+// function validationHanler(err, ipnContent){
+//     if (err) {
+//         console.error("IPN invalid"); // The IPN was invalid
+//     } else {
+//         console.log(ipnContent); // The IPN was valid.
+//         // Process the IPN data
+//     }
+// };
 
 
 

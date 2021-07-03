@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const ipn = require('paypal-ipn');
 
 router.post('/', async(req,res)=>{
     // 1. 200 response
@@ -51,49 +52,61 @@ router.post('/', async(req,res)=>{
 });
 
 function validate(body={}){
-    return new Promise((resolve, reject)=>{
+    ipn.verify(body, (err, msg)=>{
+        if(err){
+            console.log(err);
+            return false;
+        }
+        if(body.payment_status == 'Completed') {
+            console.log(msg);
+            return true;
+        }
+    })
 
-        let postreq = 'cmd=_notify-validate'
-        Object.keys(body).map((key) => {
-            postreq = `${postreq}&${key}=${body[key]}`;
-            return key;
-          });
 
-        const url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
+    // return new Promise((resolve, reject)=>{
 
-        axios.post(url, postreq, {
-            headers:{
-                'Content-type': 'text/plain',
-                'Content-Length': postreq.length,
-                'User-Agent': 'Nodejs-IPN-VerificationScript',
-            },
+    //     let postreq = 'cmd=_notify-validate'
+    //     Object.keys(body).map((key) => {
+    //         postreq = `${postreq}&${key}=${body[key]}`;
+    //         return key;
+    //       });
 
-        }).then((result)=>{
-            console.log(result.status);
-            console.log(result.data);
-            if(result.data.substring(0,8) === 'VERIFIED') {
-                console.log('VERIFIED');
-                resolve(true);
-            } else if (result.substring(0,7) === 'INVALID') {
-                console.log('INVALID');
-                reject(new Error('IPN Message is invalid.'));
-            } else {
-                reject(new Error('Unexpected response body.'));
-            }
-        }).catch((error)=>{
-            if (error.response) {
-                // Request made and server responded
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-        })
+    //     const url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
+
+    //     axios.post(url, postreq, {
+    //         headers:{
+    //             'Content-type': 'text/plain',
+    //             'Content-Length': postreq.length,
+    //             'User-Agent': 'Nodejs-IPN-VerificationScript',
+    //         },
+
+    //     }).then((result)=>{
+    //         console.log(result.status);
+    //         console.log(result.data);
+    //         if(result.data.substring(0,8) === 'VERIFIED') {
+    //             console.log('VERIFIED');
+    //             resolve(true);
+    //         } else if (result.substring(0,7) === 'INVALID') {
+    //             console.log('INVALID');
+    //             reject(new Error('IPN Message is invalid.'));
+    //         } else {
+    //             reject(new Error('Unexpected response body.'));
+    //         }
+    //     }).catch((error)=>{
+    //         if (error.response) {
+    //             // Request made and server responded
+    //             console.log(error.response.data);
+    //             console.log(error.response.status);
+    //             console.log(error.response.headers);
+    //         } else if (error.request) {
+    //             // The request was made but no response was received
+    //             console.log(error.request);
+    //         } else {
+    //             // Something happened in setting up the request that triggered an Error
+    //             console.log('Error', error.message);
+    //         }
+    //     })
 
         // axios({
         //     method: "POST",
