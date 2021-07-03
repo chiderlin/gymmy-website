@@ -60,24 +60,58 @@ function validate(body={}){
 
         const url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
 
-        axios.post(url, postreq, {
-            headers:{
-                'cache-control': 'max-age=0, no-cache, no-store, must-revalidate',
-                'content-type': 'text/html; charset=iso-8859-1',
-                'Connection': 'close',
+        // axios.post(url, postreq, {
+        //     headers:{
+        //         'cache-control': 'max-age=0, no-cache, no-store, must-revalidate',
+        //         'content-type': 'text/html; charset=iso-8859-1',
+        //         'Connection': 'close',
+        //     },
+        //     strictSSL: true,
+        //     rejectUnauthorized: false,
+        //     requestCert: true,
+        //     agent: false,
+        // }).then((result)=>{
+        //     console.log(result.status);
+        //     console.log(result.data);
+        //     if(result.data.substring(0,8) === 'VERIFIED') {
+        //         console.log('VERIFIED');
+        //         resolve(true);
+        //     } else if (result.substring(0,7) === 'INVALID') {
+        //         console.log('INVALID');
+        //         reject(new Error('IPN Message is invalid.'));
+        //     } else {
+        //         reject(new Error('Unexpected response body.'));
+        //     }
+        // }).catch((error)=>{
+        //     if (error.response) {
+        //         // Request made and server responded
+        //         console.log(error.response.data);
+        //         console.log(error.response.status);
+        //         console.log(error.response.headers);
+        //     } else if (error.request) {
+        //         // The request was made but no response was received
+        //         console.log(error.request);
+        //     } else {
+        //         // Something happened in setting up the request that triggered an Error
+        //         console.log('Error', error.message);
+        //     }
+        // })
+
+        axios({
+            method: "POST",
+            url:url,
+            headers: {
+                'Content-Length': postreq.length,
             },
-            strictSSL: true,
-            rejectUnauthorized: false,
-            requestCert: true,
-            agent: false,
+            body: postreq,
         }).then((result)=>{
-            console.log(result.status);
+            console.log(result.status)
             console.log(result.data);
             if(result.data.substring(0,8) === 'VERIFIED') {
-                console.log('VERIFIED');
+                console.log('VERIFIED')
                 resolve(true);
             } else if (result.substring(0,7) === 'INVALID') {
-                console.log('INVALID');
+                console.log('INVALID')
                 reject(new Error('IPN Message is invalid.'));
             } else {
                 reject(new Error('Unexpected response body.'));
@@ -95,29 +129,8 @@ function validate(body={}){
                 // Something happened in setting up the request that triggered an Error
                 console.log('Error', error.message);
             }
-        })
-        // axios({
-        //     method: "POST",
-        //     url:url,
-        //     headers: {
-        //         'Content-Length': postreq.length,
-        //     },
-        //     encoding: 'utf-8',
-        //     body: postreq
-        // }).then((result)=>{
-        //     console.log(result.status)
-        //     console.log(result.data);
-        //     if(result.data.substring(0,8) === 'VERIFIED') {
-        //         resolve(true);
-        //     } else if (result.substring(0,7) === 'INVALID') {
-        //         reject(new Error('IPN Message is invalid.'));
-        //     } else {
-        //         reject(new Error('Unexpected response body.'));
-        //     }
-        // }).catch((err)=>{
-        //     console.log('err:',err);
-        //     reject(new Error(err))
-        // });
+            reject(new Error(error))
+        });
     })
 }
 
