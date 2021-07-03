@@ -66,7 +66,7 @@ class PayPalService {
                 postreq = `${postreq}&${key}=${body[key]}`;
                 return key;
             });
-
+            console.log('paypal body:', body);
             const options = {
                 url: 'https://ipnpb.paypal.com/cgi-bin/webscr',
                 method: 'POST',
