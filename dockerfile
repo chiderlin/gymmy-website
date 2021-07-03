@@ -1,11 +1,12 @@
 # syntax=docker/dockerfile:1
-# FROM ubuntu:latest
-FROM tbaltrushaitis/ubuntu-nodejs
+# FROM tbaltrushaitis/ubuntu-nodejs
+
+FROM ubuntu:latest
 MAINTAINER Chi Lin "chiderlin36@gmail.com"
 RUN apt-get update && \
 DEBIAN_FRONTEND=noninteractive && \
 apt-get install -y vim && \
-# apt-get install --yes nodejs && \
+apt-get install --yes nodejs && \
 apt-get install --no-install-recommends -y
 
 COPY . /app
