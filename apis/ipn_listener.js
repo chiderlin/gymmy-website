@@ -142,7 +142,7 @@ function validate(body={}){
         //     }
         //     reject(new Error(error));
         // });
-    })
+    // })
 }
 
 module.exports = router;
