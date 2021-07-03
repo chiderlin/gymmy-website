@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const request = require('request');
 
 router.post('/', async(req,res)=>{
     // 1. 200 response
@@ -52,38 +51,55 @@ router.post('/', async(req,res)=>{
 
 function validate(body={}){
     return new Promise((resolve, reject)=>{
-        let postreq = 'cmd=_notify-validate';
-        Object.keys(body).map((key)=>{
-            postreq = `${postreq}&${key}=${body[key]}`;
-            return key
-        })
+        let postreq = 'cmd=_notify-validate'+ body;
+        // Object.keys(body).map((key)=>{
+        //     postreq = `${postreq}&${key}=${body[key]}`;
+        //     return key
+        // })
         const url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
-        const options = {
-            url: 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr',
-            method: 'POST',
-            'headers':{
+        // const options = {
+        //     url: 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr',
+        //     method: 'POST',
+        //     'headers':{
+        //         'Content-Length': postreq.length,
+        //     },
+        //     encoding: 'utf-8',
+        //     body: postreq
+        // }
+        // 會錯
+        // request(options, (error,res, resbody)=>{
+        //     if(error || res.statusCode !== 200) {
+        //         reject(new Error(error));
+        //         return ;
+        //     }
+        //     if(resbody.substring(0,8) === 'VERIFIED') {
+        //         console.log('VERIFIED');
+        //         resolve(true);
+        //     } else if(resbody.substring(0,7) === 'INVALID') {
+        //         console.log('INVALID');
+        //         reject(new Error('IPN Message is invalid.'));
+        //     } else {
+        //         reject(new Error('Unexpected response body.'));
+        //     }
+        // })
+        axios.post(url, postreq, {
+            headers:{
+                "user-agent": "Nodejs-IPN-VerificationScript",
                 'Content-Length': postreq.length,
             },
-            encoding: 'utf-8',
-            body: postreq
-        }
-        
-        request(options, (error,res, resbody)=>{
-            if(error || res.statusCode !== 200) {
-                reject(new Error(error));
-                return ;
-            }
-            if(resbody.substring(0,8) === 'VERIFIED') {
+        }).then((result)=>{
+            console.log(result.status);
+            console.log(result.data);
+            if(result.data.substring(0,8) === 'VERIFIED') {
                 console.log('VERIFIED');
                 resolve(true);
-            } else if(resbody.substring(0,7) === 'INVALID') {
+            } else if (result.substring(0,7) === 'INVALID') {
                 console.log('INVALID');
                 reject(new Error('IPN Message is invalid.'));
             } else {
                 reject(new Error('Unexpected response body.'));
             }
         })
-
         // axios({
         //     method: "POST",
         //     url:url,
