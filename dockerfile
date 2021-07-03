@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-FROM ubuntu:latest
+# FROM ubuntu:latest
+FROM tbaltrushaitis/ubuntu-nodejs
 MAINTAINER Chi Lin "chiderlin36@gmail.com"
 RUN apt-get update && \
 DEBIAN_FRONTEND=noninteractive && \
