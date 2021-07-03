@@ -74,8 +74,10 @@ function validate(body={}){
                 return ;
             }
             if(resbody.substring(0,8) === 'VERIFIED') {
+                console.log('VERIFIED');
                 resolve(true);
             } else if(resbody.substring(0,7) === 'INVALID') {
+                console.log('INVALID');
                 reject(new Error('IPN Message is invalid.'));
             } else {
                 reject(new Error('Unexpected response body.'));
