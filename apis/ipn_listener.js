@@ -51,37 +51,11 @@ router.post('/', async(req,res)=>{
 
 function validate(body={}){
     return new Promise((resolve, reject)=>{
-        let postreq = 'cmd=_notify-validate'+ body;
-        // Object.keys(body).map((key)=>{
-        //     postreq = `${postreq}&${key}=${body[key]}`;
-        //     return key
-        // })
+        console.log(body);
+        console.log(typeof(body));
+        let postreq = 'cmd=_notify-validate'+ JSON.Stringify(body);
         const url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
-        // const options = {
-        //     url: 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr',
-        //     method: 'POST',
-        //     'headers':{
-        //         'Content-Length': postreq.length,
-        //     },
-        //     encoding: 'utf-8',
-        //     body: postreq
-        // }
-        // 會錯
-        // request(options, (error,res, resbody)=>{
-        //     if(error || res.statusCode !== 200) {
-        //         reject(new Error(error));
-        //         return ;
-        //     }
-        //     if(resbody.substring(0,8) === 'VERIFIED') {
-        //         console.log('VERIFIED');
-        //         resolve(true);
-        //     } else if(resbody.substring(0,7) === 'INVALID') {
-        //         console.log('INVALID');
-        //         reject(new Error('IPN Message is invalid.'));
-        //     } else {
-        //         reject(new Error('Unexpected response body.'));
-        //     }
-        // })
+
         axios.post(url, postreq, {
             headers:{
                 "user-agent": "Nodejs-IPN-VerificationScript",
