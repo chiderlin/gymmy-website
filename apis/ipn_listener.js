@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const ipn = require('paypal-ipn');
 
-router.post('/', async(req,res)=>{
+router.post('/',(req,res)=>{
     // 1. 200 response
     console.log('It works! 😀');
     res.status(200).send('OK');
@@ -12,55 +12,54 @@ router.post('/', async(req,res)=>{
     // 2. post same ipn mag back
     const body = req.body || {};
     try {
-        const isValidated = await validate(body);
-        console.log(isValidated)
-        console.log('1')
-        if(!isValidated){
-            console.error('Error validating IPN message.');
-            return;
-        }
+        validate(body, (bool)=>{
+            console.log(bool);
+            if(!bool){
+                console.error('Error validating IPN message.');
+                return;
+            }
 
-        // IPN msg is validated
-        const transactionType = body.txn_type;
-        switch(transactionType) {
-            case 'web_accept':
-                console.log('web_accept', web_accept);
-                break;
-            case 'subscr_payment':
-                const status = body.payment_status;
-                const amount = body.mc_gross;
-                console.log('subscr_payments',status)
-                break;
-            case 'subscr_signup':
-                // const subscr_date = body.subscr_date
-                // console.log(subscr_date);
-                break;
-            case 'subscr_cancel':
-                break;
-            case 'subscr_eot':
-                break;
-            case 'recurring_payment_suspended':
-                break;
-            case 'recurring_payment_suspended_due_to_max_failed_payment':
-                break;
-            default:
-                console.log('Unhandled transaction type: ', transactionType)
-        };
+            // IPN msg is validated
+            const transactionType = body.txn_type;
+            switch(transactionType) {
+                case 'web_accept':
+                    console.log('web_accept', web_accept);
+                    break;
+                case 'subscr_payment':
+                    const status = body.payment_status;
+                    const amount = body.mc_gross;
+                    console.log('subscr_payments',status)
+                    break;
+                case 'subscr_signup':
+                    // const subscr_date = body.subscr_date
+                    // console.log(subscr_date);
+                    break;
+                case 'subscr_cancel':
+                    break;
+                case 'subscr_eot':
+                    break;
+                case 'recurring_payment_suspended':
+                    break;
+                case 'recurring_payment_suspended_due_to_max_failed_payment':
+                    break;
+                default:
+                    console.log('Unhandled transaction type: ', transactionType)
+            };
 
+        });
+        
     } catch(e) {
         console.error(e);
     };
 });
 
-function validate(body={}){
+function validate(body={}, callback){
     ipn.verify(body,{'allow_sandbox': true}, (err, msg)=>{
         if(err){
-            console.log(err);
-            return false;
+            return callback(false);
         }
         if(body.payment_status == 'Completed') {
-            console.log(msg);
-            return true;
+            return callback(true);
         }
     })
 
