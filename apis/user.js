@@ -147,8 +147,12 @@ router.delete('/user', (req, res) => {
     // req.session.email = null;
     // res.clearCookie('sessionId');
     req.session.destroy((err) => {
-        res.clearCookie('session');
-        return res.json({ 'ok': true });
+        if(err){
+            throw err;
+        } else {
+            res.clearCookie('sessionId');
+            return res.json({ 'ok': true });
+        }
     })
 });
 

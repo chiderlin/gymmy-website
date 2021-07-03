@@ -3,8 +3,7 @@
 }
 
 /* 選取欄位 */
-.nav-pills .nav-link.active,
-.nav-pills .show > .nav-link {
+.hover:hover {
   color: #fff;
   background-color: #FFA042;
 }

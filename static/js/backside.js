@@ -1,13 +1,11 @@
 let class_data; 
 init();
 
+// controll
 function init() {
     get_class();
-}
-
-// const 
-
-
+    checkLogIn();
+};
 function select_day() {
     // 如果有選過的話 先清空option選項 
     let option = document.querySelectorAll('option');
@@ -32,6 +30,37 @@ function select_class(){
 };
 
 
+// view
+function render_class(zh_name){
+    const select_class = document.getElementById('select_class');
+    const option = document.createElement('option');
+    option.value = zh_name;
+    option.appendChild(document.createTextNode(zh_name));
+    select_class.appendChild(option);
+};
+
+
+// model
+function checkLogIn(){
+    const url = '/api/user';
+    fetch(url).then((res)=>{
+        return res.json();
+    }).then((api_data)=>{
+        if(api_data.data === null) {
+            window.location.href = '/backside-login'
+        }
+    })
+};
+function logout(){
+    const url = '/api/user';
+    fetch(url,{
+        method: "DELETE",
+    }).then((res)=>{
+        return res.json();
+    }).then((data)=>{
+        window.location.href = '/backside-login';
+    })
+};
 
 function get_class() {
     let url = 'api/class'
@@ -41,13 +70,4 @@ function get_class() {
         class_data = api_data.data;
     });
 };
-
-function render_class(zh_name){
-    const select_class = document.getElementById('select_class');
-    const option = document.createElement('option');
-    option.value = zh_name;
-    option.appendChild(document.createTextNode(zh_name));
-    select_class.appendChild(option);
-};
-
 
