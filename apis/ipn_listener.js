@@ -51,7 +51,7 @@ class IPNController {
 }
 
 
-router.post('/ipn', IPNController.index);
+router.post('/', IPNController.index);
 
 
 class PayPalService {
