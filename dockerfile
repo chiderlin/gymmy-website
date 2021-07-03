@@ -3,13 +3,12 @@
 
 FROM ubuntu:latest
 MAINTAINER Chi Lin "chiderlin36@gmail.com"
-RUN apt-get update && \
-DEBIAN_FRONTEND=noninteractive && \
+RUN apt-get update && apt-get upgrade -y && \
+apt-get install --yes curl && \
 apt-get install -y vim && \
-apt-get install --yes nodejs \
-npm && \
+apt-get install --yes nodejs && \
 apt-get install --no-install-recommends -y
-
+RUN curl --silent --location https://deb.nodesource.com/setup_4.x | sudo bash -
 COPY . /app
 WORKDIR /app
 RUN npm install
