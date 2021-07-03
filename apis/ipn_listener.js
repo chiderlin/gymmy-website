@@ -60,12 +60,7 @@ function validate(body={}){
 
         const url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
 
-        axios.post(url, postreq, {
-            headers:{
-                "user-agent": "Nodejs-IPN-VerificationScript",
-                'Content-Length': postreq.length,
-            },
-        }).then((result)=>{
+        axios.post(url, postreq).then((result)=>{
             console.log(result.status);
             console.log(result.data);
             if(result.data.substring(0,8) === 'VERIFIED') {
