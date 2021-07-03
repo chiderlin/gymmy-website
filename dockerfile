@@ -1,9 +1,8 @@
-# syntax=docker/dockerfile:1
 # FROM tbaltrushaitis/ubuntu-nodejs
 
 FROM ubuntu:latest
 MAINTAINER Chi Lin "chiderlin36@gmail.com"
-RUN apt-get update && apt-get upgrade -y && \
+RUN apt-get update && apt-get install sudo -y && \
 apt-get install --yes curl && \
 apt-get install -y vim && \
 apt-get install --yes nodejs && \
