@@ -120,6 +120,27 @@ const Payment = sequelize.define('Payment',{
     },
 });
 
+const Order = sequelize.define('Order',{
+    id:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    transaction_id:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+        unique: true,
+    },
+    currency:{
+        type: Sequelize.STRING(50),
+    },
+    amount:{
+        type:Sequelize.INTEGER,
+        allowNull: false,
+    },
+    
+    
+})
 
 // 雙向關聯
 User.hasOne(Payment);
@@ -132,6 +153,7 @@ db.sequelize = sequelize;
 db.Classes = Classes;
 db.User = User;
 db.Payment = Payment;
+db.Order = Order;
 module.exports = db;
 
 

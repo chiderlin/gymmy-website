@@ -73,13 +73,13 @@ router.post('/pay-by-prime',(req,res)=>{
 })
 
 
-// 所謂定期定額扣款，在tappay就是用token pay，定期呼叫來做付款   那符合嗎？？
+// 所謂定期定額扣款，在tappay就是用token pay，定期呼叫來做付款
 router.post('/pay-by-token',(req,res)=>{
 
     sequelize.sync().then(() => {
         User.findOne({
             where: {
-                id: '9',
+                email: req.session.email,
             },
             include: Payment
         }).then((res) => {
@@ -117,6 +117,11 @@ function payByToken(post_data){
     }).then((result)=>{
         console.log(result.data);
         const data = result.data;
+        if(data.status === 0) { //付款成功
+            const transaction_id = data.bank_transaction_id;
+            const amount = data.amount;
+            const currency = data.currency;
+        }
     })
 };
 
