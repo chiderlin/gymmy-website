@@ -19,7 +19,7 @@ services:
             - ./proxy:/etc/nginx/conf.d #.conf互通
             - /etc/localtime:/etc/localtime:ro # 時間和外面相通
         networks:
-            front-gymmy
+            - front-gymmy
 
 networks:
-    front-gymmy
+    front-gymmy:
