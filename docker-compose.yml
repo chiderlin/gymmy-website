@@ -1,0 +1,25 @@
+version: "3"
+services:
+    project:
+        build: .
+        ports:
+            - "3001":"3001"
+        links:
+            nginx-gymmy
+        networks:
+            front-gymmy
+
+
+    nginx-gymmy:
+        image: nginx:1.15-alpine
+        ports:
+            - "80:80"
+            - "443":"443"
+        volumes:
+            - ./proxy:/etc/nginx/conf.d #.conf互通
+            - /etc/localtime:/etc/localtime:ro # 時間和外面相通
+        networks:
+            front-gymmy
+
+networks:
+    front-gymmy
