@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const { request } = require('express');
+const request = require('request');
 
 router.post('/', async(req,res)=>{
     // 1. 200 response
