@@ -5,7 +5,6 @@ const session = require('express-session');
 const MemoryStore = session.MemoryStore;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-// const ipn = require('express-ipn');
 
 
 app.set('views', './templates');
@@ -39,19 +38,6 @@ app.use('/api', classes);
 app.use('/api', user); 
 app.use('/api', payment);
 app.use('/ipn', ipn);
-// app.post('/ipn', ipn.validator(validationHanler));
-
-
-
-// function validationHanler(err, ipnContent){
-//     if (err) {
-//         console.error("IPN invalid"); // The IPN was invalid
-//     } else {
-//         console.log(ipnContent); // The IPN was valid.
-//         // Process the IPN data
-//     }
-// };
-
 
 
 app.get('/', (req, res) => {
@@ -102,12 +88,12 @@ app.get('/news', (req, res) => {
 });
 
 // 後台頁面
-app.get('/backstage', (req, res) => {
-    return res.render('backstage');
+app.get('/backside', (req, res) => {
+    return res.render('backside');
 });
 
-app.get('/backstage-login', (req, res) => {
-    return res.render('backstage-login');
+app.get('/backside-login', (req, res) => {
+    return res.render('backside-login');
 });
 
 app.listen(3001);
