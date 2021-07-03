@@ -30,6 +30,7 @@
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
     "paypal-ipn": "^3.0.0",
+    "request": "^2.88.2",
     "sequelize": "^6.6.2"
   }
 }
