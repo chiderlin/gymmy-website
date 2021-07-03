@@ -13,6 +13,7 @@ router.post('/', async(req,res)=>{
     const body = req.body || {};
     try {
         const isValidated = await validate(body);
+        console.log(isValidated)
         console.log('1')
         if(!isValidated){
             console.error('Error validating IPN message.');
@@ -52,7 +53,7 @@ router.post('/', async(req,res)=>{
 });
 
 function validate(body={}){
-    ipn.verify(body, (err, msg)=>{
+    ipn.verify(body,{'allow_sandbox': true}, (err, msg)=>{
         if(err){
             console.log(err);
             return false;
