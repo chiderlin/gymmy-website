@@ -51,13 +51,13 @@ router.post('/', async(req,res)=>{
 
 function validate(body={}){
     return new Promise((resolve, reject)=>{
-        
+
         let postreq = 'cmd=_notify-validate'
         Object.keys(body).map((key) => {
             postreq = `${postreq}&${key}=${body[key]}`;
             return key;
           });
-        console.log(postreq);
+
         const url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
 
         axios.post(url, postreq, {
@@ -77,6 +77,8 @@ function validate(body={}){
             } else {
                 reject(new Error('Unexpected response body.'));
             }
+        }).catch((e)=>{
+            console.log("err:",e);
         })
         // axios({
         //     method: "POST",
