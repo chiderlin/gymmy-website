@@ -88,6 +88,7 @@ class PayPalService {
                 if (resBody.substring(0, 8) === 'VERIFIED') {
                     resolve(true);
                 } else if (resBody.substring(0, 7) === 'INVALID') {
+                    console.log(resBody);
                     reject(new Error('IPN Message is invalid.'));
                 } else {
                     reject(new Error('Unexpected response body.'));
