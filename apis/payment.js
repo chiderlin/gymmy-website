@@ -73,11 +73,6 @@ router.post('/pay-by-prime',(req,res)=>{
 })
 
 
-function get_id_data(table, value, callback) {
-
-};
-
-
 // 所謂定期定額扣款，在tappay就是用token pay，定期呼叫來做付款   那符合嗎？？
 router.post('/pay-by-token',(req,res)=>{
 

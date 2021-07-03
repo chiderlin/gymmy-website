@@ -35,7 +35,7 @@ const user = require('./apis/user');
 const payment = require('./apis/payment');
 const ipn = require('./apis/ipn_listener')
 app.use('/api', classes);
-app.use('/api', user);
+app.use('/api', user); 
 app.use('/api', payment);
 app.use('/ipn', ipn);
 // app.post('/ipn', ipn.validator(validationHanler));
