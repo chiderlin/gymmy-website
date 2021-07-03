@@ -62,8 +62,14 @@ function validate(body={}){
 
         axios.post(url, postreq, {
             headers:{
-                'Content-Length': postreq.length,
+                'user-agent': 'Nodejs-IPN-VerificationScript',
+                'content-type': 'application/x-www-form-urlencoded',
+                'Connection': 'close',
             },
+            strictSSL: true,
+            rejectUnauthorized: false,
+            requestCert: true,
+            agent: false,
         }).then((result)=>{
             console.log(result.status);
             console.log(result.data);
