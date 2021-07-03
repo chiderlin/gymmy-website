@@ -14,22 +14,12 @@
 # EXPOSE 3001
 # CMD ["node", "app.js"]
 
-FROM ubuntu:14.04
 
-# Install Node.js
-RUN apt-get update && apt-get install sudo -y
-RUN apt-get install --yes curl
-RUN curl --silent --location https://deb.nodesource.com/setup_4.x | sudo bash -
-RUN apt-get install --yes nodejs
-RUN apt-get install --yes build-essential
-
+FROM node:12.18.1
+MAINTAINER Chi Lin "chiderlin36@gmail.com"
 
 COPY . /app
 WORKDIR /app
-# Install app dependencies
 RUN npm install
-EXPOSE  3001
-
-#  Defines your runtime(define default command)
-# These commands unlike RUN (they are carried out in the construction of the container) are run when the container
+EXPOSE 3001
 CMD ["node", "app.js"]
