@@ -79,6 +79,8 @@ class PayPalService {
 
             // Make a post request to PayPal
             request(options, (error, response, resBody) => {
+                console.log(response.statusCode);
+                console.log(response);
                 if (error || response.statusCode !== 200) {
                     reject(new Error(error));
                     return;
@@ -88,7 +90,6 @@ class PayPalService {
                 if (resBody.substring(0, 8) === 'VERIFIED') {
                     resolve(true);
                 } else if (resBody.substring(0, 7) === 'INVALID') {
-                    console.log(resBody);
                     reject(new Error('IPN Message is invalid.'));
                 } else {
                     reject(new Error('Unexpected response body.'));
