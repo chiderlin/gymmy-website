@@ -5,7 +5,7 @@ RUN apt-get update && \
 DEBIAN_FRONTEND=noninteractive && \
 apt-get install -y vim && \
 apt-get install --yes nodejs && \
-apt-get install --no-install-recommends -y \
+apt-get install --no-install-recommends -y
 
 COPY . /app
 WORKDIR /app
