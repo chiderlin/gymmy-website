@@ -12,6 +12,7 @@ router.post('/', async(req,res)=>{
     const body = req.body || {};
     try {
         const isValidated = await validate(body);
+        console.log('1')
         if(!isValidated){
             console.error('Error validating IPN message.');
             return;
