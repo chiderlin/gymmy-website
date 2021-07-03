@@ -1,6 +1,6 @@
 // 測試環境
-require('dotenv/config'); //要放在Sequelize之前 才會讀取到.env的資料
-const Sequelize = require('sequelize');
+// require('dotenv/config'); //要放在Sequelize之前 才會讀取到.env的資料
+// const Sequelize = require('sequelize');
 // const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env.DB_PWD, {
 //     host: process.env.DB_HOST,
 //     dialect: 'mysql',
