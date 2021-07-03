@@ -37,6 +37,22 @@ img {
     max-width: 100%;
 }
 
+.price-card {
+    display: flex;
+    justify-content: center;
+}
+
+.price-card-format {
+    width:150px;
+    height: 150px;
+}
+
+.form-check-input:checked {
+    background-color:#777777 ;
+    border-color: #777777;
+}
+
+
 .email-img-block{
     width:150px;
     height:150px;
