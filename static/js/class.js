@@ -31,13 +31,14 @@ function render(class_name_zh, desc, img){
     let list_desc = Array.from(desc);
     let str_desc = '';
     for(let i=0; i< list_desc.length; i++) {
+        str_desc += list_desc[i];
         if(list_desc[i] === '。') {
             p = document.createElement('p');
             p.appendChild(document.createTextNode(str_desc))
             desc_box.appendChild(p);
             str_desc = '';
         }
-        str_desc += list_desc[i+1];
+        
     }
     title_name.appendChild(document.createTextNode(class_name_zh));
     image.setAttribute('src', img);

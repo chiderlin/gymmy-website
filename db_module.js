@@ -127,7 +127,12 @@ const Payment = sequelize.define('Payment',{
     next_pay_date: {
         type: Sequelize.DATE,
         allowNull: false,
-    }
+    },
+    updatedAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.fn('NOW'),
+    },
+    
 });
 
 const Order = sequelize.define('Order',{
@@ -148,14 +153,22 @@ const Order = sequelize.define('Order',{
         type:Sequelize.INTEGER,
         allowNull: false,
     },
-    
-    
-})
+    createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: sequelize.fn('NOW'),
+    },
+
+}, { // 設定時間要不要有
+    timestamps: true,
+    createdAt: true,
+    updatedAt: false,
+});
 
 // 雙向關聯
 User.hasOne(Payment);
+Payment.hasMany(Order);
 Payment.belongsTo(User);
-
+Order.belongsTo(Payment);
 
 const db = {};
 db.Sequelize = Sequelize;
