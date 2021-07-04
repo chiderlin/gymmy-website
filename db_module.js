@@ -124,6 +124,10 @@ const Payment = sequelize.define('Payment',{
         allowNull: false,
         unique: true,
     },
+    next_pay_date: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    }
 });
 
 const Order = sequelize.define('Order',{

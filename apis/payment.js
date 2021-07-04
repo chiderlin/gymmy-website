@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const db = require('../db_module.js');
+const moment = require('moment');
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Payment = db.Payment;
@@ -48,7 +49,7 @@ router.post('/pay-by-prime',(req,res)=>{
                 }).then((find_data)=>{
                     find_data = JSON.parse(find_data); 
                     const userId = find_data.id;
-
+                    const currentDate = new Date();
                     // insert data
                     sequelize.sync().then(() => {
                         // 在這邊新增資料
@@ -56,6 +57,7 @@ router.post('/pay-by-prime',(req,res)=>{
                             UserId: userId,
                             card_key: card_key,
                             card_token: card_token,
+                            next_pay_date: currentDate.setMonth(currentDate.getMonth()+1),
                         }).then((ok) => {
 
                             // 執行成功印出
