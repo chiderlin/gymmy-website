@@ -1,5 +1,11 @@
 let register_user;
 let prime;
+init()
+
+function init(){
+    getUser();
+}
+
 // controller
 const small_tappay_radio = document.getElementById('small-tappay-radio');
 const small_paypal_radio = document.getElementById('small-paypal-radio');
@@ -49,9 +55,32 @@ big_tappay.addEventListener('submit', (event)=>{
             return;
         }
         prime = res.card.prime;
-        getUser();
     })
 })
+
+// 根據plan不同，paypal顯示的plan也不同
+function switch_paypal_btn(){
+    // 大
+    const paypal_big_888 = document.getElementById('paypal-button-container-P-888');
+    const paypal_big_1000 = document.getElementById('paypal-button-container-P-1000');
+    
+    // 小
+    const paypal_small_888 = document.getElementById('small-paypal-btn-888');
+    const paypal_small_1000 = document.getElementById('small-paypal-btn-1000');
+    console.log(register_user)
+    if(register_user !== null) {
+        if(register_user.plan === 888) {
+            paypal_big_1000.style.display = 'none';
+            paypal_small_1000.style.display = 'none';
+
+        } else if(register_user.plan === 1000) {
+            paypal_big_888.style.display = 'none';
+            paypal_small_888.style.display = 'none';
+        }
+    }
+
+}
+
 
 // model
 function getUser(){
@@ -60,8 +89,7 @@ function getUser(){
         return res.json();
     }).then((api_data)=>{
         register_user = api_data.data;
-        console.log(register_user);
-        sendPrime(prime);
+        switch_paypal_btn();
     })
 }
 
@@ -102,7 +130,8 @@ function logOut(){
 
 
 // 金流
-// paypal
+// paypal 大
+// 888
 paypal.Buttons({
     style: {
         shape: 'pill',
@@ -119,8 +148,30 @@ paypal.Buttons({
     onApprove: function(data, actions) {
       alert(data.subscriptionID); // You can add optional success message for the subscriber here
     }
-}).render('#paypal-button-container-P-80U28316D6581411WMDOBS6Y'); // Renders the PayPal button
+}).render('#paypal-button-container-P-888'); // Renders the PayPal button
 
+// 1000
+paypal.Buttons({
+    style: {
+        shape: 'pill',
+        color: 'silver',
+        layout: 'horizontal',
+        label: 'paypal'
+    },
+    createSubscription: function(data, actions) {
+      return actions.subscription.create({
+        /* Creates the subscription */
+        plan_id: 'P-1UR271328M306580FMDQUEEY'
+      });
+    },
+    onApprove: function(data, actions) {
+      alert(data.subscriptionID); // You can add optional success message for the subscriber here
+    }
+}).render('#paypal-button-container-P-1000'); // Renders the PayPal button
+
+
+// paypal 小
+//888
 paypal.Buttons({
     style: {
         color: 'silver',
@@ -137,7 +188,27 @@ paypal.Buttons({
       onApprove: function(data, actions) {
         alert(data.subscriptionID); // You can add optional success message for the subscriber here
       }
-}).render('#small-paypal-btn');
+}).render('#small-paypal-btn-888');
+
+// 1000
+paypal.Buttons({
+    style: {
+        color: 'silver',
+        shape: 'pill',
+        layout: 'horizontal',
+        label: 'paypal',
+    },
+    createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          /* Creates the subscription */
+          plan_id: 'P-1UR271328M306580FMDQUEEY'
+        });
+      },
+      onApprove: function(data, actions) {
+        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+      }
+}).render('#small-paypal-btn-1000');
+
 
 
 
