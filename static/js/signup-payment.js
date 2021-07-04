@@ -1,5 +1,6 @@
 let register_user;
 let prime;
+let login_check= false;
 init()
 
 function init(){
@@ -52,9 +53,11 @@ big_tappay.addEventListener('submit', (event)=>{
     TPDirect.card.getPrime((res)=>{
         if(res.status !== 0){
             // render錯誤訊息
+            console.log(res.status);
             return;
         }
         prime = res.card.prime;
+        sendPrime(prime);
     })
 })
 
@@ -67,7 +70,6 @@ function switch_paypal_btn(){
     // 小
     const paypal_small_888 = document.getElementById('small-paypal-btn-888');
     const paypal_small_1000 = document.getElementById('small-paypal-btn-1000');
-    console.log(register_user)
     if(register_user !== null) {
         if(register_user.plan === 888) {
             paypal_big_1000.style.display = 'none';
@@ -89,15 +91,17 @@ function getUser(){
         return res.json();
     }).then((api_data)=>{
         register_user = api_data.data;
+        login_check = true;
         switch_paypal_btn();
     })
 }
 
 function sendPrime(prime){
-    if(register_user === {}) {
+    if(!login_check) {
         console.log('login first')
     } else {
         const prime_data = {'prime':prime, 'info':register_user}
+        console.log(prime_data);
         const url = '/api/pay-by-prime';
         fetch(url, {
             method: 'POST',
@@ -146,7 +150,9 @@ paypal.Buttons({
       });
     },
     onApprove: function(data, actions) {
-      alert(data.subscriptionID); // You can add optional success message for the subscriber here
+        window.location.href = '/thankyou';
+        logOut();
+    //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
     }
 }).render('#paypal-button-container-P-888'); // Renders the PayPal button
 
@@ -165,7 +171,9 @@ paypal.Buttons({
       });
     },
     onApprove: function(data, actions) {
-      alert(data.subscriptionID); // You can add optional success message for the subscriber here
+    //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
+    window.location.href = '/thankyou';
+    logOut();
     }
 }).render('#paypal-button-container-P-1000'); // Renders the PayPal button
 
@@ -186,7 +194,9 @@ paypal.Buttons({
         });
       },
       onApprove: function(data, actions) {
-        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+        // alert(data.subscriptionID);
+        window.location.href = '/thankyou';
+        logOut();
       }
 }).render('#small-paypal-btn-888');
 
@@ -205,7 +215,9 @@ paypal.Buttons({
         });
       },
       onApprove: function(data, actions) {
-        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+        // alert(data.subscriptionID);
+        window.location.href = '/thankyou'
+        logOut();
       }
 }).render('#small-paypal-btn-1000');
 

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const db = require('../db_module.js');
-const moment = require('moment');
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Payment = db.Payment;
@@ -12,6 +11,7 @@ const User = db.User;
 
 // 取得Prime
 router.post('/pay-by-prime',(req,res)=>{
+
     const post_data = {
         'prime': req.body.prime,
         'partner_key':'partner_PyJKIbMCqgsYpYiouacHI67J0jT0xOdGBGSO9e05OdiB1RHhYSDdjioD',
