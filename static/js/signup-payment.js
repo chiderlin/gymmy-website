@@ -1,3 +1,6 @@
+let register_user;
+let prime;
+// controller
 const small_tappay_radio = document.getElementById('small-tappay-radio');
 const small_paypal_radio = document.getElementById('small-paypal-radio');
 const small_tappay = document.getElementById('small-tappay');
@@ -45,32 +48,60 @@ big_tappay.addEventListener('submit', (event)=>{
             // render錯誤訊息
             return;
         }
-        const prime = res.card.prime;
-        console.log(prime);
-        sendPrime(prime);
-        // const email = document.getElementById();
-        // const 
+        prime = res.card.prime;
+        getUser();
     })
 })
-function sendPrime(prime){
-    const prime_data = {'prime':prime}
-    const url = '/api/pay-by-prime';
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type':'application/json',
-        },
-        body: JSON.stringify(prime_data),
-    }).then((res)=>{
-        console.log(res);
-        return res.json();
 
-    }).then((data)=>{
-        console.log(data);
-        window.location.href = '/thankyou'
+// model
+function getUser(){
+    const url = '/api/user';
+    fetch(url).then((res)=>{
+        return res.json();
+    }).then((api_data)=>{
+        register_user = api_data.data;
+        console.log(register_user);
+        sendPrime(prime);
     })
+}
+
+function sendPrime(prime){
+    if(register_user === {}) {
+        console.log('login first')
+    } else {
+        const prime_data = {'prime':prime, 'info':register_user}
+        const url = '/api/pay-by-prime';
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify(prime_data),
+        }).then((res)=>{
+            console.log(res);
+            return res.json();
+    
+        }).then((data)=>{
+            console.log(data);
+            window.location.href = '/thankyou'
+            logOut();
+        })
+    }
 };
 
+function logOut(){
+    const url = '/api/user';
+    fetch(url,{
+        method: "DELETE",
+    }).then((res)=>{
+        return res.json();
+    }).then((data)=>{
+        
+    })
+}
+
+
+// 金流
 // paypal
 paypal.Buttons({
     style: {

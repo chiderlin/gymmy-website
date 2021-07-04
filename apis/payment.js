@@ -15,12 +15,12 @@ router.post('/pay-by-prime',(req,res)=>{
         'prime': req.body.prime,
         'partner_key':'partner_PyJKIbMCqgsYpYiouacHI67J0jT0xOdGBGSO9e05OdiB1RHhYSDdjioD',
         'merchant_id':'chi_CTBC',
-        'amount': 888,
+        'amount': req.body.info.plan,
         'details': 'gym service',
         'cardholder': {
-            'phone_number': '0911111111',
-            'name': 'test',
-            'email': 'test@test.com'
+            'phone_number': req.body.info.phone,
+            'name': req.body.info.name,
+            'email': req.body.info.email
         }, // 裡面一定要有phone_number, name, email 
         'remember': true,
     }

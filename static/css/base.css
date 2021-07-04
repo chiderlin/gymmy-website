@@ -167,6 +167,7 @@ main {
     
 }
 
+
 @media(max-width:600px) {
     .flexbox-big {
         display:none;
@@ -191,6 +192,7 @@ main {
 
 
 .menu-format {
+    cursor: pointer;
     padding: 20px 0 ;
     text-align: center;
     border-bottom: #000000 1px solid;

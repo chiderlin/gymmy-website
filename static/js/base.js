@@ -16,9 +16,18 @@ function init(){
 big_menu[5].addEventListener('click',()=>{
     logOut();
 });
+burger_menu[5].addEventListener('click',()=>{
+    logOut();
+});
 
 // 會員中心按鈕
 big_menu[3].addEventListener('click',()=>{
+    if(login_status) {
+        const username = login_user_info.data.name;
+        window.location.href = `/member/${username}`;
+    }
+});
+burger_menu[3].addEventListener('click',()=>{
     if(login_status) {
         const username = login_user_info.data.name;
         window.location.href = `/member/${username}`;
@@ -34,6 +43,8 @@ closebtn.addEventListener('click', () => {
     burger_overlay.style.height = '0%';
 });
 
+
+
 const overlay_login = document.querySelector('.overlay-login');
 const login_close_btn = document.getElementById('login-close-btn');
 // 登入/註冊按鈕
@@ -42,6 +53,7 @@ big_menu[4].addEventListener('click', () => {
 });
 
 burger_menu[4].addEventListener('click', ()=>{
+    burger_overlay.style.height = '0%';
     overlay_login.style.display = 'block';
 });
 

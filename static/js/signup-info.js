@@ -1,3 +1,19 @@
+//controll
+// 價格選項
+const basic_plan = document.getElementById('basic-plan');
+const pro = document.getElementById('profession');
+let price;
+let register_info = {}
+basic_plan.addEventListener('click',()=>{
+    price = 888;
+
+})
+pro.addEventListener('click',()=>{
+    price = 1000;
+
+})
+
+
 // 下一步按鈕
 const next_big = document.getElementById('next-big');
 const next_small = document.getElementById('next-small');
@@ -5,7 +21,6 @@ const next_small = document.getElementById('next-small');
 
 // 註冊
 const register_form_big = document.getElementById('register-form-big');
-console.log(register_form_big);
 const register_form_small = document.getElementById('register-form-small');
 register_form_big.addEventListener('submit',(event)=>{
     event.preventDefault();
@@ -13,7 +28,12 @@ register_form_big.addEventListener('submit',(event)=>{
     const email_big = document.getElementById('email-big').value;
     const pwd_big = document.getElementById('pwd-big').value;
     const phone_big = document.getElementById('phone-big').value;
-    user_register(name_big, email_big, pwd_big, phone_big);
+    if(price === undefined){
+        renderMsg('請選擇方案');
+    } else {
+        register_info = {'name': name_big, 'email':email_big, 'pwd':pwd_big, 'phone':phone_big, 'price':price};
+        user_register(register_info);
+    }
 });
 
 register_form_small.addEventListener('submit',(event)=>{
@@ -22,12 +42,19 @@ register_form_small.addEventListener('submit',(event)=>{
     const email_sma = document.getElementById('email-small').value;
     const pwd_sma = document.getElementById('pwd-small').value;
     const phone_sma = document.getElementById('phone-small').value;
-    user_register(name_sma, email_sma, pwd_sma, phone_sma);
+    if(price === undefined){
+        renderMsg('請選擇方案');
+    } else {
+        register_info = {'name': name_sma, 'email':email_sma, 'pwd':pwd_sma, 'phone':phone_sma, 'price':price};
+        user_register(register_info);
+    }
     
 })
 
-function user_register(name, email, pwd, phone) {
-    const register_info = {'name': name, 'email':email, 'pwd':pwd, 'phone':phone}
+
+
+// model
+function user_register(register_info) {
     const url = '/api/user'
     fetch(url,{
         method: 'POST',
@@ -39,6 +66,17 @@ function user_register(name, email, pwd, phone) {
         return res.json();
     }).then((msg)=>{
         console.log(msg);
-        window.location.href = '/signup-payment'
+        if(msg.error === true) {
+            renderMsg(msg.message);
+        } else if(msg.ok === true) {
+            window.location.href = '/signup-payment'
+        }
     })
 };
+
+//view
+function renderMsg(msg){
+    const renderMsg = document.getElementById('msg');
+    renderMsg.innerHTML = '';
+    renderMsg.appendChild(document.createTextNode(msg));
+}

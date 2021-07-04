@@ -30,12 +30,16 @@ router.get('/user', (req, res) => {
                         const id = data.id;
                         const name = data.name;
                         const email = data.email;
+                        const price = data.plan;
+                        const phone = data.phone;
                         const auth = data.auth;
                         const mem_info = {
                             'data': {
                                 'id': id,
                                 'name': name,
                                 'email': email,
+                                'phone': phone,
+                                'plan': price,
                                 'auth': auth,
                             }
                         }
@@ -58,6 +62,7 @@ router.post('/user', async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const phone = req.body.phone;
+    const plan = req.body.price;
     try {
         const hashPwd = await bcrypt.hash(req.body.pwd, 10)
         sequelize.sync().then(() => {
@@ -78,6 +83,7 @@ router.post('/user', async (req, res) => {
                             email: email,
                             password: hashPwd,
                             phone: phone,
+                            plan: plan,
                             auth: 2,
                         }).then(() => {
                             // 執行成功印出
@@ -88,7 +94,7 @@ router.post('/user', async (req, res) => {
                         console.log(err);
                     })
                 } else {
-                    return res.status(400).json({ 'error': true, 'message': '此帳號已註冊過' });
+                    return res.status(400).json({'error': true, 'message': '此帳號已註冊過' });
                 }
             })
         }).catch((e)=>{
