@@ -1,30 +1,30 @@
 // 測試環境
-require('dotenv/config'); //要放在Sequelize之前 才會讀取到.env的資料
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env.DB_PWD, {
-    host: process.env.DB_HOST,
-    dialect: 'mysql',
-    pool: process.env.DB_POOL,
-    timezone: '+08:00',
-})
-// ============================================
-
-// 正式環境
 // require('dotenv/config'); //要放在Sequelize之前 才會讀取到.env的資料
 // const Sequelize = require('sequelize');
 // const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env.DB_PWD, {
 //     host: process.env.DB_HOST,
-//     port: 3306,
-//     logging: console.log,
-//     maxConcurrentQueries: 100,
 //     dialect: 'mysql',
-//     dialectOptions: {
-//         ssl:'Amazon RDS'
-//     },
 //     pool: process.env.DB_POOL,
 //     timezone: '+08:00',
-//     language: 'en',
 // })
+// ============================================
+
+// 正式環境
+require('dotenv/config'); //要放在Sequelize之前 才會讀取到.env的資料
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env.DB_PWD, {
+    host: process.env.DB_HOST,
+    port: 3306,
+    logging: console.log,
+    maxConcurrentQueries: 100,
+    dialect: 'mysql',
+    dialectOptions: {
+        ssl:'Amazon RDS'
+    },
+    pool: process.env.DB_POOL,
+    timezone: '+08:00',
+    language: 'en',
+})
 
 const Classes = sequelize.define('Classes', {
     id: {
