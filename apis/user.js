@@ -7,7 +7,7 @@ const sequelize = db.sequelize;
 const User = db.User;
 
 
-// CHECK STATUS
+// CHECK STATUS(login check)
 router.get('/user', (req, res) => {
     // console.log(req.session.email)
     if (req.session.email === undefined) {
@@ -26,6 +26,7 @@ router.get('/user', (req, res) => {
                     }).then((result) => {
                         return JSON.stringify(result, null, 4);
                     }).then((data)=>{
+                        console.log(data);
                         data = JSON.parse(data);
                         const id = data.id;
                         const name = data.name;
@@ -33,6 +34,7 @@ router.get('/user', (req, res) => {
                         const price = data.plan;
                         const phone = data.phone;
                         const auth = data.auth;
+                        const active = data.active;
                         const mem_info = {
                             'data': {
                                 'id': id,
@@ -41,6 +43,7 @@ router.get('/user', (req, res) => {
                                 'phone': phone,
                                 'plan': price,
                                 'auth': auth,
+                                'active': active,
                             }
                         }
                         return res.json(mem_info);
@@ -56,6 +59,11 @@ router.get('/user', (req, res) => {
         }
     }
 });
+
+// register check
+// router.get('/register_status',(req,res))
+
+
 
 // REGISTER 
 router.post('/user', async (req, res) => {
@@ -75,6 +83,7 @@ router.post('/user', async (req, res) => {
             }).then((data)=>{
                 data = JSON.parse(data);
                 if(data === null) {
+                    // 記錄在session
                     // insert data
                     sequelize.sync().then(() => {
                         // 在這邊新增資料
@@ -85,9 +94,10 @@ router.post('/user', async (req, res) => {
                             phone: phone,
                             plan: plan,
                             auth: 2,
+                            active: 'no',
                         }).then(() => {
                             // 執行成功印出
-                            req.session.email = email;
+                            req.session.email = email
                             return res.json({'ok':true});
                         })
                     }).catch((err)=>{

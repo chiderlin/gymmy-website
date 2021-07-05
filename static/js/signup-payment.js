@@ -115,13 +115,13 @@ function sendPrime(prime){
     
         }).then((data)=>{
             console.log(data);
-            window.location.href = '/thankyou'
-            logOut();
         })
+        window.location.href = '/thankyou'
+        logOut_pay();
     }
 };
 
-function logOut(){
+function logOut_pay(){
     const url = '/api/user';
     fetch(url,{
         method: "DELETE",
@@ -132,6 +132,16 @@ function logOut(){
     })
 }
 
+function paypal_paid(){
+    const url = '/api/paypal'
+    fetch(url).then((res)=>{
+        return res.json()
+    }).then((data)=>{
+        console.log(data);
+        window.location.href = '/thankyou';
+        logOut_pay();
+    })
+}
 
 // 金流
 // paypal 大
@@ -150,8 +160,10 @@ paypal.Buttons({
       });
     },
     onApprove: function(data, actions) {
-        window.location.href = '/thankyou';
-        logOut();
+        //TODO: 呼叫/paypal
+        const url = '/api/paypal'
+        const userId = {'id':register_user.id};
+        paypal_paid()
     //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
     }
 }).render('#paypal-button-container-P-888'); // Renders the PayPal button
@@ -172,8 +184,10 @@ paypal.Buttons({
     },
     onApprove: function(data, actions) {
     //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
-    window.location.href = '/thankyou';
-    logOut();
+        const url = '/api/paypal'
+        const userId = {'id':register_user.id};
+        paypal_paid()
+    
     }
 }).render('#paypal-button-container-P-1000'); // Renders the PayPal button
 
@@ -195,8 +209,9 @@ paypal.Buttons({
       },
       onApprove: function(data, actions) {
         // alert(data.subscriptionID);
-        window.location.href = '/thankyou';
-        logOut();
+        const url = '/api/paypal'
+        const userId = {'id':register_user.id};
+        paypal_paid()
       }
 }).render('#small-paypal-btn-888');
 
@@ -216,8 +231,8 @@ paypal.Buttons({
       },
       onApprove: function(data, actions) {
         // alert(data.subscriptionID);
-        window.location.href = '/thankyou'
-        logOut();
+        
+        paypal_paid()
       }
 }).render('#small-paypal-btn-1000');
 

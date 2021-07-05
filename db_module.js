@@ -84,6 +84,7 @@ const User = sequelize.define('User',{
     name: {
         type: Sequelize.STRING(50),
         allowNull: false,
+        unique: true
     },
     email: {
         type: Sequelize.STRING(50),
@@ -102,10 +103,14 @@ const User = sequelize.define('User',{
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    active: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
     auth: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    }
+    },
 })
 
 const Payment = sequelize.define('Payment',{
@@ -116,22 +121,23 @@ const Payment = sequelize.define('Payment',{
     },
     card_key: {
         type: Sequelize.STRING(200),
-        allowNull: false,
         unique: true,
     },
     card_token:{
         type: Sequelize.STRING(200),
-        allowNull: false,
         unique: true,
     },
     next_pay_date: {
         type: Sequelize.DATE,
-        allowNull: false,
+    },
+    type:{
+        type: Sequelize.STRING(50),
     },
     updatedAt: {
         type: Sequelize.DATE,
         defaultValue: sequelize.fn('NOW'),
     },
+
     
 });
 

@@ -165,3 +165,7 @@ img {
 #flexRadioDefault4 input[type="radio"]:nth-of-type(2):checked ~ #small-paypal {
     display: block;
 } */
+.msg {
+    text-align: end;
+    color: red;
+}
