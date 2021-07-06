@@ -1,6 +1,4 @@
 let register_user;
-let prime;
-let login_check= false;
 init()
 
 function init(){
@@ -56,8 +54,10 @@ big_tappay.addEventListener('submit', (event)=>{
             console.log(res.status);
             return;
         }
-        prime = res.card.prime;
-        sendPrime(prime);
+        const prime = res.card.prime;
+        if(register_user !== null) {
+            sendPrime(prime);
+        }
     })
 })
 
@@ -91,34 +91,30 @@ function getUser(){
         return res.json();
     }).then((api_data)=>{
         register_user = api_data.data;
-        login_check = true;
         switch_paypal_btn();
     })
 }
 
 function sendPrime(prime){
-    if(!login_check) {
-        console.log('login first')
-    } else {
-        const prime_data = {'prime':prime, 'info':register_user}
-        console.log(prime_data);
-        const url = '/api/pay-by-prime';
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json',
-            },
-            body: JSON.stringify(prime_data),
-        }).then((res)=>{
-            console.log(res);
-            return res.json();
+    const prime_data = {'prime':prime, 'info':register_user}
+    console.log(prime_data);
+    const url = '/api/pay-by-prime';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json',
+        },
+        body: JSON.stringify(prime_data),
+    }).then((res)=>{
+        return res.json();
+    }).then((data)=>{
+        if(data.ok === true){
+            window.location.href = '/thankyou'
+        }
+    })
+
+    // logOut_pay(); // 不確定需不需要
     
-        }).then((data)=>{
-            console.log(data);
-        })
-        window.location.href = '/thankyou'
-        // logOut_pay(); // 不確定需不需要
-    }
 };
 
 function logOut_pay(){

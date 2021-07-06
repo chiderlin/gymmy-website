@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const db = require('../db_module.js');
-const session = require('express-session');
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Payment = db.Payment;
@@ -95,8 +94,11 @@ router.post('/pay-by-prime',(req,res)=>{
                 const phone = req.body.info.phone;
                 const name = req.body.info.name;
                 const email = req.body.info.email;
-                pay_by_prime(prime, plan, phone, name,email,userId);
-                
+                pay_by_prime(prime, plan, phone, name,email,userId, (data)=>{
+                    const bank_transaction_id = data
+                    return res.json({'ok':true, 'message':bank_transaction_id})
+                });
+                return res.json({'ok':true,'message':bank_transaction_id});
             } else {
                 return res.status(400).json({'error': true, 'message': '已完成付款手續'})
             }
@@ -158,7 +160,7 @@ router.post('/paypal', (req,res)=>{
     })
 });
 
-function pay_by_prime(prime, plan, phone, name,email,userId){
+function pay_by_prime(prime, plan, phone, name,email,userId, callback){
     const post_data = {
         'prime': prime,
         'partner_key':'partner_PyJKIbMCqgsYpYiouacHI67J0jT0xOdGBGSO9e05OdiB1RHhYSDdjioD',
@@ -215,7 +217,7 @@ function pay_by_prime(prime, plan, phone, name,email,userId){
                         })
                     })
 
-                    return res.json({'ok':true, 'message': bank_transaction_id});
+                    return callback(bank_transaction_id)
                 })
             }).catch((e)=>{
                 e = e.toString();
