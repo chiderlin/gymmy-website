@@ -41,6 +41,7 @@ function render(class_name_zh, desc, img){
         
     }
     title_name.appendChild(document.createTextNode(class_name_zh));
+    // image.className = 'img-fluid';
     image.setAttribute('src', img);
     class_img_block.appendChild(image);
 }
