@@ -98,7 +98,13 @@ function login(email, pwd) {
     }).then((res)=>{
         return res.json(); 
     }).then((data)=>{
-        window.location.reload(); // 通過的話 重新load頁面
+        console.log(data);
+        if(data.ok === true) {
+            window.location.reload(); // 通過的話 重新load頁面
+        }
+        if(data.error === true) {
+            renderErrorMsg(data.message);
+        }
     }).catch((err)=>{
         console.log(err);
     })
@@ -162,4 +168,9 @@ function initRenderMenu(api_data){
         burger_menu[2].classList.remove('hide'); // 會員方案
         burger_menu[4].classList.remove('hide'); // 登入/註冊
     }
+};
+function renderErrorMsg(msg) {
+    const login_msg = document.querySelector('.login-msg');
+    login_msg.innerHTML = '';
+    login_msg.appendChild(document.createTextNode(msg));
 };

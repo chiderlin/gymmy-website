@@ -48,8 +48,8 @@ router.post('/pay-by-prime',(req,res)=>{
 // 1.先確認是不是註冊過
 // 2.建立payment資料
 // 3.更新user active狀態 
-router.get('/paypal', (req,res)=>{
-
+router.post('/paypal', (req,res)=>{
+    const sub_id = req.body.sub_id;
     sequelize.sync().then(() => {
         User.findOne({ 
             where: {
@@ -66,6 +66,7 @@ router.get('/paypal', (req,res)=>{
                 sequelize.sync().then(() => {
                     Payment.create({
                         UserId: userId,
+                        subscriptionId:sub_id,
                         type: 'paypal',
                     }).then((ok) => {
                         // 執行成功印出
@@ -121,7 +122,7 @@ function pay_by_prime(prime, plan, phone, name,email,userId){
             // 2.更新user active 狀態
             const card_key = data.card_secret.card_key;
             const card_token = data.card_secret.card_token;
-            
+            const rec_trade_id = data.rec_trade_id //如果要辦理退款需要提供的id
             // insert data
             const currentDate = new Date(); // 下期付款日
             sequelize.sync().then(() => {
@@ -129,6 +130,7 @@ function pay_by_prime(prime, plan, phone, name,email,userId){
                     UserId: userId,
                     card_key: card_key,
                     card_token: card_token,
+                    rec_trade_id: rec_trade_id,
                     next_pay_date: currentDate.setMonth(currentDate.getMonth()+1),
                     type: 'tappay',
                 }).then((ok) => {

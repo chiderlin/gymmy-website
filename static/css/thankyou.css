@@ -1,0 +1,19 @@
+.title-name {
+    text-align: center;
+    margin-top: 50px;
+    color: #FFA042;
+    font-weight: bold;
+}
+.block-format {
+    display: flex;
+    justify-content: center;
+
+}
+.img-box {
+    display: flex;
+    justify-content: center;
+    width: 300px;
+    /* width: 200px;
+    height: 200px; */
+    /* background-color: antiquewhite; */
+}

@@ -132,9 +132,16 @@ function logOut_pay(){
     })
 }
 
-function paypal_paid(){
+function paypal_paid(subscriptionID){
     const url = '/api/paypal'
-    fetch(url).then((res)=>{
+    const sub_id = {'sub_id': subscriptionID}
+    fetch(url,{
+        method: "POST",
+        headers:{
+            'Content-Type':'application/json',
+        },
+        body: JSON.stringify(sub_id)
+    }).then((res)=>{
         return res.json()
     }).then((data)=>{
         console.log(data);
@@ -163,7 +170,7 @@ paypal.Buttons({
         //TODO: 呼叫/paypal
         const url = '/api/paypal'
         const userId = {'id':register_user.id};
-        paypal_paid()
+        paypal_paid(data.subscriptionID)
     //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
     }
 }).render('#paypal-button-container-P-888'); // Renders the PayPal button
@@ -186,7 +193,7 @@ paypal.Buttons({
     //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
         const url = '/api/paypal'
         const userId = {'id':register_user.id};
-        paypal_paid()
+        paypal_paid(data.subscriptionID)
     
     }
 }).render('#paypal-button-container-P-1000'); // Renders the PayPal button
@@ -211,7 +218,7 @@ paypal.Buttons({
         // alert(data.subscriptionID);
         const url = '/api/paypal'
         const userId = {'id':register_user.id};
-        paypal_paid()
+        paypal_paid(data.subscriptionID)
       }
 }).render('#small-paypal-btn-888');
 
@@ -232,7 +239,7 @@ paypal.Buttons({
       onApprove: function(data, actions) {
         // alert(data.subscriptionID);
         
-        paypal_paid()
+        paypal_paid(data.subscriptionID)
       }
 }).render('#small-paypal-btn-1000');
 
