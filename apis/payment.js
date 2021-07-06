@@ -122,6 +122,7 @@ function pay_by_prime(prime, plan, phone, name,email,userId){
             // 2.更新user active 狀態
             const card_key = data.card_secret.card_key;
             const card_token = data.card_secret.card_token;
+            const bank_transaction_id = data.bank_transaction_id;
             const rec_trade_id = data.rec_trade_id //如果要辦理退款需要提供的id
             // insert data
             const currentDate = new Date(); // 下期付款日
@@ -131,6 +132,7 @@ function pay_by_prime(prime, plan, phone, name,email,userId){
                     card_key: card_key,
                     card_token: card_token,
                     rec_trade_id: rec_trade_id,
+                    bank_transaction_id: bank_transaction_id,
                     next_pay_date: currentDate.setMonth(currentDate.getMonth()+1),
                     type: 'tappay',
                 }).then((ok) => {

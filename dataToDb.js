@@ -1,7 +1,9 @@
 const fs = require('fs');
 const db = require('./db_module.js');
+const Sequelize = db.Sequelize;
+const sequelize = db.sequelize;
 const Classes = db.Classes;
-const insert = db.insert_data;
+
 
 function readFile(filename, callback) {
     fs.readFile(filename, function (err, data) {
@@ -59,20 +61,47 @@ readFile('./data/taipei-101', function (class_data) { // callback回來的json d
             const class_room = class_[i].class_room
             const desc = class_[i].desc
             const img = class_[i].img
-            insert(Classes, {
-                weekday: weekday,
-                start_time: start_time,
-                end_time: end_time,
-                class_time: time,
-                class_name_zh: class_name_zh,
-                class_name_eng: class_name_eng,
-                class_teacher: class_teacher,
-                class_room: class_room,
-                desc: desc,
-                img: img.toString(),
-            }, (success)=>{
-                console.log(success);
+            sequelize.sync().then(() => {
+                // 在這邊新增資料
+                Classes.create({
+                    month:7,
+                    weekday: weekday,
+                    start_time: start_time,
+                    end_time: end_time,
+                    class_time: time,
+                    class_name_zh: class_name_zh,
+                    class_name_eng: class_name_eng,
+                    class_teacher: class_teacher,
+                    class_room: class_room,
+                    desc: desc,
+                    img: img.toString(),
+                }).then((success) => {
+                    console.log(success);
+                })
+            }).catch((err)=>{
+                console.log(err);
             })
         }
     }
 });
+
+// sequelize.sync().then(() => {
+//     // 在這邊新增資料
+//     Classes.create({
+//         month:7,
+//         weekday: weekday,
+//         start_time: start_time,
+//         end_time: end_time,
+//         class_time: time,
+//         class_name_zh: class_name_zh,
+//         class_name_eng: class_name_eng,
+//         class_teacher: class_teacher,
+//         class_room: class_room,
+//         desc: desc,
+//         img: img.toString(),
+//     }).then((success) => {
+//         console.log(success);
+//     })
+// }).catch((err)=>{
+//     console.log(err);
+// })

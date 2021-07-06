@@ -32,6 +32,9 @@ const Classes = sequelize.define('Classes', {
         primaryKey: true,
         autoIncrement: true,
     },
+    month: {
+        type: Sequelize.INTEGER,
+    },
     weekday: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -84,7 +87,6 @@ const User = sequelize.define('User',{
     name: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        unique: true
     },
     email: {
         type: Sequelize.STRING(50),
@@ -127,6 +129,18 @@ const Payment = sequelize.define('Payment',{
         type: Sequelize.STRING(200),
         unique: true,
     },
+    rec_trade_id: {
+        type: Sequelize.STRING(50),
+        unique: true,
+    },
+    bank_transaction_id: {
+        type: Sequelize.STRING(50),
+        unique: true,
+    },
+    subscriptionId:{
+        type: Sequelize.STRING(50),
+        unique: true,
+    },
     next_pay_date: {
         type: Sequelize.DATE,
     },
@@ -159,6 +173,10 @@ const Order = sequelize.define('Order',{
         type:Sequelize.INTEGER,
         allowNull: false,
     },
+    rec_trade_id:{
+        type: Sequelize.STRING(50),
+        unique: true,
+    },
     createdAt: {
         type: Sequelize.DATE,
         defaultValue: sequelize.fn('NOW'),
@@ -169,6 +187,20 @@ const Order = sequelize.define('Order',{
     createdAt: true,
     updatedAt: false,
 });
+
+// const Booking = sequelize.define('Order', {
+//     id:{
+//         type: Sequelize.INTEGER,
+//         primaryKey: true,
+//         autoIncrement: true,
+//     },
+
+
+// },{ // 設定時間要不要有
+//     timestamps: true,
+//     createdAt: true,
+//     updatedAt: false,
+// });
 
 // 雙向關聯
 User.hasOne(Payment);
