@@ -1,0 +1,169 @@
+.title-name {
+    text-align: center;
+    margin-top: 50px;
+    color: #FFA042;
+    font-weight: bold;
+}
+.block-format {
+    display: flex;
+    justify-content: center;
+}
+
+.img-box {
+    width: 200px;
+    height: 200px;
+    /* background-color: antiquewhite; */
+    border: 1px solid #777777;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+img {
+    max-width: 100%;
+}
+.user-info {
+    width: 1200px;
+    margin: 30px;
+    /* border: 1px solid #000000; */
+    border-radius: 10px;
+}
+.upper-block{
+    display: flex;
+    justify-content: center;
+    padding:5px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.info-block{
+    /* width: calc(95% - 200px); */
+    height: 200px;
+    /* background-color: antiquewhite; */
+    margin: 20px 20px 20px 0;
+}
+
+.content-block {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
+.content-box {
+    width:100%;
+    height: 100%;
+
+    /* background-color: antiquewhite; */
+}
+
+.mem-format{
+    margin-top: 20px;
+}
+
+.active-status {
+    display: flex;
+    align-items: center;
+
+}
+.class-btn {
+    color: #ffffff;
+    background-color: #FFA042;
+}
+.input-block {
+    width:470px;
+}
+
+.booking-block {
+    display: flex;
+    justify-content: center;
+    
+}
+.booking-box {
+    width: 100%;
+    /* height: 400px; */
+    border: 1px solid #e7e7e7;
+    margin: 20px 0;
+}
+.select {
+    display: flex;
+    justify-content: center;
+    padding:20px;
+    
+}
+.select-button{
+    cursor: pointer;
+    width:200px;
+    height: 50px;   
+    border:1px solid #e7e7e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f77e06;
+    font-size: 18px;
+}
+
+.active-btn {
+    background-color: #FFA042;
+    color: #ffffff;
+
+}
+
+.class-title {
+    background-color: #e7e7e7;
+}
+.booking-class{
+    padding:10px;
+    border-bottom: 1px solid #e7e7e7;
+    display: flex;
+    text-align: center;
+    line-height: 2.3;
+
+}
+
+.time {
+    width:25%;
+}
+.class {
+    width:25%;
+}
+.teacher {
+    width:25%;
+}
+.room {
+    width:25%;
+}
+.status{
+    width:25%;
+}
+@media(max-width:768px) {
+    .user-info {margin: 0;}
+    .upper-block{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .info-block{
+        width: 95%;
+        height: 200px;
+        margin: 20px;
+    }
+    .input-block {
+        width:100%;
+    }
+    .booking-box {
+        width: 100%;
+        height: 400px;
+        border: 1px solid #e7e7e7;
+        margin: 20px 0;
+    }
+    .select-button1{
+        width:80%;
+    }
+    .select-button2{
+        width:80%;
+    }
+    .booking-class{
+        font-size: 12px;
+    }
+}
+
+.history-form{
+    display: none;
+}
