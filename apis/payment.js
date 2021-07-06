@@ -2,12 +2,76 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const db = require('../db_module.js');
+const session = require('express-session');
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Payment = db.Payment;
 const User = db.User;
 
+// order資料
+router.get('/order',(req,res)=>{
+    if(req.session.email) {
+        const number = req.query.number;
+        console.log(number)
+        sequelize.sync().then(()=>{
+            User.findOne({
+                where:{
+                    email: req.session.email,
+                },
+                include: Payment,
+            }).then((result)=>{
+                return JSON.stringify(result, null, 4);
+            }).then((find_data)=>{
+                find_data = JSON.parse(find_data);
+                console.log(find_data)
+                if(find_data.Payment.type === "tappay") {
+                    let return_data = {
+                        'data':{
+                            'name':find_data.name,
+                            'email': find_data.email,
+                            'plan': find_data.plan,
+                            'payment': {
+                                'id': find_data.Payment.id,
+                                'bank_transaction_id':find_data.Payment.bank_transaction_id,
+                                'next_pay_date': find_data.Payment.next_pay_date,
+                                'rec_trade_id': find_data.Payment.rec_trade_id,
+                                'type': find_data.Payment.type,
+                            }
+                        }
+                    }
+                    return res.json(return_data)
+                } else if(find_data.Payment.type === "paypal"){
+                    const created_date = find_data.Payment.createdAt
+                    let created_date_localtime = new Date(created_date).toLocaleString('chinese',{hour12: false});
+                    let return_data = {
+                        'data':{
+                            'name':find_data.name,
+                            'email': find_data.email,
+                            'plan': find_data.plan,
+                            'payment':{
+                                'id': find_data.Payment.id,
+                                'subscriptionId':find_data.Payment.subscriptionId,
+                                'next_pay_date': find_data.Payment.next_pay_date,
+                                'created_date': created_date_localtime,
+                                'type': find_data.Payment.type,
+                            }
+                        }
+                    }
+                    return res.json(return_data);
+                }
+            }).catch((e)=>{
+                e = e.toString();
+                return res.status(500).json({ 'error': true, 'message': e });
+            });
+        })
 
+    } else {
+        return res.status(400).json({'error': true, 'message': '尚未登入系統'})
+    }
+
+
+    
+});
 
 // 取得Prime => 付款
 router.post('/pay-by-prime',(req,res)=>{
@@ -70,7 +134,7 @@ router.post('/paypal', (req,res)=>{
                         type: 'paypal',
                     }).then((ok) => {
                         // 執行成功印出
-                        return res.json({'ok':true});
+                        return res.json({'ok':true, 'message': sub_id});
                     })
                     sequelize.sync().then(() => {
                         User.findOne({
@@ -150,8 +214,8 @@ function pay_by_prime(prime, plan, phone, name,email,userId){
                             console.log('update done')
                         })
                     })
-                    
-                    return res.json({'ok':true});
+
+                    return res.json({'ok':true, 'message': bank_transaction_id});
                 })
             }).catch((e)=>{
                 e = e.toString();
@@ -166,6 +230,7 @@ function pay_by_prime(prime, plan, phone, name,email,userId){
         return res.status(500).json({'error': true, message: e})
     }) 
 };
+
 
 
 

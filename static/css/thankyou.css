@@ -4,6 +4,11 @@
     color: #FFA042;
     font-weight: bold;
 }
+.trade-num {
+    text-align: center;
+    color: #777777;
+    margin: 30px;
+}
 .block-format {
     display: flex;
     justify-content: center;

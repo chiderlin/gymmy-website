@@ -117,7 +117,7 @@ function sendPrime(prime){
             console.log(data);
         })
         window.location.href = '/thankyou'
-        logOut_pay();
+        // logOut_pay(); // 不確定需不需要
     }
 };
 
@@ -146,7 +146,7 @@ function paypal_paid(subscriptionID){
     }).then((data)=>{
         console.log(data);
         window.location.href = '/thankyou';
-        logOut_pay();
+        // logOut_pay(); //不確定需不需要
     })
 }
 
