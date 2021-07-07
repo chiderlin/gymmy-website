@@ -90,17 +90,27 @@ function renderBigClass(renderBox) {
         const end_hour = new Date(renderBox.end_time).getHours();
         const end_min = new Date(renderBox.end_time).getMinutes();
         
-        if(start_hour<=current_hour && start_min<=current_min){
-
+        // 小時/分鐘都要比對 
+        if(start_hour<current_hour){
             if(current_hour<end_hour){
-
                 class_block.classList.add('active-class');
                 class_block.appendChild(current_class)
             } else if (current_hour === end_hour) {
                 if(current_min<end_min){
-
                     class_block.classList.add('active-class');
                     class_block.appendChild(current_class)
+                }
+            }
+        } else if(start_hour===current_hour) {
+            if(start_min<=current_min){
+                if(current_hour<end_hour){
+                    class_block.classList.add('active-class');
+                    class_block.appendChild(current_class)
+                } else if (current_hour === end_hour) {
+                    if(current_min<end_min){
+                        class_block.classList.add('active-class');
+                        class_block.appendChild(current_class)
+                    }
                 }
             }
         }
