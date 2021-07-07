@@ -111,8 +111,17 @@
     font-size: 14px;
     text-align: center;
 }
+.current-class {
+    color: red;
+    font-size: 18px;
+    text-align: center;
+}
 
 /* a連結效果 */
 .col-6:hover {
     opacity: 0.7;
+}
+
+.active-class {
+    opacity: 0.5;
 }
