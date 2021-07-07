@@ -1,0 +1,23 @@
+.head-title {
+  text-align: center;
+  width:auto;
+  margin-top: 5%;
+
+}
+
+.btn-outline-primary {
+    color: #FFA042;
+    border-color: #FFA042;
+
+}
+
+.btn-outline-primary:hover {
+    background-color: #FFA042;
+    color: #ffffff;
+    border-color: #FFA042;
+
+}
+
+.margin-format {
+  margin:0 15px 0;
+}

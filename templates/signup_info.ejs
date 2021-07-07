@@ -1,0 +1,143 @@
+<%- include('./partials/head.ejs') %>
+    <link rel="stylesheet" href="/css/signup-info.css">
+
+    <body>
+        <%- include('./partials/navbar.ejs') %>
+            <h1 class="title-name">加入 Gymmy</h1>
+            <!-- 大 -->
+            <div class="div-block">
+                <div class="info-block shadow">
+                    <div class="row g-3 p-4 size-control">
+                        <div class="border-for">
+                            <p class="desc-style d-flex justify-content-center">成為Gymmy會員，一起展開健身之旅</p>
+                            <p class="desc-style d-flex justify-content-center">一起成為更好的自己</p>
+                            <div class="div-block">
+                                <div class="email-img-block">
+                                    <img src="/png/icon/dumbbell.png" alt="">
+                                </div>
+                            </div>
+                        <!-- price card -->
+                        <h3 style="text-align: center; margin-top: 30px;">選擇你喜愛的方案</h3>
+                        <div class="price-card">
+                            <div class="card text-center m-2 price-card-format">
+                                <div class="card-body">
+                                    <h5 class="card-title">入門方案</h5>
+                                    <p class="card-text">NT$888/月</p>
+                                    <div class="form-check d-flex justify-content-center">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="basic-plan">
+                                        <label class="form-check-label" for="basic-plan">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card text-center m-2 price-card-format">
+                                <div class="card-body">
+                                    <h5 class="card-title">專業方案</h5>
+                                    <p class="card-text">NT$1000/月</p>
+                                    <div class="form-check d-flex justify-content-center">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="profession">
+                                        <label class="form-check-label" for="profession">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <form class="row g-3 p-4 size-control" id="register-form-big">
+                        <h3>基本資料</h3>
+                        <div class="col-md-12">
+                            <label for="inputPassword4" class="form-label">使用者名稱</label>
+                            <input id="name-big" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputEmail4" class="form-label">電子郵件</label>
+                            <input id="email-big" type="email" class="form-control" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputPassword4" class="form-label">密碼</label>
+                            <input id="pwd-big" type="password" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="inputPassword4" class="form-label">手機</label>
+                            <input id="phone-big" type="text" class="form-control" required>
+                        </div>
+
+
+                        <div class="col-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-hover" id="next-big">下一步(1/2)</button>
+                        </div>
+                        <p id="msg" style="text-align: end; color:red;"></p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 小 -->
+            <div class="div-small-block">
+                <div class="info-small-block">
+                    <div class="row g-3 p-4">
+                        <p class="desc-style d-flex justify-content-center">成為Gymmy會員，一起展開健身之旅</p>
+                        <p class="desc-style d-flex justify-content-center">一起成為更好的自己</p>
+                        <!-- price card -->
+                        <!-- <div class="price-card">
+                            <div class="card text-center m-2 price-card-format">
+                                <div class="card-body">
+                                    <h5 class="card-title">入門方案</h5>
+                                    <p class="card-text">NT$888/月</p>
+                                    <div class="form-check d-flex justify-content-center">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="flexRadioDefault3">
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card text-center m-2 price-card-format">
+                                <div class="card-body">
+                                    <h5 class="card-title">專業方案</h5>
+                                    <p class="card-text">NT$1000/月</p>
+                                    <div class="form-check d-flex justify-content-center">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="flexRadioDefault3">
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <form class="row g-3 p-4 size-control shadow" id="register-form-small">
+                        <h3>基本資料</h3>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">使用者名稱</label>
+                            <input id="name-small" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">電子郵件</label>
+                            <input id="email-small" type="email" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">密碼</label>
+                            <input id="pwd-small" type="password" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">手機</label>
+                            <input id="phone-small" type="text" class="form-control" required>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-hover" id="next-small">下一步(1/2)</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            
+    </body>
+    <script src="/js/signup-info.js"></script>
+    <%- include('./partials/footer.ejs') %>

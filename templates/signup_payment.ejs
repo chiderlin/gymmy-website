@@ -1,0 +1,171 @@
+<%- include('./partials/head.ejs') %>
+    <link rel="stylesheet" href="/css/signup-payment.css">
+
+    <body>
+        <%- include('./partials/navbar.ejs') %>
+            <h1 class="title-name">選擇方案及付款方式</h1>
+            <!-- 大 -->
+            <div class="div-block">
+                <div class="info-block shadow">
+                    <div class="row g-3 p-4 size-control">
+                        <div class="border-for">
+
+                            <!-- payment uption -->
+                            <h3 class="p-4" style="text-align: center;">選擇你喜愛的付款方式</h3>
+                            <div class="pay-uption">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="list-group list-group-flush list-style">
+                                        <div class="form-check format">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                id="big-tappay-radio" checked>
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                信用卡
+                                            </label>
+                                        </div>
+                                        <div class="form-check format">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                id="big-paypal-radio">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                PayPal
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 信用卡付款方式輸入資料 -->
+                    <form class="row g-3 p-4 size-control" id="big-tappay">
+                        <h3>付款資料</h3>
+                        <div class="col-md-12">
+                            <label for="inputEmail4" class="form-label">信用卡卡號</label>
+                            <!-- <input type="email" class="form-control" required> -->
+                            <div class="form-control" id="card-number"></div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputPassword4" class="form-label">有效日期</label>
+                            <!-- <input type="password" class="form-control" required> -->
+                            <div class="form-control" id="card-expiration-date"></div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="inputPassword4" class="form-label">安全碼</label>
+                            <!-- <input type="text" class="form-control" required> -->
+                            <div class="form-control" id="card-ccv"></div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end align-items-end">
+                            <button type="submit" class="btn btn-hover" id="next-big">確定訂閱(2/2)</button>
+                        </div>
+                        <p class="msg"></p>
+                    </form>
+
+                    <!-- paypal -->
+                    <div class="payment-format">
+                        <div class="payment-block" id="big-paypal">
+                            <div class="payment-img-block">
+                                <div class="img-box">
+                                    <img src="/png/icon/paypal2.png" alt="">
+                                </div>
+                            </div>
+    
+                            <p>我們會將你重新導向至PayPal以完成購買交易</p>
+                            <div id="paypal-button-container-P-888"></div>
+                            <div id="paypal-button-container-P-1000"></div>
+                            
+                            <script>
+                              
+                            </script>
+
+                            <!-- <div id="big-paypal-btn"></div>
+                            <script
+                                src="https://www.paypal.com/sdk/js?client-id=AXBQ1caA3XsC-CkO2nQmoexjztTogwaA2o-M6OujOpKDgj2HL6Du3snvMK9iUvUguBqloeqixzVLk6T2&disable-funding=credit,card&currency=TWD"></script> -->
+                            <!-- <script>paypal.Buttons().render('#paypal-btn');</script> -->
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <!-- 小 -->
+            <div class="div-small-block">
+                <div class="info-small-block">
+                    <div class="row g-3 p-4">
+
+                        <!-- payment uption -->
+                        <h3 class="p-4" style="text-align: center;">選擇你喜愛的付款方式</h3>
+                        <div class="pay-uption">
+                            <div class="card" style="width: 18rem;">
+                                <div class="list-group list-group-flush list-style">
+                                    <div class="form-check format">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="small-tappay-radio">
+                                        <label class="form-check-label" for="flexRadioDefault4">
+                                            信用卡
+                                        </label>
+                                    </div>
+                                    <div class="form-check format">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="small-paypal-radio">
+                                        <label class="form-check-label" for="flexRadioDefault4">
+                                            PayPal
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 信用卡付款方式輸入資料 -->
+                <form class="row g-3 p-4 size-control shadow" id="small-tappay">
+                    <h3>付款資料</h3>
+                    <div class="col-md-12">
+                        <label for="inputEmail4" class="form-label">信用卡卡號</label>
+                        <!-- <input type="email" class="form-control" required> -->
+                        <div class="form-control" id="card-number"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputPassword4" class="form-label">有效日期</label>
+                        <!-- <input type="password" class="form-control" required> -->
+                        <div class="form-control" id="card-expiration-date"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="inputPassword4" class="form-label">安全碼</label>
+                        <!-- <input type="text" class="form-control" required> -->
+                        <div class="form-control" id="card-ccv"></div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end align-items-end">
+                        <button type="submit" class="btn btn-hover" id="next-small">確定訂閱(2/2)</button>
+                    </div>
+                    <p class="msg"></p>
+                </form>
+
+                <!-- paypal -->
+                <div class="row g-3 p-4 size-control d-flex justify-content-center align-items-center" >
+                    <div class="payment-block" id="small-paypal">
+                        <div class="payment-img-block">
+                            <div class="img-box">
+                                <img src="/png/icon/paypal2.png" alt="">
+                            </div>
+                        </div>
+                        <p>我們會將你重新導向至PayPal以完成購買交易</p>
+                        <div id="small-paypal-btn-888"></div>
+                        <div id="small-paypal-btn-1000"></div>
+                        <script
+                            src="https://www.paypal.com/sdk/js?client-id=AXBQ1caA3XsC-CkO2nQmoexjztTogwaA2o-M6OujOpKDgj2HL6Du3snvMK9iUvUguBqloeqixzVLk6T2&disable-funding=credit,card"></script>
+                        <!-- <script>paypal.Buttons().render('#paypal-btn');</script> -->
+                    </div>
+                </div>
+
+
+            </div>
+            </div>
+    </body>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AXBQ1caA3XsC-CkO2nQmoexjztTogwaA2o-M6OujOpKDgj2HL6Du3snvMK9iUvUguBqloeqixzVLk6T2&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+    <script src="https://js.tappaysdk.com/tpdirect/v5.7.0"></script>
+    <script src="/js/signup-payment.js"></script>
+    <!-- <script src="/js/signup-info.js"></script> -->
+    <%- include('./partials/footer.ejs') %>

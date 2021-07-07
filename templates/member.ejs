@@ -1,0 +1,211 @@
+
+<%- include('./partials/head.ejs') %>
+<link rel="stylesheet" href="/css/member.css">
+<body>
+    <%- include('./partials/navbar.ejs') %>
+    <h1 class="title-name">會員中心</h1>
+    <div class="block-format">
+        <div class="user-info shadow">
+            <div class="upper-block">
+                <div class="img-box">
+                    <img src="/png/icon/user.png" class="">
+                </div>
+                <div class="info-block">
+                    <div class="mem-format">會員帳號：test@test.com</div>
+                    <div class="mem-format">會員方案：專業版</div>
+                    <div class="mem-format active-status">繳費狀態：
+                        <div style="margin-right: 10px;">未開通</div>
+                        <button class="btn class-btn">開通</button>
+                    </div>
+                    <div class="input-block mem-format">
+                        <div class="input-group pe-4">
+                            <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">上傳照片</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 下 -->
+
+            <div class="content-block">
+                <div class="content-box">
+                    <div class="select">
+                        <div id="booking" class="select-button active-btn">
+                            預約的課程
+                        </div>
+                        <div id="history-record" class="select-button">
+                            歷史紀錄
+                        </div>
+                    </div>
+                    <!-- 預約的課程 -->
+                    <div class="booking-block">
+                        <div class="booking-box">
+                            <div class="booking-class class-title">
+                                <div class="time">課程時間</div>
+                                <div class="class">課程名稱</div>
+                                <div class="teacher">教練名稱</div>
+                                <div class="room">上課地點</div>
+                                <div class="status">狀態</div>
+                            </div>
+                            <div class="booking-class">
+                                <div class="time">週五0730-0830</div>
+                                <div class="class">活力有氧</div>
+                                <div class="teacher">Rudy</div>
+                                <div class="room">團體教室</div>
+                                <div class="status">
+                                    <button class="btn btn-sm class-btn">取消預定</button>
+                                </div>
+                            </div>
+                            <div class="booking-class">
+                                <div class="time">週五0730-0830</div>
+                                <div class="class">活力有氧</div>
+                                <div class="teacher">Rudy</div>
+                                <div class="room">團體教室</div>
+                                <div class="status">
+                                    <button class="btn btn-sm class-btn">取消預定</button>
+                                </div>
+                            </div>
+                            <div class="booking-class">
+                                <div class="time">週五0730-0830</div>
+                                <div class="class">活力有氧</div>
+                                <div class="teacher">Rudy</div>
+                                <div class="room">團體教室</div>
+                                <div class="status">
+                                    <button class="btn btn-sm class-btn">取消預定</button>
+                                </div>
+                            </div>
+                            <div class="booking-class">
+                                <div class="time">週五0730-0830</div>
+                                <div class="class">活力有氧</div>
+                                <div class="teacher">Rudy</div>
+                                <div class="room">團體教室</div>
+                                <div class="status">
+                                    <button class="btn btn-sm class-btn">取消預定</button>
+                                </div>
+                            </div>
+                            <div class="booking-class">
+                                <div class="time">週五0730-0830</div>
+                                <div class="class">活力有氧</div>
+                                <div class="teacher">Rudy</div>
+                                <div class="room">團體教室</div>
+                                <div class="status">
+                                    <button class="btn btn-sm class-btn">取消預定</button>
+                                </div>
+                            </div>
+                            <div class="booking-class">
+                                <div class="time">週五0730-0830</div>
+                                <div class="class">活力有氧</div>
+                                <div class="teacher">Rudy</div>
+                                <div class="room">團體教室</div>
+                                <div class="status">
+                                    <button class="btn btn-sm class-btn">取消預定</button>
+                                </div>
+                            </div>
+                            <div class="booking-class">
+                                <div class="time">週五0730-0830</div>
+                                <div class="class">活力有氧</div>
+                                <div class="teacher">Rudy</div>
+                                <div class="room">團體教室</div>
+                                <div class="status">
+                                    <button class="btn btn-sm class-btn">取消預定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 歷史紀錄區 -->
+                    <div class="history-form">
+                        <select class="form-select form-select-lg mt-4" aria-label=".form-select-lg example">
+                            <option selected>查詢</option>
+                            <option value="1">三天內</option>
+                            <option value="2">七天內</option>
+                            <option value="3">一個月內</option>
+                          </select>
+                        <div class="booking-block">
+                            <div class="booking-box">
+                                <div class="booking-class class-title">
+                                    <div class="time">課程時間</div>
+                                    <div class="class">課程名稱</div>
+                                    <div class="teacher">教練名稱</div>
+                                    <div class="room">上課地點</div>
+                                    <div class="status">狀態</div>
+                                </div>
+                                <div class="booking-class">
+                                    <div class="time">週五0730-0830</div>
+                                    <div class="class">活力有氧</div>
+                                    <div class="teacher">Rudy</div>
+                                    <div class="room">團體教室</div>
+                                    <div class="status">
+                                        -
+                                    </div>
+                                </div>
+                                <div class="booking-class">
+                                    <div class="time">週五0730-0830</div>
+                                    <div class="class">活力有氧</div>
+                                    <div class="teacher">Rudy</div>
+                                    <div class="room">團體教室</div>
+                                    <div class="status">
+                                        -
+                                    </div>
+                                </div>
+                                <div class="booking-class">
+                                    <div class="time">週五0730-0830</div>
+                                    <div class="class">活力有氧</div>
+                                    <div class="teacher">Rudy</div>
+                                    <div class="room">團體教室</div>
+                                    <div class="status">
+                                        -
+                                    </div>
+                                </div>
+                                <div class="booking-class">
+                                    <div class="time">週五0730-0830</div>
+                                    <div class="class">活力有氧</div>
+                                    <div class="teacher">Rudy</div>
+                                    <div class="room">團體教室</div>
+                                    <div class="status">
+                                        -
+                                    </div>
+                                </div>
+                                <div class="booking-class">
+                                    <div class="time">週五0730-0830</div>
+                                    <div class="class">活力有氧</div>
+                                    <div class="teacher">Rudy</div>
+                                    <div class="room">團體教室</div>
+                                    <div class="status">
+                                        -
+                                    </div>
+                                </div>
+                                <div class="booking-class">
+                                    <div class="time">週五0730-0830</div>
+                                    <div class="class">活力有氧</div>
+                                    <div class="teacher">Rudy</div>
+                                    <div class="room">團體教室</div>
+                                    <div class="status">
+                                        -
+                                    </div>
+                                </div>
+                                <div class="booking-class">
+                                    <div class="time">週五0730-0830</div>
+                                    <div class="class">活力有氧</div>
+                                    <div class="teacher">Rudy</div>
+                                    <div class="room">團體教室</div>
+                                    <div class="status">
+                                        -
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+
+</body>
+<script src="/js/member.js"></script>
+<%- include('./partials/footer.ejs') %>

@@ -1,0 +1,52 @@
+.title-name {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.block {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.desc-block {
+    width: 90%;
+    height: auto;
+    /* background-color: antiquewhite; */
+}
+
+p {
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.class-img-block {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+/* 預定課程按鈕 */
+
+.class-booking {
+    width:95%;
+    text-align: end;
+    margin-top: 50px;
+}
+
+.btn-hover{
+    background-color:#FFA042;
+    border-color: #FFA042;
+    color: #ffffff;
+}
+
+.btn-hover:hover{
+    background-color:#EA7500;
+    border-color: #EA7500;
+    color: #ffffff;
+}

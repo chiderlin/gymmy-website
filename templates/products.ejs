@@ -1,0 +1,118 @@
+<%- include('./partials/head.ejs') %>
+<link rel="stylesheet" href="/css/products.css">
+
+<body>
+  <%- include('./partials/navbar.ejs') %>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="check" viewBox="0 0 16 16">
+      <title>Check</title>
+      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+    </symbol>
+  </svg>
+  
+      </div>
+  
+      <div class="head-title">
+        <h1 class="display-4 fw-normal">會員方案</h1>
+        <p class="fs-5 text-muted">選擇你喜愛的方案展開你的運動之旅。</p>
+      </div>
+    </header>
+  
+    <main>
+      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center d-flex justify-content-center margin-format">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+              <div class="card-header py-3">
+                <h4 class="my-0 fw-normal">入門方案</h4>
+              </div>
+              <div class="card-body">
+                <h1 class="card-title pricing-card-title">NT$888<small class="text-muted fw-light">/月</small></h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                  <li>運動時間週一至週五</li>
+                  <li>運動時段7:00-16:00</li>
+                  <li>體驗私人教練一堂</li>
+                  <li>團體課程22堂/月</li>
+                </ul>
+                <button type="button" class="w-100 btn btn-lg btn-outline-primary">開始使用</button>
+              </div>
+            </div>
+          </div>
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">專業方案</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">NT$1000<small class="text-muted fw-light">/月</small></h1>
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>全天候任意使用</li>
+                <li>運動時段無限制</li>
+                <li>體驗私人教練一堂</li>
+                <li>團體課程吃到飽</li>
+              </ul>
+              <button type="button" class="w-100 btn btn-lg btn-outline-primary">開始使用</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3 ">
+              <h4 class="my-0 fw-normal">企業方案</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">-<small class="text-muted fw-light"></small></h1>
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>享有專業方案服務</li>
+                <li>健康飲食規劃</li>
+                <li>企業團報優惠</li>
+                <li>聯繫專員取得更多內容</li>
+              </ul>
+              <button type="button" class="w-100 btn btn-lg btn-outline-primary">聯絡專員</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <h2 class="display-6 text-center mb-4">比較方案細節</h2>
+  
+      <div class="table-responsive">
+        <table class="table text-center">
+          <thead>
+            <tr>
+              <th style="width: 34%;"></th>
+              <th style="width: 22%;">入門版</th>
+              <th style="width: 22%;">專業版</th>
+              <th style="width: 22%;">企業版</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" class="text-start">私人教練體驗</th>
+              <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
+              <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
+              <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
+            </tr>
+            <tr>
+              <th scope="row" class="text-start">團體課程吃到飽</th>
+              <td></td>
+              <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
+              <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
+            </tr>
+            <tr>
+              <th scope="row" class="text-start">無限制時段</th>
+              <td></td>
+              <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
+              <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
+            </tr>
+            <tr>
+              <th scope="row" class="text-start">健康飲食規劃</th>
+              <td></td>
+              <td></td>
+              <td><svg class="bi" width="24" height="24"><use xlink:href="#check"/></svg></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+</body>
+<%- include('./partials/footer.ejs') %>

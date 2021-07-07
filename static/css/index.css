@@ -1,0 +1,107 @@
+/* 影片區塊 */
+.container-mov {
+    height:100vh;
+}
+
+.banner-c {
+    width:100%;
+    height:100%;
+    background-image: url("../png/workout2_black.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-color: #000000;
+    position: absolute;
+    left:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size: 50px;
+    overflow:hidden;
+}
+
+.banner-c > video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /*讓影片滿版*/
+}
+@media(max-width:1000px) {
+    .banner-c > video {
+        height: auto;
+    }
+}
+
+@media(max-width:770px) {
+    .banner-c > video {
+        display:none;
+    }
+}
+
+
+/* price區塊 */
+.btn-outline-primary {
+    color: #FFA042;
+    border-color: #FFA042;
+}
+
+.btn-outline-primary:hover {
+    background-color: #FFA042;
+    color: #ffffff;
+    border-color: #FFA042;
+}
+
+.margin-format {
+    margin:100px 15px 0;
+}
+
+
+/* 介紹區塊 */
+.word-format {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.word-introduction {
+    width:1200px;
+    height:auto;
+    margin: 50px 0 50px;
+}
+.about-us {
+    width:100%;
+    text-align: center;
+}
+
+
+
+/* 課程區塊 */
+.views-cover {
+    margin-top: 100px;
+    width:100%;
+    height:300px;
+    background-color: #FFC78E;
+    /* background-color: #FFA042; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.class-btn {
+    width:500px;
+    height:50px;
+    background-color: #FFA042;
+}
+
+.news-announce {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.btn-primary {
+    background-color:#FFA042;
+    border-color:#FFA042;
+}
+
+.btn-primary:hover {
+    background-color:#424242;
+    border-color:#424242;
+}

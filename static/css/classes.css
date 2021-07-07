@@ -1,0 +1,127 @@
+.head-title {
+    display: flex;
+    justify-content: center;
+    width:auto;
+    margin-top: 5%;
+}
+
+.week{
+    background-color: rgba(245, 155, 10, 0.32);
+}
+.row {
+    text-align: center;
+
+}
+.col {
+    padding:0;
+}
+
+.class-format {
+    margin:10px 0 0 0;
+    height:200px;
+    background-color: bisque;
+}
+.border {
+    border: 1px solid #ffffff!important;
+}
+.class-plan {
+    display: flex;
+}
+
+.column {
+    height:auto;
+    width:190px;
+    margin-right: 5px;
+}
+.class-block {
+    margin-top: 10px;
+    width:100%;
+    height:200px;
+    background-color: bisque;
+}
+.class-block:hover {
+    opacity: 0.7;
+}
+@media(max-width:1200px) {
+    .class-plan {
+
+        width:95%;
+    }
+}
+
+
+/* 課程排版開關 */
+#small{
+    display: none;
+}
+#class-plan-small {
+    display: none;
+}
+
+
+@media(max-width: 1000px) {
+    #small {
+        display: block;
+    }
+    #big {
+        display: none;
+    }
+    #class-plan-big {
+        display:none;
+    }
+    #class-plan-small {
+        display: block;
+    }
+}
+/* 小於768時 星期佔滿版面 */
+@media (max-width: 1000px) {
+    .container-sm, .container {
+        max-width: 100%;
+    }
+}
+
+.small-weekday-hover:hover {
+    background-color:#FF9224;
+}
+
+
+.time {
+    padding:5px;
+    background-color: #F75000;
+    text-align: center;
+}
+.title-zh {
+    padding: 5px;
+    text-align: center;
+}
+.title-en {
+    color:#747474;
+    font-size: 10px;
+    text-align: center;
+}
+.teacher {
+    padding: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.class-room {
+    /* background-color: #F75000; */
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+.current-class {
+    color: red;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* a連結效果 */
+.col-6:hover {
+    opacity: 0.7;
+}
+
+.active-class {
+    opacity: 0.5;
+}

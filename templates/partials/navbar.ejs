@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="/css/signin.css">
+<div class="overlay-login">
+    <div class="login-page-block1">
+        <div class="login-page-block">
+            <div class="login-page">
+                <label for="login-close-btn">
+                    <img id="close-btn-for-img-login" src="/png/icon/icon_close.png">
+                </label>
+                <input type="button" name="close" id="login-close-btn">
+                <div class="login-title">登入會員帳號</div>
+                <form id="login-form">
+                    <input id="email-login" class="input-format" type="text" placeholder="Email" required="required">
+                    <input id="pwd-login" class="input-format" type="password" placeholder="Password" required="required">
+                    <div style="text-align: center;">
+                        <input type="submit" value="登入帳戶" class="login-btn"></input>
+                    </div>
+                </form>
+                <!-- <div class="login-msg">帳號密碼錯誤</div> -->
+                <div class="login-msg"></div>
+                <div class="login-state">還沒有帳戶?
+                    <a href="/signup-info">點此註冊</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 小螢幕 -->
+<div class="burger-overlay">
+    <a href="javascript:void(0)" class="closebtn" id="closebtn">&times;</a>
+    <div class="overlay-content">
+        <div style="width:100%;height:50px;border-bottom: 1px solid #e9e9e9;"></div>
+        <div class="menu-format hide"><a href="/news">最新消息</a></div>
+        <div class="menu-format hide"><a href="/classes">本月課程</a></div>
+        <div class="menu-format hide"><a href="/products">會員方案</a></div>
+        <div class="menu-format hide">會員中心</div>
+        <div class="menu-format hide">登入/註冊</div>
+        <div class="menu-format hide">登出系統</div>
+    </div>
+</div>
+<!-- 大 -->
+<header>
+    <div class="icon-bar">
+        <div class="img-block">
+            <a href="https://github.com/chiderlin/gymmy-website"><img src="/png/icon/github.png" class="img-fluid"></a>
+        </div>
+    </div>
+    <div class="flexbox-big">
+        <div class="navbar-c">
+            <div class="head-c">
+                <div class="title"><a href="/">Gymmy</a></div>
+            </div>
+            <div class="blank"></div>
+            <div class="items-format">
+                <ul class="items-c">
+                    <li class="hide"><a href="/news">最新消息</a></li>
+                    <li class="hide"><a href="/classes">本月課程</a></li>
+                    <li class="hide"><a href="/products">會員方案</a></li>
+                    <li class="hide">會員中心</li>  <!--url必須有username，所以在code寫跳轉不寫a -->
+                    <li class="hide">登入/註冊</li>
+                    <li class="hide">登出系統</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="flexbox-small">
+        <div class="head-small">
+            <div class="smalltitle"><a href="/">Gymmy</a></div>
+            <!-- <div class="blank"></div> -->
+            <div class="icon-block" id="openbtn">
+                <div class="burger-icon">&#9776;</div>
+            </div>
+        </div>
+    </div>
+</header>
+<script type="module" src="/js/base.js"></script>

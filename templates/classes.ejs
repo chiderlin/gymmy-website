@@ -1,0 +1,52 @@
+<%- include('./partials/head.ejs') %>
+    <link rel="stylesheet" href="/css/classes.css">
+
+    <body>
+        <%- include('./partials/navbar.ejs') %>
+        <div class="head-title">
+            <h1 class="display-4 fw-normal">本月課表</h1>
+        </div>
+        <div class="container week" id="big">
+            <div class="row">
+                <div class="col">星期一</div>
+                <div class="col">星期二</div>
+                <div class="col">星期三</div>
+                <div class="col">星期四</div>
+                <div class="col">星期五</div>
+                <div class="col">星期六</div>
+                <div class="col">星期日</div>
+            </div>
+        </div>
+        <div class="container week" id="small">
+            <div class="row">
+                <div class="col small-weekday-hover"><a href="#Mon">Mon</a></div>
+                <div class="col small-weekday-hover"><a href="#Tue">Tue</a></div>
+                <div class="col small-weekday-hover"><a href="#Wed">Wed</a></div>
+                <div class="col small-weekday-hover"><a href="#Thu">Thu</a></div>
+                <div class="col small-weekday-hover"><a href="#Fri">Fri</a></div>
+                <div class="col small-weekday-hover"><a href="#Sat">Sat</a></div>
+                <div class="col small-weekday-hover"><a href="#Sun">Sun</a></div>
+            </div>
+        </div>
+        <div class="p-0 container class-plan" id="class-plan-big">
+            <div class="column" id="1"></div>
+            <div class="column" id="2"></div>
+            <div class="column" id="3"></div>
+            <div class="column" id="4"></div>
+            <div class="column" id="5"></div>
+            <div class="column" id="6"></div>
+            <div class="column" id="7"></div>
+        </div>
+
+        <div class="container" id="class-plan-small">
+            <div class="row" id="Mon"></div>
+            <div class="row" id="Tue"></div>
+            <div class="row" id="Wed"></div>
+            <div class="row" id="Thu"></div>
+            <div class="row" id="Fri"></div>
+            <div class="row" id="Sat"></div>
+            <div class="row" id="Sun"></div>
+        </div>
+    </body>
+    <script src="/js/classes.js"></script>
+    <%- include('./partials/footer.ejs') %>

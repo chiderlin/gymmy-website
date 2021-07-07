@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+* {
+    box-sizing:border-box;
+    font-family: 'Noto Sans TC', sans-serif;
+}
+.login-state > a {
+    text-decoration: underline;
+}
+.login-state > a:hover {
+    text-decoration: underline;
+    color: #666666;
+}
+a {
+    text-decoration: none;
+    color: #000000;
+}
+a:hover {
+    color: #000000;
+}
+
+body {
+    margin: 0;
+    overflow-x:hidden;
+}
+
+main {
+    margin-top: 50px;
+}
+
+.icon-bar {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    background-color:#FFA042;
+}
+.img-block {
+    position: absolute;
+    top:5px;
+    right:30px;
+    width:50px;
+    height:30px;
+
+}
+.img-fluid{
+    max-width: 60%;
+}
+
+
+.flexbox-big { 
+    width: 100%;
+    height: 80px;
+    background-color: #ffffff;
+    padding-top:0;
+    display: flex;
+    justify-content:center;
+    border-bottom: 1px solid #e9e9e9;
+
+}
+
+/* navbar是bootstrap有預設的  */
+.navbar-c {
+    width: 1920px; /*讓navbar開到最大(最兩邊)*/
+    display: flex;
+}
+
+.head-c {
+    font-size: 40px;
+    margin:0;
+    font-weight: bold;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+}
+.title a {
+    color:#EA7500;
+}
+
+
+.blank {
+    flex:auto;
+    height: 100%;
+}
+
+
+.items-c {
+    display: flex;
+    list-style:none;
+    padding: 15px;
+    color: #000000;
+    
+}
+
+.items-c > li {
+    flex:none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.items-c > li:hover {
+    background-color: #FFA042;
+}
+.icon-block {
+    width:50px;
+    height:50px;
+    background-color: #FFA042;
+    cursor:pointer;
+    position:absolute;
+    right:0;
+    top:0;
+    display:none;
+}
+.burger-icon {
+    color:#ffffff;
+    position:absolute;
+    top:0;
+    right:10px;
+}
+
+/* 小螢幕 */
+.flexbox-small {
+    width: 100%;
+    height: 50px;
+    display:none;
+    border-bottom: 1px solid #e9e9e9;
+}
+
+.head-small {
+    font-size: 30px;
+    margin:0;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    position:relative;
+}
+
+.smalltitle {
+    position: absolute;
+    right:40%;
+    top:0;
+    
+}
+.smalltitle a {
+    color: #EA7500;
+}
+
+.burger-overlay {
+    width:100%;
+    height:0%;
+    position:fixed;
+    z-index:100;
+    top:0;
+    left:0;
+    background-color: #ffffff;
+    opacity: 0.9;
+    overflow-y:hidden;
+    transition: 0.5s;
+}
+
+.closebtn {
+    position:absolute;
+    right:0;
+    color: #000000;
+    font-size:30px;
+}
+.closebtn:hover {
+    color: #3f3d3d;
+    
+}
+
+
+@media(max-width:600px) {
+    .flexbox-big {
+        display:none;
+    }
+    .flexbox-small {
+        display:block;
+    }
+
+    .items-format {
+        display:none;
+    }
+    .icon-bar {
+        display:none;
+    }
+    .icon-block {
+        display:block;
+    }
+}
+.menu-format > a {
+    color: #000000;
+}
+
+
+.menu-format {
+    cursor: pointer;
+    padding: 20px 0 ;
+    text-align: center;
+    border-bottom: #000000 1px solid;
+    
+}
+
+.menu-format:hover {
+    background-color: #FFA042;
+}
+
+/* footer部分 */
+@media (min-width: 768px) {
+    .my-md-5 {
+        margin-top: 3rem!important;
+        margin-bottom: 0rem !important;
+    }
+}
+
+.my-md-5 {
+    margin-top: 3rem!important;
+}
+
+.bottom-color {
+    background-color: #424242;
+}
+
+/* navbar切換 */
+.hide {
+    display: none;
+}
