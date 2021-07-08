@@ -1,5 +1,6 @@
 <%- include('./partials/head.ejs') %>
     <link rel="stylesheet" href="/css/classes.css">
+    
 
     <body>
         <%- include('./partials/navbar.ejs') %>
@@ -47,6 +48,8 @@
             <div class="row" id="Sat"></div>
             <div class="row" id="Sun"></div>
         </div>
+        <div id="test"></div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/classes.js"></script>
     </body>
-    <script src="/js/classes.js"></script>
     <%- include('./partials/footer.ejs') %>

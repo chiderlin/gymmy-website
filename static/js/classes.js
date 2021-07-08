@@ -1,11 +1,17 @@
 let tmp;
+let socket = io();
 
 init();
 function init() {
     getClassList();
 };
 
+socket.on('test', (msg)=>{
+    const test = document.getElementById('test');
+    test.innerHTML = '';
+    test.textContent = msg;
 
+})
 
 
 
@@ -77,32 +83,27 @@ function renderBigClass(renderBox) {
     column.appendChild(link);
     container.appendChild(column);
 
-    // 上課中 => 如何讓它變成動態的？？？ socket.io如何實現
-    const current = new Date();
-    let firstDate = new Date(current.getFullYear(), current.getMonth(), 1); // 取得這個月第一天
-    const current_day = current.getDay();
-    if(renderBox.weekday === current_day) { 
-        const current_hour = current.getHours();
-        const current_min = current.getMinutes();
 
-        const start_hour = new Date(renderBox.start_time).getHours();
-        const start_min = new Date(renderBox.start_time).getMinutes();
-        const end_hour = new Date(renderBox.end_time).getHours();
-        const end_min = new Date(renderBox.end_time).getMinutes();
-        
-        // 小時/分鐘都要比對 
-        if(start_hour<current_hour){
-            if(current_hour<end_hour){
-                class_block.classList.add('active-class');
-                class_block.appendChild(current_class)
-            } else if (current_hour === end_hour) {
-                if(current_min<end_min){
-                    class_block.classList.add('active-class');
-                    class_block.appendChild(current_class)
-                }
-            }
-        } else if(start_hour===current_hour) {
-            if(start_min<=current_min){
+    socket.on('current class', (msg)=>{
+        // 上課中 => 如何讓它變成動態的？？？ socket.io如何實現
+        // const current = new Date();
+        const current = new Date(msg);
+        // let firstDate = new Date(current.getFullYear(), current.getMonth(), 1); // 取得這個月第一天
+        const current_day = current.getDay();
+        if(renderBox.weekday === current_day) { 
+            const current_hour = current.getHours();
+            const current_min = current.getMinutes();
+
+            const start_hour = new Date(renderBox.start_time).getHours();
+            const start_min = new Date(renderBox.start_time).getMinutes();
+            const end_hour = new Date(renderBox.end_time).getHours();
+            const end_min = new Date(renderBox.end_time).getMinutes();
+            // console.log(current_hour)
+            // console.log(start_hour)
+            // console.log(renderBox.title_zh)
+            // 小時/分鐘都要比對 
+            if(start_hour<current_hour){
+                // console.log(renderBox.title_zh)
                 if(current_hour<end_hour){
                     class_block.classList.add('active-class');
                     class_block.appendChild(current_class)
@@ -112,9 +113,24 @@ function renderBigClass(renderBox) {
                         class_block.appendChild(current_class)
                     }
                 }
+            } else if(start_hour===current_hour) {
+                console.log(renderBox.title_zh)
+
+                if(start_min<=current_min){
+                    if(current_hour<end_hour){
+                        class_block.classList.add('active-class');
+                        class_block.appendChild(current_class)
+                    } else if (current_hour === end_hour) {
+                        if(current_min<end_min){
+                            class_block.classList.add('active-class');
+                            class_block.appendChild(current_class)
+                        }
+                    }
+                }
             }
         }
-    }
+    })
+    
 };
 
 function renderSmallClass(renderBox) {
