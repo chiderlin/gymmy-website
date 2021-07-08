@@ -85,8 +85,10 @@ function getBooking(){
     }).then((api_data)=>{
         console.log(api_data);
         const data = api_data.data;
-        for(let i=0; i<data.length; i++){
-            renderBooking(data[i]);
+        if(data !== null) {
+            for(let i=0; i<data.length; i++){
+                renderBooking(data[i]);
+            }
         }
     });
 }
