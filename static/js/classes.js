@@ -114,7 +114,7 @@ function renderBigClass(renderBox) {
                     }
                 }
             } else if(start_hour===current_hour) {
-                console.log(renderBox.title_zh)
+                // console.log(renderBox.title_zh)
 
                 if(start_min<=current_min){
                     if(current_hour<end_hour){

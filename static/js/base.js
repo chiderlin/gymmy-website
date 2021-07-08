@@ -98,7 +98,6 @@ function login(email, pwd) {
     }).then((res)=>{
         return res.json(); 
     }).then((data)=>{
-        console.log(data);
         if(data.ok === true) {
             window.location.reload(); // 通過的話 重新load頁面
         }

@@ -17,10 +17,8 @@ router.get('/class', (req, res) => {
         console.log('a user connected');
         setInterval(() => {
             socket.emit('current class', new Date());
-        }, 1000); //15分鐘
+        }, 1000); //1秒
     })
-
-
 
     try {
         sequelize.sync().then(() => {

@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../db_module.js');
+const Sequelize = db.Sequelize;
+const sequelize = db.sequelize;
+const Member = db.Member;
+const User = db.User;
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 const multer = require('multer');
 const fs = require('fs');
-const app = express();
+
 const storage = multer.diskStorage({
     destination: (req,res,callback)=>{
         callback(null, './upload/')
@@ -30,9 +35,7 @@ const upload = multer({
 })
 
 //TODO:
-//1.檔案上傳s3
-//2.把檔名＆圖片網址紀錄到member db（圖片才會永久保存，在init時前端render出來）
-//，之後如果要更換照片時刪除s3上面的照片
+//更換照片 => 1.s3傳送新照片上去取得新網址 2.更新member資料庫資料 3.刪除原本s3上面的照片
 
 
 const mybucket = 'gymmy';
@@ -53,7 +56,31 @@ router.post('/upload', upload.single('img'),function(req,res,next){
                 if(err){return console.error(err)}
                 console.log('deleted');
             })
-            res.json({'ok':true, 'address':`https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`});
+            sequelize.sync().then(() => {
+                User.findOne({
+                    where: {
+                        email: req.session.email,
+                    }
+                }).then((result) => {
+                    return JSON.stringify(result, null, 4);
+                }).then((data)=>{
+                    data = JSON.parse(data);
+                    const userId = data.id
+
+                    sequelize.sync().then(() => {
+                        // 在這邊新增資料
+                        Member.create({
+                            image_name: req.file.originalname,
+                            image_address: `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`,
+                            UserId:userId,
+                        }).then(() => {
+                            // 執行成功印出
+
+                            return res.json({'ok':true, 'address':`https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`});
+                        })
+                    })
+                })
+            })
         })
     } catch(e){
         e = e.toString()
@@ -61,5 +88,38 @@ router.post('/upload', upload.single('img'),function(req,res,next){
     }
 
 })
+
+// member頁面取得資料
+router.get('/member',(req,res)=>{
+    sequelize.sync().then(() => {
+        User.findOne({
+            where: {
+                email: req.session.email,
+            },
+            include:Member,
+        }).then((result) => {
+            return JSON.stringify(result, null, 4);
+        }).then((api_data)=>{
+            console.log(api_data);
+            api_data = JSON.parse(api_data);
+            const member_email = api_data.email;
+            const member_plan = api_data.plan;
+            const member_active = api_data.active;
+            let member_image;
+            if(api_data.Member !== null){
+                member_image = api_data.Member.image_address;
+            } else {
+                member_image = null;
+            }
+            const data = {
+                'email':member_email,
+                'plan':member_plan,
+                'active':member_active,
+                'image':member_image
+            }
+            return res.json(data);
+        });
+    });
+});
 
 module.exports = router;
