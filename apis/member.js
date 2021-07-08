@@ -35,11 +35,10 @@ const upload = multer({
 })
 
 //TODO:
-//更換照片 => 1.s3傳送新照片上去取得新網址 2.更新member資料庫資料 3.刪除原本s3上面的照片
+//更換照片 => 3.刪除原本s3上面的照片
 
 
 const mybucket = 'gymmy';
-
 router.post('/upload', upload.single('img'),function(req,res,next){
     // console.log(req.file);
 
@@ -60,25 +59,43 @@ router.post('/upload', upload.single('img'),function(req,res,next){
                 User.findOne({
                     where: {
                         email: req.session.email,
-                    }
+                    },
+                    include:Member,
                 }).then((result) => {
                     return JSON.stringify(result, null, 4);
                 }).then((data)=>{
                     data = JSON.parse(data);
                     const userId = data.id
-
-                    sequelize.sync().then(() => {
-                        // 在這邊新增資料
-                        Member.create({
-                            image_name: req.file.originalname,
-                            image_address: `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`,
-                            UserId:userId,
-                        }).then(() => {
-                            // 執行成功印出
-
-                            return res.json({'ok':true, 'address':`https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`});
+                    if(data.Member === null) {
+                        sequelize.sync().then(() => {
+                            // 在這邊新增資料
+                            Member.create({
+                                image_name: req.file.originalname,
+                                image_address: `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`,
+                                UserId:userId,
+                            }).then(() => {
+                                // 執行成功印出
+    
+                                return res.json({'ok':true, 'address':`https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`});
+                            })
                         })
-                    })
+                    } else {
+                        sequelize.sync().then(() => {
+                            Member.findOne({
+                                where: {
+                                    UserId: userId,
+                                }
+                            }).then((mem)=>{
+                                mem.update({
+                                    image_name: req.file.originalname,
+                                    image_address: `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`,
+                                })
+                            }).then(()=>{
+                                console.log('update done')
+                                return res.json({'ok':true, 'address':`https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`});
+                            })
+                        })
+                    }
                 })
             })
         })

@@ -124,6 +124,9 @@ function renderBigClass(renderBox) {
                         if(current_min<end_min){
                             class_block.classList.add('active-class');
                             class_block.appendChild(current_class)
+                        } else if(current_min >= end_min) {
+                            class_block.classList.remove('active-class');
+                            class_block.appendChild(current_class)
                         }
                     }
                 }

@@ -1,15 +1,31 @@
-
+// controller
 const get_route = location.pathname
-const url = `/api${get_route}`
+let classId = get_route.split('/')[2]
+classId = parseInt(classId);
+let class_info;
+
 init();
 function init() {
     get_class_data();
 };
 
+
+const booking_btn = document.getElementById('booking-btn');
+booking_btn.addEventListener('click',()=>{
+    // 呼叫booking api
+    booking();
+    
+});
+
+
+//model
 function get_class_data(){
+    const url = `/api${get_route}`
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
+        class_info = api_data;
+        console.log(class_info)
         const class_name_zh = api_data.class_name_zh;
         const desc = api_data.desc;
         const img = api_data.img;
@@ -18,8 +34,36 @@ function get_class_data(){
         console.log(err);
     });
 };
+function booking(){
+    const class_data= {
+        'data':{
+            'classId': class_info.id,
+            'month': class_info.month,
+            'weekday': class_info.weekday,
+            'class_time':class_info.class_time,
+            'start_time':class_info.start_time,
+            'end_time':class_info.end_time,
+            'class_name':class_info.class_name_zh,
+            'teacher':class_info.class_teacher,
+            'room': class_info.class_room,
+        }
+    };
+    const url = '/api/booking'
+    fetch(url,{
+        method:"POST",
+        headers:{
+            'Content-Type':'application/json',
+        },
+        body: JSON.stringify(class_data),
+    }).then((res)=>{
+        return res.json();
+    }).then((api_data)=>{
+        console.log(api_data);
+    });
+};
 
 
+//view
 function render(class_name_zh, desc, img){
     const title_name = document.querySelector('.title-name');
     const desc_box = document.querySelector('.desc-box');

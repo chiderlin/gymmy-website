@@ -179,3 +179,22 @@
 .history-form{
     display: none;
 }
+
+
+.card-block {
+    display: flex;
+    justify-content: center;
+}
+.card-box {
+    margin-bottom: 20px;
+    display: none;
+}
+/* 預定課程小螢幕 */
+@media(max-width:500px){
+    .booking-block{
+        display: block;
+    }
+    .card-box {
+        display: none;
+    }
+}

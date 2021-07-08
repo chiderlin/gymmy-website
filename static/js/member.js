@@ -3,6 +3,7 @@ init()
 function init(){
     checkLogIn();
     getMember();
+    getBooking();
 }
 
 const select_button1 = document.querySelector('#booking');
@@ -64,6 +65,7 @@ function uploadImg(){
         }
     })
 };
+
 function getMember(){
     const url = '/api/member'
     fetch(url).then((res)=>{
@@ -74,12 +76,26 @@ function getMember(){
             renderMemberInfo(data);
         }
     })
+};
+
+function getBooking(){
+    const url = '/api/booking';
+    fetch(url).then((res)=>{
+        return res.json();
+    }).then((api_data)=>{
+        console.log(api_data);
+        const data = api_data.data;
+        for(let i=0; i<data.length; i++){
+            renderBooking(data[i]);
+        }
+    });
 }
 
 
 // view
 function renderUpload(img_address){
     const img_box = document.querySelector('.img-box');
+    img_box.innerHTML = ''
     const img = document.createElement('img');
     img.setAttribute('src', img_address);
     img.className = 'mem-photo';
@@ -136,4 +152,35 @@ function check_active(active){
     } else if(active === 'no') {
         return false
     }
+};
+function renderBooking(data){
+    console.log(data.class_name);
+    const booking_box = document.querySelector('.booking-box');
+    const booking_class = document.createElement('div');
+    const time = document.createElement('div');
+    const class_ = document.createElement('div');
+    const teacher = document.createElement('div');
+    const room = document.createElement('div');
+    const btn_box = document.createElement('div');
+    const btn = document.createElement('button');
+
+    btn_box.className = 'status';
+    btn.className = 'btn btn-sm class-btn';
+    booking_class.className = 'booking-class'
+    time.className = 'time';
+    class_.className = 'class';
+    teacher.className = 'teacher';
+    room.className = 'room';
+    time.appendChild(document.createTextNode(data.class_time));
+    class_.appendChild(document.createTextNode(data.class_name));
+    teacher.appendChild(document.createTextNode(data.teacher));
+    room.appendChild(document.createTextNode(data.room));
+    btn.appendChild(document.createTextNode('取消預定'))
+    btn_box.appendChild(btn)
+    booking_class.appendChild(time)
+    booking_class.appendChild(class_)
+    booking_class.appendChild(teacher)
+    booking_class.appendChild(room)
+    booking_class.appendChild(btn_box)
+    booking_box.appendChild(booking_class)
 };

@@ -39,11 +39,13 @@ const classes = require('./apis/classes');
 const user = require('./apis/user');
 const payment = require('./apis/payment');
 const member = require('./apis/member');
+const booking = require('./apis/booking');
 const ipn = require('./apis/ipn_listener')
 app.use('/api', classes);
 app.use('/api', user); 
 app.use('/api', payment);
 app.use('/api', member);
+app.use('/api', booking);
 app.use('/ipn', ipn);
 
 

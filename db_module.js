@@ -204,13 +204,46 @@ const Member = sequelize.define('Member',{
 });
 
 
-const Booking = sequelize.define('Order', {
+const Booking = sequelize.define('Booking', {
     id:{
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-
+    classId:{
+        type: Sequelize.INTEGER, 
+    },
+    month:{
+        type: Sequelize.INTEGER,
+    },
+    weekday:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    start_time:{
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    end_time:{
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    class_time:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    class_name:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    teacher:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    room:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
 
 },{ // 設定時間要不要有
     timestamps: true,
@@ -222,13 +255,10 @@ const Booking = sequelize.define('Order', {
 User.hasOne(Payment);
 Payment.hasMany(Order);
 User.hasOne(Member);
-
 User.hasMany(Booking);
-Classes.hasMany(Booking);
 
 Payment.belongsTo(User);
 Order.belongsTo(Payment);
-
 Booking.belongsTo(User);
 Member.belongsTo(User);
 
