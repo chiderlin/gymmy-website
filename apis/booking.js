@@ -154,7 +154,7 @@ router.delete('/booking',(req,res)=>{
           }
         }).then(user => {
           user.destroy().then(() => {
-            console.log('destroy done!');
+            return res.json({'ok':true});
           });
         });
       });
