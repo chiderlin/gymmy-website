@@ -97,7 +97,7 @@ router.post('/user', async (req, res) => {
                             active: 'no',
                         }).then(() => {
                             // 執行成功印出
-                            req.session.email = email
+                            req.session.email = email;
                             return res.json({'ok':true});
                         })
                     }).catch((err)=>{
@@ -132,6 +132,8 @@ router.patch('/user', (req, res) => {
                 return JSON.stringify(result, null, 4);
             }).then((data)=>{
                 data = JSON.parse(data);
+                const userid = data.id;
+
                 if (data === null) {
                     return res.status(400).json({ 'error': true, 'message': '帳號或密碼錯誤' });
                 } else {
@@ -140,6 +142,7 @@ router.patch('/user', (req, res) => {
                         // console.log(res); bool
                         if (compare) {
                             req.session.email = email;
+                            req.session.userid = userid;
                             return res.json({ 'ok': true });
                         } else {
                             return res.status(400).json({ 'error': true, 'message': '帳號或密碼錯誤' });

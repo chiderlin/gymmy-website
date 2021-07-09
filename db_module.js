@@ -220,6 +220,10 @@ const Booking = sequelize.define('Booking', {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    class_date:{
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
     start_time:{
         type: Sequelize.DATE,
         allowNull: false,

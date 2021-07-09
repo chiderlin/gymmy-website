@@ -14,8 +14,6 @@ socket.on('test', (msg)=>{
 })
 
 
-
-
 function getClassList() {
     const url = '/api/class';
     fetch(url).then((res) => {
@@ -36,9 +34,7 @@ function getClassList() {
                 'end_time':data[i].end_time
             }
             renderBigClass(renderBox);
-            renderSmallClass(renderBox);
-            // let test = start_time.substring(10,15);            
-
+            renderSmallClass(renderBox);           
         }
     }).catch((err)=>{
         console.log(err);
@@ -82,47 +78,54 @@ function renderBigClass(renderBox) {
     link.appendChild(class_block);
     column.appendChild(link);
     container.appendChild(column);
+    const compare_time = {
+        'weekday':renderBox.weekday,
+        'start_time':renderBox.start_time,
+        'end_time':renderBox.end_time
+    }
+    socket_listener(class_block,current_class,compare_time)
+    
+};
 
-
+function socket_listener(block,current_class,compare_time){
     socket.on('current class', (msg)=>{
         // 上課中 => 如何讓它變成動態的？？？ socket.io如何實現
         // const current = new Date();
         const current = new Date(msg);
         // let firstDate = new Date(current.getFullYear(), current.getMonth(), 1); // 取得這個月第一天
         const current_day = current.getDay();
-        if(renderBox.weekday === current_day) { 
+        if(compare_time.weekday === current_day) { 
             const current_hour = current.getHours();
             const current_min = current.getMinutes();
-
-            const start_hour = new Date(renderBox.start_time).getHours();
-            const start_min = new Date(renderBox.start_time).getMinutes();
-            const end_hour = new Date(renderBox.end_time).getHours();
-            const end_min = new Date(renderBox.end_time).getMinutes();
+            const start_hour = new Date(compare_time.start_time).getHours();
+            const start_min = new Date(compare_time.start_time).getMinutes();
+            const end_hour = new Date(compare_time.end_time).getHours();
+            const end_min = new Date(compare_time.end_time).getMinutes();
 
             // 小時/分鐘都要比對 
             if(start_hour<current_hour){
                 if(current_hour<end_hour){
-                    class_block.classList.add('active-class');
-                    class_block.appendChild(current_class)
+                    block.classList.add('active-class');
+                    block.appendChild(current_class)
                 } else if (current_hour === end_hour) {
                     if(current_min<end_min){
-                        class_block.classList.add('active-class');
-                        class_block.appendChild(current_class)
+                        block.classList.add('active-class');
+                        block.appendChild(current_class)
                     }
                 }
             } else if(start_hour===current_hour) {
                 if(start_min<=current_min){
                     if(current_hour<end_hour){
-                        class_block.classList.add('active-class');
-                        class_block.appendChild(current_class)
+                        block.classList.add('active-class');
+                        block.appendChild(current_class)
                     } else if (current_hour === end_hour) {
                         if(current_min<=end_min){
-                            class_block.classList.add('active-class');
-                            class_block.appendChild(current_class)
+                            block.classList.add('active-class');
+                            block.appendChild(current_class)
                         } else if(current_min > end_min) {
                             current_class.innerHTML = '';
-                            class_block.classList.remove('active-class');
-                            class_block.appendChild(current_class)
+                            block.classList.remove('active-class');
+                            block.appendChild(current_class)
                         }
                     }
                 }
@@ -157,6 +160,9 @@ function renderSmallClass(renderBox) {
     const title_en = document.createElement('div');
     const teacher = document.createElement('div');
     const classroom = document.createElement('div');
+    const current_class = document.createElement('div');
+    current_class.appendChild(document.createTextNode('上課中'));
+    current_class.className = 'current-class';
     link.setAttribute('href', `/class/${renderBox.id}`);
     col_6.className = 'col-6';
     col_12.className = 'col-sm-12 class-format'
@@ -178,4 +184,11 @@ function renderSmallClass(renderBox) {
     link.appendChild(col_12);
     col_6.appendChild(link);
     row.appendChild(col_6);
+
+    const compare_time = {
+        'weekday':renderBox.weekday,
+        'start_time':renderBox.start_time,
+        'end_time':renderBox.end_time
+    }
+    socket_listener(col_12,current_class,compare_time)
 };

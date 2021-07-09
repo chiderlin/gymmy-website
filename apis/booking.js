@@ -10,46 +10,138 @@ const moment = require('moment');
 
 
 router.get('/booking',(req,res)=>{
-    
-    User.findOne({
-        where: {
-            email: req.session.email,
+    let list_of_class = []
+    Booking.findAll({
+        where:{
+            UserId: req.session.userid
         },
-        include:Booking,
-    }).then((result) => {
+        order:[
+            ['class_date', 'asc'],
+            ['start_time', 'asc']
+        ]
+    }).then((result)=>{
         return JSON.stringify(result, null, 4);
     }).then((data)=>{
-        // console.log(data);
         data = JSON.parse(data)
-        let all_booking_data = [];
-        if(JSON.stringify(data.Bookings) !== '[]'){
-            const booking = data.Bookings;
-
-            for(let i=0; i<booking.length; i++){
-                const bookingId = booking[i].id;
-                const class_time = booking[i].class_time;
-                const class_name = booking[i].class_name;
-                const teacher = booking[i].teacher;
-                const room = booking[i].room
+        if(data !== null) {
+            for(let i=0; i<data.length;i++){
                 const booking_data = {
-                    'bookingId':bookingId,
-                    'class_time':class_time,
-                    'class_name':class_name,
-                    'teacher':teacher,
-                    'room':room
+                    'bookingId':data[i].id,
+                    'class_time':data[i].class_time,
+                    'class_name':data[i].class_name,
+                    'teacher':data[i].teacher,
+                    'room':data[i].room
                 }
-                all_booking_data.push(booking_data);
+                list_of_class.push(booking_data)
             }
-            return res.json({'data':all_booking_data}); 
+            const class_data = {
+                'data':list_of_class
+            }
+            return res.json(class_data);
         } else {
             return res.json({'data':null});
         }
-    }).catch((e)=>{
-        e = e.toString()
-        return res.status(500).json({'error':true, 'message':e});
     })
-    
 });
+
+// router.get('/history/booking',(req,res)=>{
+//     // 過期的
+//     console.log(req.session.userid);
+//     Booking.findAll({
+//         where:{
+//             UserId: req.session.userid
+//         },
+//         order:[
+//             ['class_date', 'asc'],
+//             ['start_time', 'asc']
+//         ]
+//     }).then((result)=>{
+//         return JSON.stringify(result, null, 4);
+//     }).then(async(data)=>{
+//         data = JSON.parse(data)
+//         if(data !== null) {
+//             const history_list = await check_expiry(data);
+//             const history_data = {
+//                 'data':history_list
+//             }
+    
+//             return res.json(history_data);
+//         }
+//     })
+// });
+
+// function check_expiry(data){
+//     const list_of_history = [];
+//     for(let i=0; i<data.length;i++){
+//         const today = new Date().getDate();
+//         const class_date = new Date(data[i].class_date).getDate()
+//         const end_hour = new Date(data[i].end_time).getHours();
+//         if(today>class_date){
+//             // 確定過期
+//             const booking_data = {
+//                 'bookingId':data.id,
+//                 'class_time':data.class_time,
+//                 'class_name':data.class_name,
+//                 'teacher':data.teacher,
+//                 'room':data.room
+//             }
+//             list_of_history.push(booking_data)
+
+//         }else if(today === class_date) {
+//             const current_hour = new Date().getHours();
+//             const end_hour = new Date(data[i].end_time).getHours();
+//             if(current_hour>end_hour){
+//                 // 確定過期
+//                 const booking_data = {
+//                     'bookingId':data.id,
+//                     'class_time':data.class_time,
+//                     'class_name':data.class_name,
+//                     'teacher':data.teacher,
+//                     'room':data.room
+//                 }
+//                 list_of_history.push(booking_data)
+//             }
+//         }
+//     }
+//     return list_of_history;
+// };
+
+// function check_class(data){
+//     const list_of_class = [];
+//     for(let i=0; i<data.length;i++){
+//         const today = new Date().getDate();
+//         const class_date = new Date(data[i].class_date).getDate()
+//         const end_hour = new Date(data[i].end_time).getHours();
+//         if(today<class_date){
+//             // 確定沒過期
+//             const booking_data = {
+//                 'bookingId':data.id,
+//                 'class_time':data.class_time,
+//                 'class_name':data.class_name,
+//                 'teacher':data.teacher,
+//                 'room':data.room
+//             }
+//             list_of_class.push(booking_data)
+
+//         }else if(today === class_date) {
+//             const current_hour = new Date().getHours();
+//             const start_hour = new Date(data[i].start_time).getHours();
+//             const end_hour = new Date(data[i].end_time).getHours();
+//             if(current_hour>end_hour){
+//                 // 確定過期
+//                 const booking_data = {
+//                     'bookingId':data.id,
+//                     'class_time':data.class_time,
+//                     'class_name':data.class_name,
+//                     'teacher':data.teacher,
+//                     'room':data.room
+//                 }
+//                 list_of_class.push(booking_data)
+//             }
+//         }
+//     }
+//     return list_of_class;
+// }
 
 
 router.delete('/booking',(req,res)=>{
@@ -92,8 +184,8 @@ router.post('/booking',(req,res)=>{
         // class_date = current.setDate(current.getDate()+calculation＿date);
         class_date = moment().add(calculation＿date, 'days').format('YYYY-MM-DD')
     }
-    class_date += ' 時段'+class_info.class_time
-    console.log(class_date);
+
+    const class_data_format = class_date + ' 時段' + class_info.class_time
     if(req.session.email){
         sequelize.sync().then(() => {
             User.findOne({
@@ -118,7 +210,8 @@ router.post('/booking',(req,res)=>{
                             classId: class_info.classId,
                             month:class_info.month,
                             weekday:class_info.weekday,
-                            class_time:class_date,
+                            class_date:class_date,
+                            class_time:class_data_format,
                             start_time:class_info.start_time,
                             end_time:class_info.end_time,
                             class_name:class_info.class_name,
@@ -129,12 +222,35 @@ router.post('/booking',(req,res)=>{
                                     
                             return res.json({'ok':true});
                         })
-                    } else { // 有booking 資料做比對，日期不同可以
-                        // 比對classId
-                        // 比對日期
-                        //兩者都相同者已預訂過，不可再預定
-                    }
-                    
+                    } else { // with booking 資料做比對，日期不同可以
+                        // 比對classId => 傳進來的classId＆資料庫的比對
+                        let new_booking = class_info.classId;
+                        const bookings = data.Bookings
+                        for(let i=0; i<bookings.length; i++) {
+                            if(bookings[i].classId === new_booking){
+                                if(bookings[i].class_time.substring(0,10)===class_date){// 比對日期
+                                    return res.status(400).json({'error:':true, 'message':'此課程已預訂'})
+                                }
+                            }
+                        }
+                        Booking.create({
+                            UserId: userId,
+                            classId: class_info.classId,
+                            month:class_info.month,
+                            weekday:class_info.weekday,
+                            class_time:class_data_format,
+                            class_date:class_date,
+                            start_time:class_info.start_time,
+                            end_time:class_info.end_time,
+                            class_name:class_info.class_name,
+                            teacher:class_info.teacher,
+                            room: class_info.room,
+                
+                        }).then(() => {
+                                    
+                            return res.json({'ok':true});
+                        })
+                    } 
                 })
             }).catch((e)=>{
                 e = e.toString();

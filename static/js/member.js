@@ -34,6 +34,17 @@ upload_btn.addEventListener('click',()=>{
     uploadImg();
 })
 
+function cancelBookingProcess(){
+    // const bookingId = document.querySelector('.class-btn')
+    // console.log(bookingId)
+    //刪除booking db
+    // deleteBooking((res)=>{
+    //     // 刪除render效果
+    //     deleteRender();
+    // });
+    
+};
+
 
 // model
 function checkLogIn(){
@@ -83,6 +94,7 @@ function getBooking(){
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
+        console.log(api_data);
         const data = api_data.data;
         if(data !== null) {
             for(let i=0; i<data.length; i++){
@@ -92,6 +104,20 @@ function getBooking(){
     });
 }
 
+function deleteBooking(callback){
+    const url = '/api/booking';
+    fetch(url,{
+        method:"DELETE",
+        headers:{
+            "Content-Type":"application/json",
+        },
+        body:JSON.stringify()
+    }).then((res)=>{
+        return res.json()
+    }).then((del)=>{
+        callback('ok');
+    })
+}
 
 // view
 function renderUpload(img_address){
@@ -154,6 +180,7 @@ function check_active(active){
         return false
     }
 };
+
 function renderBooking(data){
     console.log(data.class_name);
     const booking_box = document.querySelector('.booking-box');
@@ -165,8 +192,11 @@ function renderBooking(data){
     const btn_box = document.createElement('div');
     const btn = document.createElement('button');
 
+    btn.onclick = cancelBookingProcess();
     btn_box.className = 'status';
     btn.className = 'btn btn-sm class-btn';
+    btn.value = data.bookingId;
+    // booking_class.id = data.bookingId;
     booking_class.className = 'booking-class'
     time.className = 'time';
     class_.className = 'class';
@@ -184,4 +214,12 @@ function renderBooking(data){
     booking_class.appendChild(room)
     booking_class.appendChild(btn_box)
     booking_box.appendChild(booking_class)
+
+    const cencel_btn = document.querySelectorAll('.class-btn');
+    console.log(cencel_btn)
+
+};
+
+function deleteRender(){
+
 };
