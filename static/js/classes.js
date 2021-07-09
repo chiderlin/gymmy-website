@@ -1,5 +1,5 @@
 let tmp;
-let socket = io();
+let socket = io.connect('0.0.0.0:3001');
 
 init();
 function init() {
