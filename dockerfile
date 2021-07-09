@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:14.15.4-buster
 MAINTAINER Chi Lin "chiderlin36@gmail.com"
 
 COPY . /app
