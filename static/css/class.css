@@ -34,12 +34,13 @@ img {
 /* 預定課程按鈕 */
 
 .class-booking {
-    width:95%;
-    text-align: end;
+    width:100%;
+    text-align: center;
     margin-top: 50px;
 }
 
 .btn-hover{
+    width:200px;
     background-color:#FFA042;
     border-color: #FFA042;
     color: #ffffff;

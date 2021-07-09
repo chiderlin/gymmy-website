@@ -88,7 +88,6 @@ function renderBigClass(renderBox) {
         // 上課中 => 如何讓它變成動態的？？？ socket.io如何實現
         // const current = new Date();
         const current = new Date(msg);
-        console.log(current);
         // let firstDate = new Date(current.getFullYear(), current.getMonth(), 1); // 取得這個月第一天
         const current_day = current.getDay();
         if(renderBox.weekday === current_day) { 
@@ -99,12 +98,9 @@ function renderBigClass(renderBox) {
             const start_min = new Date(renderBox.start_time).getMinutes();
             const end_hour = new Date(renderBox.end_time).getHours();
             const end_min = new Date(renderBox.end_time).getMinutes();
-            // console.log(current_hour)
-            // console.log(start_hour)
-            // console.log(renderBox.title_zh)
+
             // 小時/分鐘都要比對 
             if(start_hour<current_hour){
-                // console.log(renderBox.title_zh)
                 if(current_hour<end_hour){
                     class_block.classList.add('active-class');
                     class_block.appendChild(current_class)
@@ -115,17 +111,16 @@ function renderBigClass(renderBox) {
                     }
                 }
             } else if(start_hour===current_hour) {
-                // console.log(renderBox.title_zh)
-
                 if(start_min<=current_min){
                     if(current_hour<end_hour){
                         class_block.classList.add('active-class');
                         class_block.appendChild(current_class)
                     } else if (current_hour === end_hour) {
-                        if(current_min<end_min){
+                        if(current_min<=end_min){
                             class_block.classList.add('active-class');
                             class_block.appendChild(current_class)
-                        } else if(current_min >= end_min) {
+                        } else if(current_min > end_min) {
+                            current_class.innerHTML = '';
                             class_block.classList.remove('active-class');
                             class_block.appendChild(current_class)
                         }
@@ -134,7 +129,6 @@ function renderBigClass(renderBox) {
             }
         }
     })
-    
 };
 
 function renderSmallClass(renderBox) {

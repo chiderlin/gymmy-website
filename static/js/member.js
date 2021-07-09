@@ -83,7 +83,6 @@ function getBooking(){
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        console.log(api_data);
         const data = api_data.data;
         if(data !== null) {
             for(let i=0; i<data.length; i++){

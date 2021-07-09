@@ -3,22 +3,57 @@ const get_route = location.pathname
 let classId = get_route.split('/')[2]
 classId = parseInt(classId);
 let class_info;
-
+let check_login = false;
+let check_active;
 init();
 function init() {
     get_class_data();
+    checkLogIn();
 };
 
-
+const overlay_login = document.querySelector('.overlay-login');
 const booking_btn = document.getElementById('booking-btn');
 booking_btn.addEventListener('click',()=>{
+    //判斷有沒有登入
+    //判斷有沒有繳費
     // 呼叫booking api
-    booking();
+    if(check_login) {
+        if(check_active === 'yes') {
+            const current_weekday = new Date().getDay()
+            if(class_info.weekday !== current_weekday){ //可以訂不是今天的課程
+                booking();
+            } else {
+                console.log('今日課程已不開放預訂')
+            }
+
+        } else {
+            // 跳出視窗確認是否要完成繳費程序 （提醒視窗我還沒做）
+            console.log('請完成繳費程序')
+        }
+    } else {
+        // 展開login頁面
+        overlay_login.style.display = 'block';
+    }
+
     
 });
 
 
 //model
+function checkLogIn(){
+    const url = '/api/user';
+    fetch(url).then((res)=>{
+        return res.json();
+    }).then((api_data)=>{
+        console.log(api_data);
+        if(api_data.data !== null) {
+            check_login = true;
+            check_active = api_data.data.active;
+        }
+    })
+}
+
+// 先取得課程資料 => 重新寫入booking db 
 function get_class_data(){
     const url = `/api${get_route}`
     fetch(url).then((res)=>{
@@ -29,7 +64,7 @@ function get_class_data(){
         const class_name_zh = api_data.class_name_zh;
         const desc = api_data.desc;
         const img = api_data.img;
-        render(class_name_zh, desc, img);
+        render_class(class_name_zh, desc, img);
     }).catch((err)=>{
         console.log(err);
     });
@@ -64,7 +99,7 @@ function booking(){
 
 
 //view
-function render(class_name_zh, desc, img){
+function render_class(class_name_zh, desc, img){
     const title_name = document.querySelector('.title-name');
     const desc_box = document.querySelector('.desc-box');
     let p;
