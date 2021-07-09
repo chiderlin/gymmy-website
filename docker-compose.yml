@@ -2,7 +2,7 @@ version: "3"
 services:
     web:
         build: .
-        volume:
+        volumes:
             - /home/ubuntu/.aws/:/app/.aws
         ports:
             - "3001:3001"
