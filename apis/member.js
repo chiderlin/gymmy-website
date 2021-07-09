@@ -36,13 +36,7 @@ const upload = multer({
 
 //TODO:
 //更換照片 => 3.刪除原本s3上面的照片
-AWS.config.getCredentials(function(err) {
-    if (err) console.log(err.stack);
-    // credentials not loaded
-    else {
-      console.log("Access key:", AWS.config.credentials.accessKeyId);
-    }
-  });
+
 
 const mybucket = 'gymmy';
 router.post('/upload', upload.single('img'),function(req,res,next){
