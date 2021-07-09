@@ -45,7 +45,7 @@ router.post('/upload', upload.single('img'),function(req,res,next){
     const stream = fs.createReadStream(`./upload/${req.file.originalname}`);
     const params = {Bucket: mybucket, Key:`member_img/${req.file.originalname}`, Body:stream, ACL:'public-read'};
     const options = {partSize: 1024*1024*5, queueSize:1};
-    try {
+    // try {
         s3.upload(params,options, (err, data)=>{
             if(err){
                 throw err;
@@ -99,10 +99,10 @@ router.post('/upload', upload.single('img'),function(req,res,next){
                 })
             })
         })
-    } catch(e){
-        e = e.toString()
-        res.status(500).json({'error':true,'message':e});
-    }
+    // } catch(e){
+    //     e = e.toString()
+    //     res.status(500).json({'error':true,'message':e});
+    // }
 
 })
 
