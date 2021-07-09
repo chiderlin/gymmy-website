@@ -88,6 +88,7 @@ function renderBigClass(renderBox) {
         // 上課中 => 如何讓它變成動態的？？？ socket.io如何實現
         // const current = new Date();
         const current = new Date(msg);
+        console.log(current);
         // let firstDate = new Date(current.getFullYear(), current.getMonth(), 1); // 取得這個月第一天
         const current_day = current.getDay();
         if(renderBox.weekday === current_day) { 
