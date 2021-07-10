@@ -71,13 +71,15 @@
           <option value="6">週六</option>
           <option value="7">週日</option>
         </select>
-        <select class="form-select" id="select_class" multiple aria-label="multiple select example">
+        <select class="form-select" id="select_class" onchange="select_class();" multiple
+          aria-label="multiple select example">
           <option selected>請選擇課程</option>
         </select>
         <div class="submit-div">
           <button class="w-100 btn class-btn">查詢</button>
         </div>
       </div>
+
 
       <!-- member block -->
       <div class="member-block">
@@ -86,39 +88,33 @@
 
         <div class="member-box">
           <div class="title-block">
-            <div class="title-name">學員名單</div>
+            <div class="num">#</div>
+            <div class="username">學員名稱</div>
+            <div class="email">電子信箱</div>
           </div>
-          <div class="p-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                1.123 checkbox
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                2.123 checkbox
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                3.123 checkbox
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                4.123 checkbox
-              </label>
-            </div>
+          <!-- <div class="member">
+            <input type="checkbox">
+            <div class="num">1</div>
+            <div class="username">111</div>
+            <div class="email">111@111</div>
           </div>
+          <div class="member">
+            <input type="checkbox">
+            <div class="num">2</div>
+            <div class="username">123</div>
+            <div class="email">123@123</div>
+          </div>
+          <div class="member">
+            <input type="checkbox">
+            <div class="num">3</div>
+            <div class="username">222</div>
+            <div class="email">222@222</div>
+          </div> -->
         </div>
       </div>
       <div class="update-btn-block">
-        <button type="button" class="btn btn-secondary">新增</button>
-        <button type="button" class="btn btn-secondary">刪除</button>
+        <button id="add-btn" type="button" class="btn btn-secondary">新增</button>
+        <button id="delete-btn" type="button" class="btn btn-secondary">刪除</button>
       </div>
     </div>
 

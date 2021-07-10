@@ -46,7 +46,7 @@
                             </div>
                             <!-- 預約的課程 -->
                             <div class="booking-block">
-                                <div class="booking-box">
+                                <div id="booking-box" class="booking-box">
                                     <div class="booking-class class-title">
                                         <div class="time">課程時間</div>
                                         <div class="class">課程名稱</div>
@@ -55,68 +55,15 @@
                                         <div class="status">狀態</div>
                                     </div>
                                     <!-- <div class="booking-class">
-                                <div class="time">週五0730-0830</div>
-                                <div class="class">活力有氧</div>
-                                <div class="teacher">Rudy</div>
-                                <div class="room">團體教室</div>
-                                <div class="status">
-                                    <button class="btn btn-sm class-btn">取消預定</button>
-                                </div>
-                            </div>
-                            <div class="booking-class">
-                                <div class="time">週五0730-0830</div>
-                                <div class="class">活力有氧</div>
-                                <div class="teacher">Rudy</div>
-                                <div class="room">團體教室</div>
-                                <div class="status">
-                                    <button class="btn btn-sm class-btn">取消預定</button>
-                                </div>
-                            </div>
-                            <div class="booking-class">
-                                <div class="time">週五0730-0830</div>
-                                <div class="class">活力有氧</div>
-                                <div class="teacher">Rudy</div>
-                                <div class="room">團體教室</div>
-                                <div class="status">
-                                    <button class="btn btn-sm class-btn">取消預定</button>
-                                </div>
-                            </div>
-                            <div class="booking-class">
-                                <div class="time">週五0730-0830</div>
-                                <div class="class">活力有氧</div>
-                                <div class="teacher">Rudy</div>
-                                <div class="room">團體教室</div>
-                                <div class="status">
-                                    <button class="btn btn-sm class-btn">取消預定</button>
-                                </div>
-                            </div>
-                            <div class="booking-class">
-                                <div class="time">週五0730-0830</div>
-                                <div class="class">活力有氧</div>
-                                <div class="teacher">Rudy</div>
-                                <div class="room">團體教室</div>
-                                <div class="status">
-                                    <button class="btn btn-sm class-btn">取消預定</button>
-                                </div>
-                            </div>
-                            <div class="booking-class">
-                                <div class="time">週五0730-0830</div>
-                                <div class="class">活力有氧</div>
-                                <div class="teacher">Rudy</div>
-                                <div class="room">團體教室</div>
-                                <div class="status">
-                                    <button class="btn btn-sm class-btn">取消預定</button>
-                                </div>
-                            </div>
-                            <div class="booking-class">
-                                <div class="time">週五0730-0830</div>
-                                <div class="class">活力有氧</div>
-                                <div class="teacher">Rudy</div>
-                                <div class="room">團體教室</div>
-                                <div class="status">
-                                    <button class="btn btn-sm class-btn">取消預定</button>
-                                </div>
-                            </div> -->
+                                        <div class="time">週五0730-0830</div>
+                                        <div class="class">活力有氧</div>
+                                        <div class="teacher">Rudy</div>
+                                        <div class="room">團體教室</div>
+                                        <div class="status">
+                                            <button class="btn btn-sm class-btn">取消預定</button>
+                                        </div>
+                                    </div> -->
+
                                 </div>
                             </div>
 
@@ -138,14 +85,15 @@
 
                             <!-- 歷史紀錄區 -->
                             <div class="history-form">
-                                <select class="form-select form-select-lg mt-4" aria-label=".form-select-lg example">
-                                    <option selected>查詢</option>
+                                <select id="select_history_day" onchange="selectHistoryDay();"
+                                    class="form-select form-select-lg mt-4" aria-label=".form-select-lg example">
+                                    <option selected value="0">查詢</option>
                                     <option value="1">三天內</option>
                                     <option value="2">七天內</option>
                                     <option value="3">一個月內</option>
                                 </select>
                                 <div class="booking-block">
-                                    <div class="booking-box">
+                                    <div id="history-booking-box" class="booking-box">
                                         <div class="booking-class class-title">
                                             <div class="time">課程時間</div>
                                             <div class="class">課程名稱</div>
@@ -161,25 +109,8 @@
                                             <div class="status">
                                                 -
                                             </div>
-                                        </div>
-                                        <div class="booking-class">
-                                            <div class="time">週五0730-0830</div>
-                                            <div class="class">活力有氧</div>
-                                            <div class="teacher">Rudy</div>
-                                            <div class="room">團體教室</div>
-                                            <div class="status">
-                                                -
-                                            </div>
-                                        </div>
-                                        <div class="booking-class">
-                                            <div class="time">週五0730-0830</div>
-                                            <div class="class">活力有氧</div>
-                                            <div class="teacher">Rudy</div>
-                                            <div class="room">團體教室</div>
-                                            <div class="status">
-                                                -
-                                            </div>
                                         </div> -->
+                                        
 
                                     </div>
                                 </div>

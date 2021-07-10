@@ -34,6 +34,34 @@ upload_btn.addEventListener('click',()=>{
     uploadImg();
 })
 
+function cancelBookingProcess(){
+    const cancel_btn = document.querySelectorAll('.class-btn');
+    for(let i=0;i<cancel_btn.length; i++){
+        cancel_btn[i].addEventListener('click',()=>{
+            if(window.confirm("確定要刪除此預約課程嗎?") == true) {
+                const bookingId = cancel_btn[i].value; //str
+                // 刪除booking db
+                deleteBooking(bookingId,(res)=>{
+                    if(res.ok === true){
+                        window.location.reload();
+                    }
+                });
+            }
+
+        })
+    }
+    
+};
+
+// 查詢選單 TODO
+function selectHistoryDay(){
+    let day = document.getElementById('select_history_day').value;
+    day = parseInt(day);
+    console.log(day);
+
+    
+};
+
 
 
 
@@ -89,12 +117,40 @@ function getBooking(){
         const data = api_data.data;
         if(data !== null) {
             for(let i=0; i<data.length; i++){
-                renderBookingClass(data[i]);
+                // 判斷時間 
+                const class_time = new Date(data[i].class_time.substring(0,10));
+                const today = new Date();
+                if(class_time>today){
+                    renderBookingClass(data[i]);
+                } else if(class_time===today){
+                    //TODO
+                    // 要再判斷，開始上課時間一小時內不能取消預定
+                    // 現在時間超過結束時間=>renderHistory
+                
+                } else if(class_time<today) {
+                    renderHistory(data[i])
+                }
             }
-            cancelBookingProcess();
+            cancelBookingProcess(); // 等render完再加上取消預定按鈕的功能
         }
     });
-}
+};
+
+function deleteBooking(bookingId, callback){
+    const url = '/api/booking';
+    const booking_info = {'bookingId':bookingId}
+    fetch(url,{
+        method:"DELETE",
+        headers:{
+            "Content-Type":"application/json",
+        },
+        body:JSON.stringify(booking_info)
+    }).then((res)=>{
+        return res.json()
+    }).then((del)=>{
+        callback(del);
+    })
+};
 
 
 
@@ -162,8 +218,7 @@ function check_active(active){
 };
 
 function renderBookingClass(data){
-    console.log(data.class_name);
-    const booking_box = document.querySelector('.booking-box');
+    const booking_box = document.querySelector('#booking-box');
     const booking_class = document.createElement('div');
     const time = document.createElement('div');
     const class_ = document.createElement('div');
@@ -196,40 +251,26 @@ function renderBookingClass(data){
     booking_box.appendChild(booking_class)
 };
 
-
-function cancelBookingProcess(){
-    const cancel_btn = document.querySelectorAll('.class-btn');
-    let bookingId;
-    for(let i=0;i<cancel_btn.length; i++){
-        cancel_btn[i].addEventListener('click',()=>{
-            if(window.confirm("確定要刪除此預約課程嗎?") == true) {
-                bookingId = cancel_btn[i].value; //str
-                // 刪除booking db
-                deleteBooking(bookingId,(res)=>{
-                    if(res.ok === true){
-                        window.location.reload();
-    
-                    }
-                });
-            }
-
-        })
-    }
-    
+function renderHistory(){
+    const booking_box = document.querySelector('#history-booking-box');
+    const booking_class = document.createElement('div');
+    const time = document.createElement('div');
+    const class_ = document.createElement('div');
+    const teacher = document.createElement('div');
+    const room = document.createElement('div');
+    booking_class.id = data.bookingId;
+    booking_class.className = 'booking-class'
+    time.className = 'time';
+    class_.className = 'class';
+    teacher.className = 'teacher';
+    room.className = 'room';
+    time.appendChild(document.createTextNode(data.class_time));
+    class_.appendChild(document.createTextNode(data.class_name));
+    teacher.appendChild(document.createTextNode(data.teacher));
+    room.appendChild(document.createTextNode(data.room));
+    booking_class.appendChild(time)
+    booking_class.appendChild(class_)
+    booking_class.appendChild(teacher)
+    booking_class.appendChild(room)
+    booking_box.appendChild(booking_class)
 };
-
-function deleteBooking(bookingId, callback){
-    const url = '/api/booking';
-    const booking_info = {'bookingId':bookingId}
-    fetch(url,{
-        method:"DELETE",
-        headers:{
-            "Content-Type":"application/json",
-        },
-        body:JSON.stringify(booking_info)
-    }).then((res)=>{
-        return res.json()
-    }).then((del)=>{
-        callback(del);
-    })
-}

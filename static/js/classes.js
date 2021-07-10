@@ -36,6 +36,7 @@ function getClassList() {
             renderBigClass(renderBox);
             renderSmallClass(renderBox);           
         }
+        
     }).catch((err)=>{
         console.log(err);
     })
@@ -105,6 +106,7 @@ function socket_listener(block,current_class,compare_time){
             // 小時/分鐘都要比對 
             if(start_hour<current_hour){
                 if(current_hour<end_hour){
+                    
                     block.classList.add('active-class');
                     block.appendChild(current_class)
                 } else if (current_hour === end_hour) {
@@ -116,13 +118,15 @@ function socket_listener(block,current_class,compare_time){
             } else if(start_hour===current_hour) {
                 if(start_min<=current_min){
                     if(current_hour<end_hour){
+
                         block.classList.add('active-class');
                         block.appendChild(current_class)
                     } else if (current_hour === end_hour) {
-                        if(current_min<=end_min){
+                        if(current_min<end_min){
+
                             block.classList.add('active-class');
                             block.appendChild(current_class)
-                        } else if(current_min > end_min) {
+                        } else if(current_min === end_min) {
                             current_class.innerHTML = '';
                             block.classList.remove('active-class');
                             block.appendChild(current_class)
