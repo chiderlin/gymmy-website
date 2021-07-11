@@ -19,7 +19,6 @@ router.get('/booking/student/:classId',(req,res)=>{
     }).then((result)=>{
         return JSON.stringify(result, null, 4);
     }).then((data)=>{
-        console.log(data);
         if(data !== '[]'){
             data = JSON.parse(data);
             for(let i=0; i<data.length;i++){
