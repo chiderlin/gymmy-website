@@ -8,6 +8,7 @@ const User = db.User;
 const Classes = db.Classes;
 const moment = require('moment');
 
+// 後台統計學員人數
 router.get('/booking/student/:classId',(req,res)=>{
     const classId = req.params.classId;
     const student_list = []
@@ -47,7 +48,7 @@ router.get('/booking/student/:classId',(req,res)=>{
     })
 });
 
-
+// 會員中心預約的課程
 router.get('/booking',(req,res)=>{
     let list_of_class = []
     Booking.findAll({
@@ -67,6 +68,7 @@ router.get('/booking',(req,res)=>{
             for(let i=0; i<data.length;i++){
                 const booking_data = {
                     'bookingId':data[i].id,
+                    'weekday':data[i].weekday,
                     'start_time':data[i].start_time,
                     'end_time':data[i].end_time,
                     'class_time':data[i].class_time,

@@ -130,18 +130,63 @@ function getBooking(){
         if(data !== null) {
             for(let i=0; i<data.length; i++){
                 // 判斷時間 
-                const class_time = new Date(data[i].class_time.substring(0,10));
-                const today = new Date();
-                if(class_time>today){
-                    renderBookingClass(data[i]);
-                } else if(class_time===today){
-                    //TODO
-                    // 要再判斷，開始上課時間一小時內不能取消預定
-                    // 現在時間超過結束時間=>renderHistory
+                const class_time = data[i].class_time.substring(0,10)
+                const start_time = new Date(data[i].start_time).toLocaleString('chinese',{hour12: false}).substring(9,14);
+                const end_time = new Date(data[i].start_time).toLocaleString('chinese',{hour12: false}).substring(9,14);
+                const class_time_info = {
+                    'class_time': new Date(class_time),
+                    'month': new Date(class_time).getMonth()+1,
+                    'date': new Date(class_time).getDate(),
+                    'start_time':new Date(class_time+'T'+start_time),
+                    'end_time': new Date(class_time+'T'+end_time),
+                }
                 
-                } else if(class_time<today) {
+                const today = new Date();
+                const today_info = {
+                    'time': today,
+                    'month': today.getMonth()+1,
+                    'date': today.getDate(),
+                    'day': today.getDay(),
+                    'hour':today.getHours(),
+                }
+                if(class_time_info.class_time>today){// 不是今天的課
+                    renderBookingClass(data[i], true);
+                } else if(class_time_info.month === today_info.month && class_time_info.date === today_info.date){ //今天的課
+                    if(class_time_info.start_time>today){ //上課時間還沒到
+                        const compare_time = new Date(class_time_info.start_time).getTime() - today.getTime();
+                        let min=Math.floor(compare_time/(1000*60)); 
+                        if(min < 60){ //上課時間在一小時內
+                            renderBookingClass(data[i], false); //不能取消預定
+                        } else {
+                            renderBookingClass(data[i], true); 
+                        }
+                    }else if(class_time_info.end_time<today){
+                        renderHistory(data[i])
+                    }
+                } else {
                     renderHistory(data[i])
                 }
+
+
+                // if(class_time>today){ // 不是今天的課
+                //     renderBookingClass(data[i], true);
+                    
+                // } else if(class_time_info.month === today_info.month && class_time_info.date === today_info.date){ //今天的課
+                //     // 要再判斷，開始上課時間一小時內不能取消預定
+                //     // 現在時間超過結束時間=>renderHistory
+
+                //     if(class_time_info.start_time>today_info.hour){ // 課程小時大
+
+                //         renderBookingClass(data[i],true);
+                //     } else if(class_time_info.start_time===today_info.hour){ //如果小時一樣
+                //         renderBookingClass(data[i],false);
+                //     } else {
+                //         renderHistory(data[i])
+                //     }
+                
+                // } else if(class_time<today) {
+                //     renderHistory(data[i])
+                
             }
             cancelBookingProcess(); // 等render完再加上取消預定按鈕的功能
         }
@@ -230,7 +275,7 @@ function check_active(active){
     }
 };
 
-function renderBookingClass(data){
+function renderBookingClass(data, btn_or_not){
     const booking_box = document.querySelector('#booking-box');
     const booking_class = document.createElement('div');
     const time = document.createElement('div');
@@ -250,12 +295,17 @@ function renderBookingClass(data){
     class_.className = 'class';
     teacher.className = 'teacher';
     room.className = 'room';
+    if(btn_or_not){
+        btn.appendChild(document.createTextNode('取消預定'))
+        btn_box.appendChild(btn)
+    } else {
+        btn_box.appendChild(document.createTextNode('-'))
+    }
     time.appendChild(document.createTextNode(data.class_time));
     class_.appendChild(document.createTextNode(data.class_name));
     teacher.appendChild(document.createTextNode(data.teacher));
     room.appendChild(document.createTextNode(data.room));
-    btn.appendChild(document.createTextNode('取消預定'))
-    btn_box.appendChild(btn)
+    
     booking_class.appendChild(time)
     booking_class.appendChild(class_)
     booking_class.appendChild(teacher)
@@ -271,19 +321,23 @@ function renderHistory(data){
     const class_ = document.createElement('div');
     const teacher = document.createElement('div');
     const room = document.createElement('div');
+    const status = document.createElement('div');
     booking_class.id = data.bookingId;
     booking_class.className = 'booking-class'
     time.className = 'time';
     class_.className = 'class';
     teacher.className = 'teacher';
     room.className = 'room';
+    status.className = 'status';
     time.appendChild(document.createTextNode(data.class_time));
     class_.appendChild(document.createTextNode(data.class_name));
     teacher.appendChild(document.createTextNode(data.teacher));
     room.appendChild(document.createTextNode(data.room));
-    booking_class.appendChild(time)
-    booking_class.appendChild(class_)
-    booking_class.appendChild(teacher)
-    booking_class.appendChild(room)
-    booking_box.appendChild(booking_class)
+    status.appendChild(document.createTextNode('-'));
+    booking_class.appendChild(time);
+    booking_class.appendChild(class_);
+    booking_class.appendChild(teacher);
+    booking_class.appendChild(room);
+    booking_class.appendChild(status);
+    booking_box.appendChild(booking_class);
 };
