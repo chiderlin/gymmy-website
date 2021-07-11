@@ -62,6 +62,18 @@ function selectHistoryDay(){
     
 };
 
+//開通按鈕流程
+function activeProcess(){
+    const active_btn = document.getElementById('active-btn');
+    if(active_btn === null) {
+        return ;
+    } else {
+        active_btn.addEventListener('click',()=>{
+            window.location.href = '/signup-payment'
+        })
+    }
+}
+
 
 
 
@@ -176,7 +188,6 @@ function renderMemberInfo(data){
     const active = document.createElement('div');
     const format_plan = plan_transform(data.plan);
     const active_check = check_active(data.active);
-
     if(active_check) {
         active.appendChild(document.createTextNode('開通'))
         mem_active.appendChild(active);
@@ -184,6 +195,7 @@ function renderMemberInfo(data){
         active.appendChild(document.createTextNode('未開通'))
         active.className = 'active-format';
         const active_btn = document.createElement('button');
+        active_btn.id = 'active-btn'
         active_btn.className = 'btn class-btn';
         active_btn.appendChild(document.createTextNode('開通'))
         mem_active.appendChild(active);
@@ -199,6 +211,7 @@ function renderMemberInfo(data){
     }
     mem_email.appendChild(email);
     mem_plan.appendChild(plan);
+    activeProcess();
 };
 
 function plan_transform(plan){
