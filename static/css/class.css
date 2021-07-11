@@ -51,3 +51,7 @@ img {
     border-color: #EA7500;
     color: #ffffff;
 }
+
+.statement-block{
+    display: none;
+}

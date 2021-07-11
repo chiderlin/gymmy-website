@@ -171,7 +171,7 @@ router.post('/booking',(req,res)=>{
                         for(let i=0; i<bookings.length; i++) {
                             if(bookings[i].classId === new_booking){
                                 if(bookings[i].class_time.substring(0,10)===class_date){// 比對日期
-                                    return res.status(400).json({'error:':true, 'message':'此課程已預訂'})
+                                    return res.status(400).json({'error':true, 'message':'此課程已預訂過'})
                                 }
                             }
                         }
