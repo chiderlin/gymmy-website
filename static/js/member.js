@@ -251,7 +251,7 @@ function renderBookingClass(data){
     booking_box.appendChild(booking_class)
 };
 
-function renderHistory(){
+function renderHistory(data){
     const booking_box = document.querySelector('#history-booking-box');
     const booking_class = document.createElement('div');
     const time = document.createElement('div');

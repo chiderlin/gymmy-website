@@ -23,10 +23,12 @@ booking_btn.addEventListener('click',()=>{
             if(class_info.weekday !== current_weekday){ //可以訂不是今天的課程
                 booking();
             } else {
+                //TODO
                 console.log('今日課程已不開放預訂')
             }
 
         } else {
+            //TODO
             // 跳出視窗確認是否要完成繳費程序 （提醒視窗我還沒做）
             console.log('請完成繳費程序')
         }
@@ -34,8 +36,6 @@ booking_btn.addEventListener('click',()=>{
         // 展開login頁面
         overlay_login.style.display = 'block';
     }
-
-    
 });
 
 

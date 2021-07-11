@@ -19,15 +19,18 @@ router.get('/booking/student/:classId',(req,res)=>{
     }).then((result)=>{
         return JSON.stringify(result, null, 4);
     }).then((data)=>{
+        console.log(data);
         if(data !== '[]'){
             data = JSON.parse(data);
             for(let i=0; i<data.length;i++){
+                const class_date = data[i].class_date;
                 const userId = data[i].User.id;
                 const username = data[i].User.name;
                 const email = data[i].User.email;
                 const bookingId = data[i].id;
                 const student_info = {
                     'bookingId':bookingId,
+                    'class_date':class_date,
                     'userId':userId,
                     'username':username,
                     'email':email
