@@ -7,6 +7,41 @@ const sequelize = db.sequelize;
 const User = db.User;
 
 
+// GET ALL USERS
+router.get('/users',(req,res)=>{
+    if(req.session.email === 'admin@admin'){
+        User.findAll()
+        .then((result)=>{
+            return JSON.stringify(result, null, 4);
+        })
+        .then((api_data)=>{
+            const user_list = []
+            api_data = JSON.parse(api_data);
+            for(let i=0; i<api_data.length;i++){
+                const active = api_data[i].active;
+                if(active === 'yes'){ //沒有開通就不要顯示在後台
+                    const userId = api_data[i].id;
+                    const name = api_data[i].name;
+                    const email = api_data[i].email;
+                    const plan = api_data[i].plan;
+                    const user_info = {
+                        'userId':userId,
+                        'name':name,
+                        'email':email,
+                        'plan':plan,
+                        'active':active,
+                    }
+                    user_list.push(user_info)
+                }
+            }
+            return res.json({'data':user_list});
+        })
+    }
+    
+});
+
+
+
 // CHECK STATUS(login check)
 router.get('/user', (req, res) => {
     // console.log(req.session.email)
@@ -59,10 +94,6 @@ router.get('/user', (req, res) => {
         }
     }
 });
-
-// register check
-// router.get('/register_status',(req,res))
-
 
 
 // REGISTER 
