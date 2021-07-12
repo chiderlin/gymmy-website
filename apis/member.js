@@ -7,7 +7,7 @@ const Member = db.Member;
 const User = db.User;
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
-const multer = require('multer');
+const multer = require('multer'); //檔案處理
 const fs = require('fs');
 
 const storage = multer.diskStorage({
@@ -34,9 +34,6 @@ const upload = multer({
     },
 })
 
-//TODO:
-//更換照片 => 3.刪除原本s3上面的照片
-
 
 const mybucket = 'gymmy';
 router.post('/upload', upload.single('img'),function(req,res,next){
@@ -51,11 +48,13 @@ router.post('/upload', upload.single('img'),function(req,res,next){
                 throw err;
             }
             console.log(data.Location);
-            fs.unlink(`./upload/${req.file.originalname}`,(err)=>{
+            console.log(data.VersionId)
+            fs.unlink(`./upload/${req.file.originalname}`,(err)=>{ //刪除本機圖片
                 if(err){return console.error(err)}
                 console.log('deleted');
             })
             sequelize.sync().then(() => {
+
                 User.findOne({
                     where: {
                         email: req.session.email,
@@ -66,20 +65,21 @@ router.post('/upload', upload.single('img'),function(req,res,next){
                 }).then((data)=>{
                     data = JSON.parse(data);
                     const userId = data.id
-                    if(data.Member === null) {
+                    const address = `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`
+                    if(data.Member === null) { //member沒有這個會員圖片資料
                         sequelize.sync().then(() => {
                             // 在這邊新增資料
                             Member.create({
                                 image_name: req.file.originalname,
-                                image_address: `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`,
+                                image_address: address,
                                 UserId:userId,
                             }).then(() => {
                                 // 執行成功印出
     
-                                return res.json({'ok':true, 'address':`https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`});
+                                return res.json({'ok':true, 'address':address});
                             })
                         })
-                    } else {
+                    } else { //已經有紀錄->更新圖片  3.刪除原本s3上面的照片
                         sequelize.sync().then(() => {
                             Member.findOne({
                                 where: {
@@ -88,11 +88,11 @@ router.post('/upload', upload.single('img'),function(req,res,next){
                             }).then((mem)=>{
                                 mem.update({
                                     image_name: req.file.originalname,
-                                    image_address: `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`,
-                                })
+                                    image_address: address,
+                                })    
                             }).then(()=>{
                                 console.log('update done')
-                                return res.json({'ok':true, 'address':`https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`});
+                                return res.json({'ok':true, 'address':address});
                             })
                         })
                     }

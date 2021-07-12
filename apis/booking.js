@@ -20,9 +20,12 @@ router.get('/booking/student/:classId',(req,res)=>{
     }).then((result)=>{
         return JSON.stringify(result, null, 4);
     }).then((data)=>{
+        console.log(data);
         if(data !== '[]'){
             data = JSON.parse(data);
             for(let i=0; i<data.length;i++){
+                
+                const current_date = moment().format('YYYY-MM-DD') 
                 const class_date = data[i].class_date;
                 const userId = data[i].User.id;
                 const username = data[i].User.name;
@@ -35,7 +38,9 @@ router.get('/booking/student/:classId',(req,res)=>{
                     'username':username,
                     'email':email
                 }
-                student_list.push(student_info)
+                if(current_date<=class_date){ //大於等於今天的日期，才可以被query出來，不然會跟之前的課重複到
+                    student_list.push(student_info)
+                }
             }
             return res.json({'data':student_list});
         } else {
