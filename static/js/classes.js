@@ -47,9 +47,9 @@ function getClassList() {
     })
 };
 
-async function bookingStudent(classId, cb){ //計算每堂課booking人數
+function bookingStudent(classId, cb){ //計算每堂課booking人數
     const url = `/api/booking/student/${classId}`
-    await fetch(url)
+    fetch(url)
     .then(res=>res.json())
     .then((api_data)=>{
         
