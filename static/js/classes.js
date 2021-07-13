@@ -16,11 +16,11 @@ function init() {
 //3.當日不可預約
 
 //model
-function getClassList() {
+async function getClassList() {
     const url = '/api/class';
-    fetch(url).then((res) => {
+    await fetch(url).then((res) => {
         return res.json();
-    }).then((api_data) => {
+    }).then(async(api_data) => {
         const data = api_data.data;
         class_data = data;
         for(let i=0; i<class_data.length;i++){//再一起render
@@ -35,7 +35,7 @@ function getClassList() {
                 'start_time':class_data[i].start_time,
                 'end_time':class_data[i].end_time
             }
-            bookingStudent(data[i].id,(res)=>{
+            await bookingStudent(data[i].id,(res)=>{
                 console.log('抓')
                 renderBigClass(renderBox)
                 renderSmallClass(renderBox)
