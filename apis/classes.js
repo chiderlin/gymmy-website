@@ -11,14 +11,14 @@ const Classes = db.Classes;
 
 
 router.get('/class', (req, res) => {
-    let io = req.app.get('socket.io');
-    // console.log(io);
-    io.on('connection',(socket)=>{
-        console.log('a user connected');
-        setInterval(() => {
-            socket.emit('current class', new Date());
-        }, 5000); //1秒
-    })
+    // let io = req.app.get('socket.io');
+    // // console.log(io);
+    // io.on('connection',(socket)=>{
+    //     console.log('a user connected');
+    //     setInterval(() => {
+    //         socket.emit('current class', new Date());
+    //     }, 5000); //1秒
+    // })
 
     try {
         sequelize.sync().then(() => {

@@ -8,19 +8,12 @@ function init() {
     getClassList()
 };
 
-// socket.on('test', (msg)=>{
-//     const test = document.getElementById('test');
-//     test.innerHTML = '';
-//     test.textContent = msg;
-
-// })
 
 
 //用/api/booking/student 查看人數，render對應的資料在網頁上
 //1.可預約
 //2.已額滿
 //3.當日不可預約
-
 
 //model
 function getClassList() {
@@ -30,7 +23,6 @@ function getClassList() {
     }).then((api_data) => {
         const data = api_data.data;
         class_data = data;
-        console.log(data)
         for(let i=0; i<class_data.length;i++){//再一起render
             let renderBox = {
                 'id':class_data[i].id,
@@ -43,21 +35,21 @@ function getClassList() {
                 'start_time':class_data[i].start_time,
                 'end_time':class_data[i].end_time
             }
-            bookingStudent(data[i].id, (res)=>{
+            bookingStudent(data[i].id,(res)=>{
+                console.log('抓')
                 renderBigClass(renderBox)
                 renderSmallClass(renderBox)
-                count++;
-            });  
+                count++; 
+            });     
         }
-
     }).catch((err)=>{
         console.log(err);
     })
 };
 
-function bookingStudent(classId, cb){ //計算每堂課booking人數
+async function bookingStudent(classId, cb){ //計算每堂課booking人數
     const url = `/api/booking/student/${classId}`
-    fetch(url)
+    await fetch(url)
     .then(res=>res.json())
     .then((api_data)=>{
         
@@ -70,8 +62,7 @@ function bookingStudent(classId, cb){ //計算每堂課booking人數
             people = data.length
         }
         booking_list.push(people)
-
-        return cb('ok')
+        return cb(booking_list)
     });
 };
 
@@ -80,7 +71,8 @@ function bookingStudent(classId, cb){ //計算每堂課booking人數
 
 //view
 function renderBigClass(renderBox) {
-
+    console.log(renderBox.weekday)
+    console.log(renderBox.start_time)
     const column = document.getElementById(renderBox.weekday);
     const container = document.getElementById('class-plan-big');
     const class_block = document.createElement('div');
@@ -140,56 +132,106 @@ function renderBigClass(renderBox) {
         'end_time':renderBox.end_time
     }
     socket_listener(class_block,current_class,compare_time)
+    // setInterval(() => {
+    //     socket_listener(class_block,current_class,compare_time)
+    // }, 5000);
 };
 
 function socket_listener(block,current_class,compare_time){
-    socket.on('current class', (msg)=>{
 
-        const current = new Date(msg);
-        let current_day = current.getDay();
-        if(current_day === 0){
-            current_day = 7;
-        }
-        if(compare_time.weekday === current_day) { 
-            const current_hour = current.getHours();
-            const current_min = current.getMinutes();
-            const start_hour = new Date(compare_time.start_time).getHours();
-            const start_min = new Date(compare_time.start_time).getMinutes();
-            const end_hour = new Date(compare_time.end_time).getHours();
-            const end_min = new Date(compare_time.end_time).getMinutes();
+    const current = new Date();
+    let current_day = current.getDay();
+    if(current_day === 0){
+        current_day = 7;
+    }
+    if(compare_time.weekday === current_day) { 
+        const current_hour = current.getHours();
+        const current_min = current.getMinutes();
+        const start_hour = new Date(compare_time.start_time).getHours();
+        const start_min = new Date(compare_time.start_time).getMinutes();
+        const end_hour = new Date(compare_time.end_time).getHours();
+        const end_min = new Date(compare_time.end_time).getMinutes();
 
-            // 小時/分鐘都要比對 
-            if(start_hour<current_hour){
+        // 小時/分鐘都要比對 
+        if(start_hour<current_hour){
+            if(current_hour<end_hour){
+                block.classList.add('active-class');
+                block.appendChild(current_class)
+            } else if (current_hour === end_hour) {
+                if(current_min<end_min){
+                    block.classList.add('active-class');
+                    block.appendChild(current_class)
+                }
+            }
+        } else if(start_hour===current_hour) {
+            if(start_min<=current_min){
                 if(current_hour<end_hour){
+
                     block.classList.add('active-class');
                     block.appendChild(current_class)
                 } else if (current_hour === end_hour) {
                     if(current_min<end_min){
-                        block.classList.add('active-class');
-                        block.appendChild(current_class)
-                    }
-                }
-            } else if(start_hour===current_hour) {
-                if(start_min<=current_min){
-                    if(current_hour<end_hour){
 
                         block.classList.add('active-class');
                         block.appendChild(current_class)
-                    } else if (current_hour === end_hour) {
-                        if(current_min<end_min){
-
-                            block.classList.add('active-class');
-                            block.appendChild(current_class)
-                        } else if(current_min === end_min) {
-                            current_class.innerHTML = '';
-                            block.classList.remove('active-class');
-                            block.appendChild(current_class)
-                        }
+                    } else if(current_min === end_min) {
+                        current_class.innerHTML = '';
+                        block.classList.remove('active-class');
+                        block.appendChild(current_class)
                     }
                 }
             }
         }
-    })
+    }
+
+
+    // socket.on('current class', (msg)=>{
+
+    //     const current = new Date(msg);
+    //     let current_day = current.getDay();
+    //     if(current_day === 0){
+    //         current_day = 7;
+    //     }
+    //     if(compare_time.weekday === current_day) { 
+    //         const current_hour = current.getHours();
+    //         const current_min = current.getMinutes();
+    //         const start_hour = new Date(compare_time.start_time).getHours();
+    //         const start_min = new Date(compare_time.start_time).getMinutes();
+    //         const end_hour = new Date(compare_time.end_time).getHours();
+    //         const end_min = new Date(compare_time.end_time).getMinutes();
+
+    //         // 小時/分鐘都要比對 
+    //         if(start_hour<current_hour){
+    //             if(current_hour<end_hour){
+    //                 block.classList.add('active-class');
+    //                 block.appendChild(current_class)
+    //             } else if (current_hour === end_hour) {
+    //                 if(current_min<end_min){
+    //                     block.classList.add('active-class');
+    //                     block.appendChild(current_class)
+    //                 }
+    //             }
+    //         } else if(start_hour===current_hour) {
+    //             if(start_min<=current_min){
+    //                 if(current_hour<end_hour){
+
+    //                     block.classList.add('active-class');
+    //                     block.appendChild(current_class)
+    //                 } else if (current_hour === end_hour) {
+    //                     if(current_min<end_min){
+
+    //                         block.classList.add('active-class');
+    //                         block.appendChild(current_class)
+    //                     } else if(current_min === end_min) {
+    //                         current_class.innerHTML = '';
+    //                         block.classList.remove('active-class');
+    //                         block.appendChild(current_class)
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // })
 };
 
 function renderSmallClass(renderBox) {
