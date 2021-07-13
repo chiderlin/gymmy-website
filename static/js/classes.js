@@ -35,8 +35,7 @@ function getClassList() {
                 'start_time':class_data[i].start_time,
                 'end_time':class_data[i].end_time
             }
-            await bookingStudent(data[i].id,(res)=>{
-            });
+            await bookingStudent(data[i].id);
             console.log('抓')
             renderBigClass(renderBox)
             renderSmallClass(renderBox)
@@ -47,7 +46,7 @@ function getClassList() {
     })
 };
 
-async function bookingStudent(classId, cb){ //計算每堂課booking人數
+async function bookingStudent(classId){ //計算每堂課booking人數
     const url = `/api/booking/student/${classId}`
     await fetch(url)
     .then(res=>res.json())
@@ -62,7 +61,6 @@ async function bookingStudent(classId, cb){ //計算每堂課booking人數
             people = data.length
         }
         booking_list.push(people)
-        return cb(booking_list)
     });
 };
 
