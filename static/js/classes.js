@@ -16,9 +16,9 @@ function init() {
 //3.當日不可預約
 
 //model
-async function getClassList() {
+function getClassList() {
     const url = '/api/class';
-    await fetch(url).then((res) => {
+    fetch(url).then((res) => {
         return res.json();
     }).then(async(api_data) => {
         const data = api_data.data;
