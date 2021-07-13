@@ -36,11 +36,11 @@ function getClassList() {
                 'end_time':class_data[i].end_time
             }
             await bookingStudent(data[i].id,(res)=>{
-                console.log('抓')
-                renderBigClass(renderBox)
-                renderSmallClass(renderBox)
-                count++; 
-            });     
+            });
+            console.log('抓')
+            renderBigClass(renderBox)
+            renderSmallClass(renderBox)
+            count++; 
         }
     }).catch((err)=>{
         console.log(err);
