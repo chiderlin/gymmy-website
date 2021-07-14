@@ -1,3 +1,4 @@
+
 // controller
 const get_route = location.pathname
 let classId = get_route.split('/')[2]
@@ -5,6 +6,7 @@ classId = parseInt(classId);
 let class_info;
 let check_login = false;
 let check_active;
+let num_of_class;
 const overlay_statement = document.querySelector('.overlay-statement');
 
 init();
@@ -18,10 +20,11 @@ function checkBookingBtn(weekday){
     const overlay_login = document.querySelector('.overlay-login');
     const booking_btn = document.getElementById('booking-btn');
     let today_weekday = new Date().getDay();
-    // 今天不可預定
     if(today_weekday ===0){
         today_weekday = 7;
     }
+    
+    // 今天不可預定
     if(weekday === today_weekday){
         booking_btn.disabled = true;
     }
@@ -32,6 +35,18 @@ function checkBookingBtn(weekday){
         // 呼叫booking api
         if(check_login) {
             if(check_active === 'yes') {
+                if(check_plan === 888){
+                    if(weekday === 6 || weekday === 7){
+                        renderStatement('方案入門版只能預定週一至週五課程');
+                        overlay_statement.style.display = 'block';
+                        return
+                    }
+                    if(num_of_class === 22){
+                        renderStatement('本月課程數量已達上限22堂');
+                        overlay_statement.style.display = 'block';
+                        return
+                    }
+                }
                 booking((res)=>{
                     console.log(res);
                     if(res.ok === true){
@@ -42,6 +57,9 @@ function checkBookingBtn(weekday){
                         overlay_statement.style.display = 'block';
                     }                 
                 });
+
+                
+
 
             } else {
                 // 跳出視窗確認是否要完成繳費程序(提醒視窗)
@@ -79,6 +97,13 @@ function checkLogIn(){
         if(api_data.data !== null) {
             check_login = true;
             check_active = api_data.data.active;
+            check_plan = api_data.data.plan;
+            if(check_plan === 888) {
+                getBooking((class_count)=>{ //這個api已經限定本月份課程累積數
+                    num_of_class = class_count
+                });
+            }
+
         }
     })
 }
@@ -129,6 +154,17 @@ function booking(cb){
         return cb(api_data);
     });
 };
+
+function getBooking(cb){
+    const url = '/api/booking'
+    fetch(url).then((res)=>{
+        return res.json();
+    }).then((api_data)=>{
+        console.log(api_data);
+        return cb(api_data.data.length)
+        
+    });
+}
 
 
 

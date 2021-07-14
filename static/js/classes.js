@@ -3,6 +3,8 @@ let tmp;
 let socket = io();
 let booking_list = []
 let count = 0;
+
+// controller
 init();
 function init() {
     getClassList()
@@ -33,38 +35,44 @@ function getClassList() {
                 'start_time':class_data[i].start_time,
                 'end_time':class_data[i].end_time
             }
-            // await bookingStudent(data[i].id);
-
             renderBigClass(renderBox)
             renderSmallClass(renderBox)
-            
-            count++; 
         }
-        changeLoadingStatus()
+        // changeLoadingStatus()
 
     }).catch((err)=>{
         console.log(err);
     })
 };
 
-// async function bookingStudent(classId){ //計算每堂課booking人數
-//     const url = `/api/booking/student/${classId}`
-//     await fetch(url)
-//     .then(res=>res.json())
-//     .then((api_data)=>{
-        
-//         const data = api_data.data;
-//         let people;
+function bookingStudent(classId, weekday, class_block){
+    const url = `/api/booking/student/${classId}`
+    fetch(url)
+    .then(res=>res.json())
+    .then((api_data)=>{
+        const data = api_data.data;
+        let today_weekday = new Date().getDay();
+        if(today_weekday === 0){
+            today_weekday = 7;
+        }
+        if(weekday === today_weekday){
+            renderBookingStatus('不可預定', class_block);
+             
+        } else {
 
-//         if(data === null){
-//             people = 0
-//         } else{
-//             people = data.length
-//         }
-//         booking_list.push(people)
-//     });
-// };
-
+            if(data === null) {
+                renderBookingStatus('可預約', class_block);
+            } else {
+                let people = api_data.data.length
+                if(people>= 15){
+                    renderBookingStatus('已額滿', class_block); 
+                } else {
+                    renderBookingStatus('可預約', class_block);
+                }
+            }
+        }
+    })
+};
 
 
 
@@ -81,27 +89,8 @@ function renderBigClass(renderBox) {
     const teacher = document.createElement('div');
     const classroom = document.createElement('div');
     const current_class = document.createElement('div');
-    const status = document.createElement('div');
     current_class.appendChild(document.createTextNode('上課中'));
-    let today = new Date().getDay()
-    if(today === 0){
-        today = 7;
-    }
     
-    // if(today === renderBox.weekday) {
-    //     status.style.backgroundColor = 'orange';
-    //     status.appendChild(document.createTextNode('不可預定'));
-    // } else {
-    //     if(booking_list[count]>=15){
-    //         status.style.backgroundColor = 'red';
-    //         status.appendChild(document.createTextNode('已額滿'));
-    //     } else {
-    //         status.style.backgroundColor = 'green';
-    //         status.appendChild(document.createTextNode('可預約'))
-    //     }
-    // }
-
-    status.className = 'status'
     current_class.className = 'current-class';
     class_block.className = 'class-block';
     link.setAttribute('href', `/class/${renderBox.id}`)
@@ -120,7 +109,6 @@ function renderBigClass(renderBox) {
     class_block.appendChild(title_en);
     class_block.appendChild(teacher);
     class_block.appendChild(classroom);
-    // class_block.appendChild(status);
     link.appendChild(class_block);
     column.appendChild(link);
     container.appendChild(column);
@@ -260,25 +248,8 @@ function renderSmallClass(renderBox) {
     const teacher = document.createElement('div');
     const classroom = document.createElement('div');
     const current_class = document.createElement('div');
-    const status = document.createElement('div');
     current_class.appendChild(document.createTextNode('上課中'));
-    let today = new Date().getDay()
-    if(today === 0){
-        today = 7;
-    }
 
-    // if(today === renderBox.weekday) {
-    //     status.style.backgroundColor = 'orange';
-    //     status.appendChild(document.createTextNode('不可預定'));
-    // } else {
-    //     if(booking_list[count]>=15){
-    //         status.style.backgroundColor = 'red';
-    //         status.appendChild(document.createTextNode('已額滿'));
-    //     } else {
-    //         status.style.backgroundColor = 'green';
-    //         status.appendChild(document.createTextNode('可預約'))
-    //     }
-    // }
     current_class.className = 'current-class';
     link.setAttribute('href', `/class/${renderBox.id}`);
     col_6.className = 'col-6';
@@ -298,7 +269,6 @@ function renderSmallClass(renderBox) {
     col_12.appendChild(title_en);
     col_12.appendChild(teacher);
     col_12.appendChild(classroom);
-    // col_12.appendChild(status);
     link.appendChild(col_12);
     col_6.appendChild(link);
     row.appendChild(col_6);
@@ -310,38 +280,6 @@ function renderSmallClass(renderBox) {
     }
     socket_listener(col_12,current_class,compare_time)
     bookingStudent(renderBox.id, renderBox.weekday, col_12)
-};
-
-//=================
-
-
-function bookingStudent(classId, weekday, class_block){
-    const url = `/api/booking/student/${classId}`
-    fetch(url)
-    .then(res=>res.json())
-    .then((api_data)=>{
-        const data = api_data.data;
-        let today_weekday = new Date().getDay();
-        if(today_weekday === 0){
-            today_weekday = 7;
-        }
-        if(weekday === today_weekday){
-            renderBookingStatus('不可預定', class_block);
-             
-        } else {
-
-            if(data === null) {
-                renderBookingStatus('可預約', class_block);
-            } else {
-                let people = api_data.data.length
-                if(people>= 15){
-                    renderBookingStatus('已額滿', class_block); 
-                } else {
-                    renderBookingStatus('可預約', class_block);
-                }
-            }
-        }
-    })
 };
 
 function renderBookingStatus(msg, class_block){
@@ -356,4 +294,70 @@ function renderBookingStatus(msg, class_block){
     }
     status.appendChild(document.createTextNode(msg));
     class_block.appendChild(status);
-}
+};
+
+
+
+
+//=================
+// renderBigClass裡面的內容： 不用了
+    // const status = document.createElement('div');
+    // status.className = 'status'
+    // class_block.appendChild(status);
+    // let today = new Date().getDay()
+    // if(today === 0){
+    //     today = 7;
+    // }
+    // if(today === renderBox.weekday) {
+    //     status.style.backgroundColor = 'orange';
+    //     status.appendChild(document.createTextNode('不可預定'));
+    // } else {
+    //     if(booking_list[count]>=15){
+    //         status.style.backgroundColor = 'red';
+    //         status.appendChild(document.createTextNode('已額滿'));
+    //     } else {
+    //         status.style.backgroundColor = 'green';
+    //         status.appendChild(document.createTextNode('可預約'))
+    //     }
+    // }
+
+
+    // renderSmallClass裡面的內容： 不用了
+    // const status = document.createElement('div');
+    // let today = new Date().getDay()
+    // if(today === 0){
+    //     today = 7;
+    // }
+    // if(today === renderBox.weekday) {
+    //     status.style.backgroundColor = 'orange';
+    //     status.appendChild(document.createTextNode('不可預定'));
+    // } else {
+    //     if(booking_list[count]>=15){
+    //         status.style.backgroundColor = 'red';
+    //         status.appendChild(document.createTextNode('已額滿'));
+    //     } else {
+    //         status.style.backgroundColor = 'green';
+    //         status.appendChild(document.createTextNode('可預約'))
+    //     }
+    // }
+    // col_12.appendChild(status);
+
+
+
+// async function bookingStudent(classId){ //計算每堂課booking人數
+//     const url = `/api/booking/student/${classId}`
+//     await fetch(url)
+//     .then(res=>res.json())
+//     .then((api_data)=>{
+        
+//         const data = api_data.data;
+//         let people;
+
+//         if(data === null){
+//             people = 0
+//         } else{
+//             people = data.length
+//         }
+//         booking_list.push(people)
+//     });
+// };

@@ -5,10 +5,9 @@ const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Booking = db.Booking;
 const User = db.User;
-const Classes = db.Classes;
 const moment = require('moment');
 
-// 後台統計學員人數
+// 後台統計每堂課學員人數
 router.get('/booking/student/:classId', (req, res) => {
     const classId = req.params.classId;
     const student_list = []
@@ -53,44 +52,52 @@ router.get('/booking/student/:classId', (req, res) => {
     })
 });
 
-// 會員中心預約的課程
+// 會員中心預約的課程(本月紀錄)
 router.get('/booking', (req, res) => {
-    let list_of_class = []
-    Booking.findAll({
-        where: {
-            UserId: req.session.userid
-        },
-        order: [
-            ['class_date', 'asc'],
-            ['start_time', 'asc']
-        ]
-    }).then((result) => {
-        return JSON.stringify(result, null, 4);
-    }).then((data) => {
-        console.log(data);
-        data = JSON.parse(data)
-        if (data !== null) {
-            for (let i = 0; i < data.length; i++) {
-                const booking_data = {
-                    'bookingId': data[i].id,
-                    'weekday': data[i].weekday,
-                    'start_time': data[i].start_time,
-                    'end_time': data[i].end_time,
-                    'class_time': data[i].class_time,
-                    'class_name': data[i].class_name,
-                    'teacher': data[i].teacher,
-                    'room': data[i].room
+    if(req.session.userid){
+        let list_of_class = []
+        Booking.findAll({
+            where: {
+                UserId: req.session.userid,
+            },
+            order: [
+                ['class_date', 'asc'],
+                ['start_time', 'asc']
+            ]
+        }).then((result) => {
+            return JSON.stringify(result, null, 4);
+        }).then((data) => {
+            console.log(data);
+            data = JSON.parse(data)
+            if (data !== null) {
+                for (let i = 0; i < data.length; i++) {
+                    const booking_data = {
+                        'bookingId': data[i].id,
+                        'weekday': data[i].weekday,
+                        'start_time': data[i].start_time,
+                        'end_time': data[i].end_time,
+                        'class_time': data[i].class_time,
+                        'class_name': data[i].class_name,
+                        'teacher': data[i].teacher,
+                        'room': data[i].room
+                    }
+                    const class_time = new Date(data[i].class_time.substring(0,10)).getMonth()+1;
+                    const current_mon = new Date().getMonth()+1;
+                    if(class_time === current_mon) { // 限定放本月的課程data
+                        list_of_class.push(booking_data)
+                    }
                 }
-                list_of_class.push(booking_data)
+                const class_data = {
+                    'data': list_of_class
+                }
+                return res.json(class_data);
+            } else {
+                return res.json({ 'data': null });
             }
-            const class_data = {
-                'data': list_of_class
-            }
-            return res.json(class_data);
-        } else {
-            return res.json({ 'data': null });
-        }
-    })
+        })
+    } else {
+        return res.json({'data':'未登入'})
+    }
 });
 
 router.delete('/booking', (req, res) => {
@@ -111,6 +118,9 @@ router.delete('/booking', (req, res) => {
 
 router.post('/booking', (req, res) => {
     const class_info = req.body.data;
+    if(class_info === undefined){
+        return
+    }
     const weekday = class_info.weekday;
     const current = new Date()
     let current_day = current.getDay(); //4
@@ -161,11 +171,8 @@ router.post('/booking', (req, res) => {
             }).then((result) => {
                 return JSON.stringify(result, null, 4);
             }).then((data) => {
-                data = JSON.parse(data);
                 console.log(data);
-                console.log(data.Bookings);
-                console.log(typeof (data.Bookings))
-
+                data = JSON.parse(data);
                 const userId = data.id;
                 sequelize.sync().then(() => {
                     if (JSON.stringify(data.Bookings) === '[]') { //沒有booking資料
@@ -192,8 +199,9 @@ router.post('/booking', (req, res) => {
                         let new_booking = class_info.classId;
                         const bookings = data.Bookings
                         for (let i = 0; i < bookings.length; i++) {
+                            const class_time = bookings[i].class_time.substring(0, 10)
                             if (bookings[i].classId === new_booking) {
-                                if (bookings[i].class_time.substring(0, 10) === class_date) {// 比對日期
+                                if (class_time === class_date) {// 比對日期
                                     return res.status(400).json({ 'error': true, 'message': '此課程已預訂過' })
                                 }
                             }
