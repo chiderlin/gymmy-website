@@ -105,4 +105,8 @@ app.get('/backside-login', (req, res) => {
     return res.render('backside-login');
 });
 
+app.get('/backside-post',(req,res)=>{
+    return res.render('backside-post');
+})
+
 server.listen(3001); 

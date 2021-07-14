@@ -71,6 +71,15 @@ login_form.addEventListener('submit',(event)=>{
     loginNavBar();
 });
 
+//提示視窗關閉按鈕
+const close_btn = document.getElementById('close-btn');
+const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
+close_btn.addEventListener('click',()=>{
+    overlay_statement.style.display = 'none';
+})
+close_btn_for_img_statement.addEventListener('click',()=>{
+    overlay_statement.style.display = 'none';
+})
 
 
 // module

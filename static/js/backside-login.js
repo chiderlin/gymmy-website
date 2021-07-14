@@ -27,8 +27,9 @@ function login(email, pwd){
     }).then((data)=>{
         if(data.ok === true) {
             login_status();
-        } else {
-            renderError();
+        } 
+        if(data.error === true){
+            renderError(data.message);
         }
     }).catch((err)=>{
         console.log(err);
@@ -41,20 +42,19 @@ function login_status() {
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        console.log(api_data);
         const auth = api_data.data.auth
         if(auth === 1) {
             window.location.href = '/backside';
         } else {
-            renderError();
+            renderError('權限不足');
         }
     })
 };
 
-function renderError(){
+function renderError(msg){
     const error_msg = document.querySelector('.error-msg');
     error_msg.innerHTML = '';
     console.log(error_msg);
-    error_msg.appendChild(document.createTextNode('權限不足'));
+    error_msg.appendChild(document.createTextNode(msg));
 
 }

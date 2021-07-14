@@ -1,5 +1,6 @@
 .custom {
   width: 280px;
+  height:100vh;
 }
 
 /* 選取欄位 */
@@ -182,4 +183,13 @@
   color: red;
   position:absolute;
   right:10px;
+}
+
+/*新增文章部分*/
+.cke-block{
+  width:500px;
+  height:100px;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
 }

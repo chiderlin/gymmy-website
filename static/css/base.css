@@ -166,6 +166,12 @@ main {
     color: #3f3d3d;
     
 }
+.btn-hover{
+    width:200px;
+    background-color:#FFA042;
+    border-color: #FFA042;
+    color: #ffffff;
+}
 
 
 @media(max-width:600px) {

@@ -14,14 +14,17 @@ pro_plan.addEventListener('click',()=>{
     check_pay()
 });
 
+const overlay_statement = document.querySelector('.overlay-statement');
 function check_pay(){
     if(check_login) {
         if(check_active === 'yes') {
             // 提醒視窗，顯示已完成繳費程序，可以開始預訂課程
-            console.log('已完成交易程序，即刻開始預定課程')
+            renderStatement('已完成交易程序，即刻開始預定課程')
+            overlay_statement.style.display = 'block'
         } else {
-            // 提醒視窗，詢問是否完成交易程序 （還沒做提醒視窗）
-            console.log('請完成繳費程序')
+            window.location.href = '/signup-payment';           
+            // renderStatement('請完成繳費程序')
+            // overlay_statement.style.display = 'block'
         }
     } else {
         overlay_login.style.display = 'block';
@@ -44,3 +47,20 @@ function checkLogIn(){
         }
     })
 }
+
+//view
+function renderStatement(msg){
+    const statement_msg_check = document.querySelectorAll('.statement-msg');
+    const statement_page = document.querySelector('.statement-page');
+    if(statement_msg_check.length !==0){ //先check有無render的資料，有先清空
+        for(let i=0; i<statement_msg_check.length; i++){
+            statement_page.removeChild(statement_msg_check[i]);
+        };
+    };
+    const close_btn = document.querySelector('.close-btn')
+    const statement_msg = document.createElement('div');
+    statement_msg.className = 'statement-msg';
+    statement_msg.appendChild(document.createTextNode(msg));
+    statement_page.appendChild(statement_msg);
+    statement_page.insertBefore(statement_msg,close_btn);
+};
