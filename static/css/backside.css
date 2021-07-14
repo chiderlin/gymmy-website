@@ -120,7 +120,7 @@
 }
 .statement-block {
   display:block;
-  width:600px;height:300px;
+  width:600px;height:400px;
   background: #EA7500;
   border-radius:5px;
   position: relative;
@@ -175,4 +175,11 @@
   padding:10px;
   /* height:60px; */
   border-bottom: 1px solid #e7e7e7;
+}
+
+.add-msg{
+  text-align: end;
+  color: red;
+  position:absolute;
+  right:10px;
 }

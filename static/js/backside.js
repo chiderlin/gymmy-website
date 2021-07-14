@@ -3,6 +3,8 @@ let all_class_data;
 let selected_classId;
 let current_class_data;
 let index = 1;
+let student_amount;
+let class_student_data;
 init();
 
 // controll
@@ -45,7 +47,6 @@ function select_class(){
 
 // 查詢按鈕，fetch booking get (where classId=後台classId，關聯UserId)，選取user-name & email 
 const class_btn = document.querySelector('.class-btn');
-console.log(class_btn)
 class_btn.addEventListener('click',(e)=>{
     checkStudent(selected_classId)
 });
@@ -65,10 +66,25 @@ confirm_btn.addEventListener('click',()=>{
     console.log(checkboxes);
     for(let i=0; i<checkboxes.length; i++){
         const userId = parseInt(checkboxes[i].value);
+        console.log(class_student_data);
+        for(let j=0; j<class_student_data.length; j++){
+            if(class_student_data[j].userId === userId){
+                renderErrMsg('學員重複預定');
+                return 
+            }
+        }
         checkedUser.push(userId)
     }
 
     if(checkboxes.length !==0){
+        // booking之前先check課堂人數是否滿15人
+        if(student_amount+checkboxes.length>15 || student_amount===15){
+            renderErrMsg('每堂課最多預定15人');
+            return 
+        }
+        // booking之前先check這個人是否已經在上面列表
+
+
         //post資料到後端，在booking新增此學員到此課程
         //前端reload，在查看一次該課程，學員已新增
         booking(checkedUser,(res)=>{
@@ -119,7 +135,6 @@ function renderClass(classid,zh_name){
 };
 
 function renderStudent(data){
-    console.log(data);
     const member_box = document.querySelector('.member-box');
     const member_check = document.querySelectorAll('.member'); 
     if(member_check.length !==0){ //先check有無render的資料，有先清空
@@ -185,8 +200,13 @@ function renderClassTitle(class_name_zh){
     const member_box = document.querySelector('.member-box');
     class_title.appendChild(document.createTextNode(`課程：${class_name_zh}`));
     member_block.insertBefore(class_title,member_box);
-}
+};
 
+function renderErrMsg(msg){
+    const add_msg = document.querySelector('.add-msg');
+    add_msg.innerHTML = '';
+    add_msg.appendChild(document.createTextNode(msg));
+}
 
 
 // model
@@ -218,7 +238,7 @@ function getAllClass() {
         return res.json();
     }).then((api_data)=>{
         all_class_data = api_data.data;
-        console.log(all_class_data)
+        //console.log(all_class_data)
     });
 };
 
@@ -228,8 +248,13 @@ function checkStudent(classId){
     .then(res=>res.json())
     .then((api_data)=>{
         const data = api_data.data;
+        class_student_data = data;
+        student_amount = api_data.data.length;
+
         console.log(api_data.data);
+        console.log(student_amount);
         renderStudent(data);
+
     })
 };
 
@@ -258,7 +283,7 @@ function getStudentList(){
     fetch(url).then((res)=>{
         return res.json()
     }).then((api_data)=>{
-        console.log(api_data);
+        //console.log(api_data);
         const data = api_data.data
         renderStudentList(data);
     })
