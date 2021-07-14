@@ -20,65 +20,65 @@ function getClassList() {
     const url = '/api/class';
     fetch(url).then((res) => {
         return res.json();
-    }).then(async(api_data) => {
+    }).then(async (api_data) => {
         const data = api_data.data;
         class_data = data;
-        for(let i=0; i<class_data.length;i++){//再一起render
+        for (let i = 0; i < class_data.length; i++) {//再一起render
             let renderBox = {
-                'id':class_data[i].id,
-                'weekday':class_data[i].weekday,
-                'time':class_data[i].class_time,
-                'title_zh':class_data[i].class_name_zh,
-                'title_en':class_data[i].class_name_eng,
-                'teacher':class_data[i].class_teacher,
-                'room':class_data[i].class_room,
-                'start_time':class_data[i].start_time,
-                'end_time':class_data[i].end_time
+                'id': class_data[i].id,
+                'weekday': class_data[i].weekday,
+                'time': class_data[i].class_time,
+                'title_zh': class_data[i].class_name_zh,
+                'title_en': class_data[i].class_name_eng,
+                'teacher': class_data[i].class_teacher,
+                'room': class_data[i].class_room,
+                'start_time': class_data[i].start_time,
+                'end_time': class_data[i].end_time
             }
             renderBigClass(renderBox)
             renderSmallClass(renderBox)
         }
         // changeLoadingStatus()
 
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err);
     })
 };
 
-function bookingStudent(classId, weekday, class_block){
+function bookingStudent(classId, weekday, class_block) {
     const url = `/api/booking/student/${classId}`
     fetch(url)
-    .then(res=>res.json())
-    .then((api_data)=>{
-        const data = api_data.data;
-        let today_weekday = new Date().getDay();
-        if(today_weekday === 0){
-            today_weekday = 7;
-        }
-        if(weekday === today_weekday){
-            renderBookingStatus('不可預定', class_block);
-             
-        } else {
+        .then(res => res.json())
+        .then((api_data) => {
+            const data = api_data.data;
+            let today_weekday = new Date().getDay();
+            if (today_weekday === 0) {
+                today_weekday = 7;
+            }
+            if (weekday === today_weekday) {
+                renderBookingStatus('不可預定', class_block);
 
-            if(data === null) {
-                renderBookingStatus('可預約', class_block);
             } else {
-                let people = api_data.data.length
-                if(people>= 15){
-                    renderBookingStatus('已額滿', class_block); 
-                } else {
+
+                if (data === null) {
                     renderBookingStatus('可預約', class_block);
+                } else {
+                    let people = api_data.data.length
+                    if (people >= 15) {
+                        renderBookingStatus('已額滿', class_block);
+                    } else {
+                        renderBookingStatus('可預約', class_block);
+                    }
                 }
             }
-        }
-    })
+        })
 };
 
 
 
 //view
 function renderBigClass(renderBox) {
-    
+
     const column = document.getElementById(renderBox.weekday);
     const container = document.getElementById('class-plan-big');
     const class_block = document.createElement('div');
@@ -90,7 +90,7 @@ function renderBigClass(renderBox) {
     const classroom = document.createElement('div');
     const current_class = document.createElement('div');
     current_class.appendChild(document.createTextNode('上課中'));
-    
+
     current_class.className = 'current-class';
     class_block.className = 'class-block';
     link.setAttribute('href', `/class/${renderBox.id}`)
@@ -113,25 +113,25 @@ function renderBigClass(renderBox) {
     column.appendChild(link);
     container.appendChild(column);
     const compare_time = {
-        'weekday':renderBox.weekday,
-        'start_time':renderBox.start_time,
-        'end_time':renderBox.end_time
+        'weekday': renderBox.weekday,
+        'start_time': renderBox.start_time,
+        'end_time': renderBox.end_time
     }
-    socket_listener(class_block,current_class,compare_time)
+    socket_listener(class_block, current_class, compare_time)
     bookingStudent(renderBox.id, renderBox.weekday, class_block)
-    // setInterval(() => {
-    //     socket_listener(class_block,current_class,compare_time)
-    // }, 5000);
+    setInterval(() => {
+        socket_listener(class_block, current_class, compare_time)
+    }, 5000);
 };
 
-function socket_listener(block,current_class,compare_time){
+function socket_listener(block, current_class, compare_time) {
 
     const current = new Date();
     let current_day = current.getDay();
-    if(current_day === 0){
+    if (current_day === 0) {
         current_day = 7;
     }
-    if(compare_time.weekday === current_day) { 
+    if (compare_time.weekday === current_day) {
         const current_hour = current.getHours();
         const current_min = current.getMinutes();
         const start_hour = new Date(compare_time.start_time).getHours();
@@ -140,28 +140,28 @@ function socket_listener(block,current_class,compare_time){
         const end_min = new Date(compare_time.end_time).getMinutes();
 
         // 小時/分鐘都要比對 
-        if(start_hour<current_hour){
-            if(current_hour<end_hour){
+        if (start_hour < current_hour) {
+            if (current_hour < end_hour) {
                 block.classList.add('active-class');
                 block.appendChild(current_class)
             } else if (current_hour === end_hour) {
-                if(current_min<end_min){
+                if (current_min < end_min) {
                     block.classList.add('active-class');
                     block.appendChild(current_class)
                 }
             }
-        } else if(start_hour===current_hour) {
-            if(start_min<=current_min){
-                if(current_hour<end_hour){
+        } else if (start_hour === current_hour) {
+            if (start_min <= current_min) {
+                if (current_hour < end_hour) {
 
                     block.classList.add('active-class');
                     block.appendChild(current_class)
                 } else if (current_hour === end_hour) {
-                    if(current_min<end_min){
+                    if (current_min < end_min) {
 
                         block.classList.add('active-class');
                         block.appendChild(current_class)
-                    } else if(current_min === end_min) {
+                    } else if (current_min === end_min) {
                         current_class.innerHTML = '';
                         block.classList.remove('active-class');
                         block.appendChild(current_class)
@@ -274,22 +274,25 @@ function renderSmallClass(renderBox) {
     row.appendChild(col_6);
 
     const compare_time = {
-        'weekday':renderBox.weekday,
-        'start_time':renderBox.start_time,
-        'end_time':renderBox.end_time
+        'weekday': renderBox.weekday,
+        'start_time': renderBox.start_time,
+        'end_time': renderBox.end_time
     }
-    socket_listener(col_12,current_class,compare_time)
+    socket_listener(col_12, current_class, compare_time)
+    setInterval(() => {
+        socket_listener(class_block, current_class, compare_time)
+    }, 5000);
     bookingStudent(renderBox.id, renderBox.weekday, col_12)
 };
 
-function renderBookingStatus(msg, class_block){
+function renderBookingStatus(msg, class_block) {
     const status = document.createElement('div');
     status.className = 'status'
-    if(msg === '已額滿'){
+    if (msg === '已額滿') {
         status.style.backgroundColor = 'red';
-    } else if(msg === '可預約'){
+    } else if (msg === '可預約') {
         status.style.backgroundColor = 'green';
-    } else if(msg === '不可預定'){
+    } else if (msg === '不可預定') {
         status.style.backgroundColor = 'orange';
     }
     status.appendChild(document.createTextNode(msg));
@@ -349,7 +352,7 @@ function renderBookingStatus(msg, class_block){
 //     await fetch(url)
 //     .then(res=>res.json())
 //     .then((api_data)=>{
-        
+
 //         const data = api_data.data;
 //         let people;
 
