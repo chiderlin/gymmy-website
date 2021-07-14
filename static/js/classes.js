@@ -280,7 +280,7 @@ function renderSmallClass(renderBox) {
     }
     socket_listener(col_12, current_class, compare_time)
     setInterval(() => {
-        socket_listener(class_block, current_class, compare_time)
+        socket_listener(col_12, current_class, compare_time)
     }, 5000);
     bookingStudent(renderBox.id, renderBox.weekday, col_12)
 };
