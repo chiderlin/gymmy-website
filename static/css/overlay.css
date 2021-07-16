@@ -10,7 +10,7 @@
 }
 .login-page-block1 {
     display:flex;
-    width:100%;height:310px;
+    width:100%;height:350px;
     justify-content:center;
     position:absolute;top:80px;
     
@@ -20,6 +20,7 @@
     width:340px;height:100%;
     background: #EA7500;
     border-radius:5px;
+    position: relative;
 }
 
 .login-page {
@@ -142,4 +143,10 @@
     top:17px;
     right:17px;
     cursor: pointer;
+}
+
+#my-signin2 {
+    position: absolute;
+    bottom: 60px;
+    right:15px;
 }

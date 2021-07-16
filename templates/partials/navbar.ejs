@@ -9,12 +9,18 @@
                 <input type="button" name="close" id="login-close-btn">
                 <div class="login-title">登入會員帳號</div>
                 <form id="login-form">
-                    <input id="email-login" class="input-format" type="text" placeholder="Email" required="required">
-                    <input id="pwd-login" class="input-format" type="password" placeholder="Password" required="required">
+                    <input id="email-login" class="input-format" type="email" placeholder="電子郵件" required="required">
+                    <input id="pwd-login" class="input-format" type="password" placeholder="密碼" required="required">
                     <div style="text-align: center;">
                         <input type="submit" value="登入帳戶" class="login-btn"></input>
                     </div>
                 </form>
+                <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+                <div id="my-signin2"></div>
+                <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+                <script src="https://apis.google.com/js/api:client.js"></script>
+                <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+                <!-- <a href="#" onclick="signOut();">Sign out</a> -->
                 <!-- <div class="login-msg">帳號密碼錯誤</div> -->
                 <div class="login-msg"></div>
                 <div class="login-state">還沒有帳戶?
@@ -91,4 +97,4 @@
         </div>
     </div>
 </header>
-<script type="module" src="/js/base.js"></script>
+<script src="/js/base.js"></script>

@@ -5,7 +5,7 @@ checkLogIn();
 const basic_plan = document.getElementById('888-btn');
 const pro_plan = document.getElementById('1000-btn');
 const contact  = document.getElementById('contact');
-const overlay_login = document.querySelector('.overlay-login');
+const overlay_login_ = document.querySelector('.overlay-login');
 basic_plan.addEventListener('click',()=>{
     check_pay();
 });
@@ -27,7 +27,7 @@ function check_pay(){
             // overlay_statement.style.display = 'block'
         }
     } else {
-        overlay_login.style.display = 'block';
+        overlay_login_.style.display = 'block';
     }
 };
 

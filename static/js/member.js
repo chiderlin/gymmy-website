@@ -180,7 +180,7 @@ function getBooking() {
                     if(day>0 && day<=3){
                         renderHistory(data[i], 3) //三天內
                     } else if(day>3 && day<=7){
-                        renderHistory(data[i], 7) // 七天內
+                        renderHistory(data[i], 7) // 四天～七天
                     }
                 }
 

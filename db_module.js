@@ -95,15 +95,15 @@ const User = sequelize.define('User',{
     },
     password: {
         type: Sequelize.STRING(200),
-        allowNull: false,
+
     },
     phone: {
         type: Sequelize.STRING(50),
-        allowNull: false,
+
     },
     plan:{
         type: Sequelize.INTEGER,
-        allowNull: false,
+
     },
     active: {
         type: Sequelize.STRING(50),
