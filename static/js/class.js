@@ -58,9 +58,6 @@ function checkBookingBtn(weekday){
                     }                 
                 });
 
-                
-
-
             } else {
                 // 跳出視窗確認是否要完成繳費程序(提醒視窗)
                 overlay_statement.style.display = 'block';
@@ -71,20 +68,7 @@ function checkBookingBtn(weekday){
             overlay_login.style.display = 'block';
         }
     });
-}
-
-
-//提示視窗關閉按鈕
-const close_btn = document.getElementById('close-btn');
-const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
-close_btn.addEventListener('click',()=>{
-    overlay_statement.style.display = 'none';
-})
-close_btn_for_img_statement.addEventListener('click',()=>{
-    overlay_statement.style.display = 'none';
-})
-
-
+};
 
 
 //model
@@ -106,7 +90,7 @@ function checkLogIn(){
 
         }
     })
-}
+};
 
 // 先取得課程資料 => 重新寫入booking db 
 function getClassData(){
@@ -164,7 +148,7 @@ function getBooking(cb){
         return cb(api_data.data.length)
         
     });
-}
+};
 
 
 
@@ -199,7 +183,7 @@ function renderClass(class_name_zh, desc, img){
     class_img_block.appendChild(image);
     booking_btn.appendChild(document.createTextNode('預定課程'))
     class_booking_btn_blcok.appendChild(booking_btn)
-}
+};
 
 // render提示視窗
 function renderStatement(msg){

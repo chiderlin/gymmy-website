@@ -93,7 +93,8 @@ function checkLogIn() {
             login_user_info = api_data; //為了會員中心的網址跳轉，把資料變成全域變數
         }
     })
-}
+};
+
 function login(email, pwd) {
     const url = '/api/user';
     const login_info = { 'email': email, 'password': pwd }
@@ -117,6 +118,7 @@ function login(email, pwd) {
         console.log(err);
     })
 };
+
 function logOut() {
     const url = '/api/user';
     fetch(url, {
@@ -126,7 +128,7 @@ function logOut() {
     }).then((data) => {
         window.location.href = '/';
     })
-}
+};
 
 
 
