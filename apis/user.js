@@ -133,7 +133,7 @@ router.post('/user', async (req, res) => {
                             active: 'no',
                         }).then(() => {
                             
-                            // req.session.email = email;
+                            req.session.email = email;
                             return res.json({ 'ok': true });
                         })
                     }).catch((err) => {

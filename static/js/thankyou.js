@@ -14,9 +14,16 @@ function order_info(){
             if(data.payment.type === 'paypal'){
                 const number = data.payment.subscriptionId
                 renderOrder(number);
+                setTimeout(() => {
+                    logOut()
+                }, 5000);
+
             } else if(data.payment.type === 'tappay') {
                 const number = data.payment.bank_transaction_id;
                 renderOrder(number);
+                setTimeout(() => {
+                    logOut()
+                }, 5000);
             }
         }
     });
@@ -31,4 +38,16 @@ function renderOrder(number){
     trade_num.appendChild(document.createTextNode(number));
     img.setAttribute('src', '/png/icon/checked.png');
     img_box.appendChild(img);
+};
+
+
+function logOut() {
+    const url = '/api/user';
+    fetch(url, {
+        method: "DELETE",
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        window.location.href = '/';
+    })
 };

@@ -7,12 +7,14 @@ let class_info;
 let check_login = false;
 let check_active;
 let num_of_class;
+let student_amount;
 const overlay_statement = document.querySelector('.overlay-statement');
 
 init();
 function init() {
     getClassData();
     checkLogIn();
+    bookingStudent(classId);
 };
 
 // 預定按鈕流程
@@ -35,6 +37,11 @@ function checkBookingBtn(weekday){
         // 呼叫booking api
         if(check_login) {
             if(check_active === 'yes') {
+                if(student_amount === 15) {
+                    renderStatement('課程人數已額滿');
+                    overlay_statement.style.display = 'block';
+                    return
+                }
                 if(check_plan === 888){
                     if(weekday === 6 || weekday === 7){
                         renderStatement('方案入門版只能預定週一至週五課程');
@@ -144,12 +151,20 @@ function getBooking(cb){
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        console.log(api_data);
         return cb(api_data.data.length)
-        
     });
 };
 
+function bookingStudent(classId) {
+    const url = `/api/booking/student/${classId}`
+    fetch(url)
+        .then(res => res.json())
+        .then((api_data) => {
+            console.log(api_data);
+            student_amount = api_data.data.length
+        })
+
+};
 
 
 //view

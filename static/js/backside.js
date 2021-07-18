@@ -4,7 +4,9 @@ let selected_classId;
 let current_class_data;
 let index = 1;
 let student_amount;
-let class_student_data;
+let per_class_booking_student;
+let all_student_list;
+
 init();
 
 // controll
@@ -33,6 +35,7 @@ function select_day() {
             renderClass(class_id,zh_name); // 再render
         }
     } 
+    renderStudentList(all_student_list, day);
 };
 
 //TODO:選取課程=>查詢=>取得學員名單
@@ -66,11 +69,14 @@ confirm_btn.addEventListener('click',()=>{
     console.log(checkboxes);
     for(let i=0; i<checkboxes.length; i++){
         const userId = parseInt(checkboxes[i].value);
-        console.log(class_student_data);
-        for(let j=0; j<class_student_data.length; j++){
-            if(class_student_data[j].userId === userId){
-                renderErrMsg('學員重複預定');
-                return 
+        console.log(per_class_booking_student);
+        if(per_class_booking_student !== null){
+            for(let j=0; j<per_class_booking_student.length; j++){
+                if(per_class_booking_student[j].userId === userId){
+                    // booking之前先check這個人是否已經在上面列表
+                    renderErrMsg('學員重複預定');
+                    return 
+                }
             }
         }
         checkedUser.push(userId)
@@ -82,8 +88,6 @@ confirm_btn.addEventListener('click',()=>{
             renderErrMsg('每堂課最多預定15人');
             return 
         }
-        // booking之前先check這個人是否已經在上面列表
-
 
         //post資料到後端，在booking新增此學員到此課程
         //前端reload，在查看一次該課程，學員已新增
@@ -93,6 +97,7 @@ confirm_btn.addEventListener('click',()=>{
             }
         })
     } else { //新增的地方沒有選取任何學員
+        renderErrMsg('請選擇要增加的學員');
         return ;
     }
 });
@@ -167,9 +172,21 @@ function renderStudent(data){
     }
 };
 
-function renderStudentList(data){
-    for(let i=0; i<data.length;i++){
-        const statement_page = document.querySelector('.statement-page');
+function renderStudentList(data, selected_day){
+    const student_list = document.querySelectorAll('.student-list');
+    console.log(student_list)
+    const statement_page = document.querySelector('.statement-page');
+    if(student_list !== null){ //先check有無render的資料，有先清空
+        for(let i=0; i<student_list.length; i++){
+            statement_page.removeChild(student_list[i]);
+        };
+    };
+    for(let i=0; i<data.length;i++){ // 六日方案888的學員不能顯示在增加名單裡面
+        if(selected_day === 6 || selected_day===7){
+            if(data[i].plan === 888){
+                continue;
+            }
+        }
         const close_btn = document.querySelector('.close-btn')
         const member = document.createElement('div');
         const checkbox = document.createElement('input');
@@ -238,12 +255,10 @@ function getAllClass() {
         return res.json();
     }).then((api_data)=>{
         all_class_data = api_data.data;
-        //console.log(all_class_data)
     });
 };
 
 function checkStudent(classId){
-    console.log(classId);
     const url = `/api/booking/student/${classId}`
     fetch(url)
     .then((res)=>{
@@ -252,12 +267,13 @@ function checkStudent(classId){
     .then((api_data)=>{
         console.log(api_data);
         const data = api_data.data;
-        class_student_data = data;
-        student_amount = api_data.data.length;
-
-        console.log(api_data.data);
-        console.log(student_amount);
-        renderStudent(data);
+        if(data === null){
+            student_amount = 0;
+        } else {
+            student_amount = api_data.data.length
+        }
+        per_class_booking_student = data;
+        renderStudent(data); // 因為要清空原本的list所以不管data有沒有null都要跑
 
     })
 };
@@ -287,9 +303,10 @@ function getStudentList(){
     fetch(url).then((res)=>{
         return res.json()
     }).then((api_data)=>{
-        //console.log(api_data);
+        console.log(api_data);
         const data = api_data.data
-        renderStudentList(data);
+        all_student_list = data;
+        // renderStudentList(data);
     })
 };
 

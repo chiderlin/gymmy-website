@@ -72,6 +72,7 @@ function bookingStudent(classId, weekday, class_block) {
                 }
             }
         })
+
 };
 
 
@@ -121,7 +122,7 @@ function renderBigClass(renderBox) {
     bookingStudent(renderBox.id, renderBox.weekday, class_block)
     setInterval(() => {
         socket_listener(class_block, current_class, compare_time)
-    }, 1000*60);
+    }, 1000 * 60);
 };
 
 function socket_listener(block, current_class, compare_time) {
@@ -281,7 +282,7 @@ function renderSmallClass(renderBox) {
     socket_listener(col_12, current_class, compare_time)
     setInterval(() => {
         socket_listener(col_12, current_class, compare_time)
-    }, 1000*60);
+    }, 1000 * 60);
     bookingStudent(renderBox.id, renderBox.weekday, col_12)
 };
 
