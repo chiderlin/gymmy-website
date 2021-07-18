@@ -37,7 +37,7 @@ router.get('/booking/student/:classId', (req, res) => {
                     'username': username,
                     'email': email
                 }
-                if (current_date <= class_date) { //大於等於今天的日期，才可以被query出來，不然會跟之前的課重複到
+                if (class_date >= current_date) { //大於等於今天的日期，才可以被query出來，不然會跟之前的課重複到
                     student_list.push(student_info)
                 }
             }

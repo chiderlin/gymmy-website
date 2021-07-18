@@ -243,10 +243,14 @@ function getAllClass() {
 };
 
 function checkStudent(classId){
+    console.log(classId);
     const url = `/api/booking/student/${classId}`
     fetch(url)
-    .then(res=>res.json())
+    .then((res)=>{
+        return res.json();
+    })
     .then((api_data)=>{
+        console.log(api_data);
         const data = api_data.data;
         class_student_data = data;
         student_amount = api_data.data.length;

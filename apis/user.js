@@ -132,8 +132,8 @@ router.post('/user', async (req, res) => {
                             auth: 2,
                             active: 'no',
                         }).then(() => {
-                            // 執行成功印出
-                            req.session.email = email;
+                            
+                            // req.session.email = email;
                             return res.json({ 'ok': true });
                         })
                     }).catch((err) => {
