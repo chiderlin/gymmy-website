@@ -1,10 +1,15 @@
 <%- include('./partials/head.ejs') %>
     <link rel="stylesheet" href="/css/classes.css">
+    
 
     <body>
         <%- include('./partials/navbar.ejs') %>
         <div class="head-title">
             <h1 class="display-4 fw-normal">本月課表</h1>
+        </div>
+        <div class="statement">
+            <p>1.本日課程不可再做預定</p>
+            <p>2.每堂課程可預訂人數15人</p>
         </div>
         <div class="container week" id="big">
             <div class="row">
@@ -17,6 +22,7 @@
                 <div class="col">星期日</div>
             </div>
         </div>
+
         <div class="container week" id="small">
             <div class="row">
                 <div class="col small-weekday-hover"><a href="#Mon">Mon</a></div>
@@ -29,7 +35,18 @@
             </div>
         </div>
         <div class="p-0 container class-plan" id="class-plan-big">
-            <div class="column" id="1"></div>
+            <div class="column" id="1">
+                <!-- <a href="/class/2">
+                    <div class="class-block">
+                        <div class="time">0730-0830</div>
+                        <div class="title-zh">強力瑜珈</div>
+                        <div class="title-en">Power Yoga</div>
+                        <div class="teacher">Abby</div>
+                        <div class="status">可預約</div>
+                        <div class="class-room">團體有氧教室</div>
+                    </div>
+                </a> -->
+            </div>
             <div class="column" id="2"></div>
             <div class="column" id="3"></div>
             <div class="column" id="4"></div>
@@ -47,6 +64,8 @@
             <div class="row" id="Sat"></div>
             <div class="row" id="Sun"></div>
         </div>
+        <div id="test"></div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/classes.js"></script>
     </body>
-    <script src="/js/classes.js"></script>
     <%- include('./partials/footer.ejs') %>

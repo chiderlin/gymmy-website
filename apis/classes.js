@@ -4,10 +4,22 @@ const db = require('../db_module.js');
 const Sequelize = db.Sequelize;
 const sequelize = db.sequelize;
 const Classes = db.Classes;
+// const app = express();
+// const io = app.get('socket.io')
+
 
 
 
 router.get('/class', (req, res) => {
+    // let io = req.app.get('socket.io');
+    // // console.log(io);
+    // io.on('connection',(socket)=>{
+    //     console.log('a user connected');
+    //     setInterval(() => {
+    //         socket.emit('current class', new Date());
+    //     }, 5000); //1秒
+    // })
+
     try {
         sequelize.sync().then(() => {
             Classes.findAll({

@@ -158,13 +158,19 @@ main {
 
 .closebtn {
     position:absolute;
-    right:0;
+    right:20px;
     color: #000000;
     font-size:30px;
 }
 .closebtn:hover {
     color: #3f3d3d;
     
+}
+.btn-hover{
+    width:200px;
+    background-color:#FFA042;
+    border-color: #FFA042;
+    color: #ffffff;
 }
 
 

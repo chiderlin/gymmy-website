@@ -7,28 +7,28 @@ let login_status = false;
 let login_user_info;
 
 init();
-function init(){
+function init() {
     checkLogIn()
 };
 
 
 // 登出按鈕
-big_menu[5].addEventListener('click',()=>{
+big_menu[5].addEventListener('click', () => {
     logOut();
 });
-burger_menu[5].addEventListener('click',()=>{
+burger_menu[5].addEventListener('click', () => {
     logOut();
 });
 
 // 會員中心按鈕
-big_menu[3].addEventListener('click',()=>{
-    if(login_status) {
+big_menu[3].addEventListener('click', () => {
+    if (login_status) {
         const username = login_user_info.data.name;
         window.location.href = `/member/${username}`;
     }
 });
-burger_menu[3].addEventListener('click',()=>{
-    if(login_status) {
+burger_menu[3].addEventListener('click', () => {
+    if (login_status) {
         const username = login_user_info.data.name;
         window.location.href = `/member/${username}`;
     }
@@ -52,78 +52,88 @@ big_menu[4].addEventListener('click', () => {
     overlay_login.style.display = 'block';
 });
 
-burger_menu[4].addEventListener('click', ()=>{
+burger_menu[4].addEventListener('click', () => {
     burger_overlay.style.height = '0%';
     overlay_login.style.display = 'block';
 });
 
-login_close_btn.addEventListener('click',()=>{
+login_close_btn.addEventListener('click', () => {
     overlay_login.style.display = 'none';
 });
 
 // login 輸入
 const login_form = document.getElementById('login-form');
-login_form.addEventListener('submit',(event)=>{
+login_form.addEventListener('submit', (event) => {
     event.preventDefault();
     const email = document.getElementById('email-login').value;
     const pwd = document.getElementById('pwd-login').value;
     login(email, pwd); // 通過的話 重新load頁面
-    loginNavBar();
 });
 
+//提示視窗關閉按鈕
+const close_btn = document.getElementById('close-btn');
+const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
+close_btn.addEventListener('click', () => {
+    overlay_statement.style.display = 'none';
+})
+close_btn_for_img_statement.addEventListener('click', () => {
+    overlay_statement.style.display = 'none';
+})
 
 
 // module
-function checkLogIn(){
+function checkLogIn() {
     const url = '/api/user';
-    fetch(url).then((res)=>{
+    fetch(url).then((res) => {
         return res.json();
-    }).then((api_data)=>{
+    }).then((api_data) => {
         initRenderMenu(api_data);
-        if(api_data.data !== null) {
+        if (api_data.data !== null) {
             login_status = true;
             login_user_info = api_data; //為了會員中心的網址跳轉，把資料變成全域變數
         }
     })
-}
+};
+
 function login(email, pwd) {
     const url = '/api/user';
-    const login_info = {'email':email, 'password':pwd}
+    const login_info = { 'email': email, 'password': pwd }
     fetch(url, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(login_info),
-    }).then((res)=>{
-        return res.json(); 
-    }).then((data)=>{
-        console.log(data);
-        if(data.ok === true) {
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        if (data.ok === true) {
             window.location.reload(); // 通過的話 重新load頁面
+            loginNavBar();
         }
-        if(data.error === true) {
+        if (data.error === true) {
             renderErrorMsg(data.message);
         }
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err);
     })
 };
-function logOut(){
+
+function logOut() {
     const url = '/api/user';
-    fetch(url,{
+    fetch(url, {
         method: "DELETE",
-    }).then((res)=>{
+    }).then((res) => {
         return res.json();
-    }).then((data)=>{
+    }).then((data) => {
         window.location.href = '/';
     })
-}
+};
 
 
 
 // view
-function loginNavBar(){
+function loginNavBar() {
     // big screen
     big_menu[0].classList.remove('hide'); // 最新消息
     big_menu[1].classList.remove('hide'); // 本月課程
@@ -140,8 +150,8 @@ function loginNavBar(){
     burger_menu[4].classList.add('hide'); // 登入/註冊
 };
 
-function initRenderMenu(api_data){
-    if(api_data.data !== null) {
+function initRenderMenu(api_data) {
+    if (api_data.data !== null) {
         // 登入狀態
         // big screen
         big_menu[0].classList.remove('hide'); // 最新消息
@@ -169,8 +179,90 @@ function initRenderMenu(api_data){
         burger_menu[4].classList.remove('hide'); // 登入/註冊
     }
 };
+
 function renderErrorMsg(msg) {
     const login_msg = document.querySelector('.login-msg');
     login_msg.innerHTML = '';
     login_msg.appendChild(document.createTextNode(msg));
 };
+
+// ===========================
+
+
+
+function onSignIn(googleUser) {
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log(id_token);
+    const token = {
+        'id_token': id_token
+    }
+    const URL = '/api/google-login';
+    fetch(URL, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(token)
+    }).then((res) => {
+        return res.json()
+    }).then((data) => {
+        if (data.ok === true) {
+            signOut();
+            window.location.reload();
+            loginNavBar();
+        }
+    })
+    // var profile = googleUser.getBasicProfile();
+    // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    // console.log('Name: ' + profile.getName());
+    // console.log('Image URL: ' + profile.getImageUrl());
+    // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        console.log('User signed out.');
+    });
+}
+
+
+function onSuccess(googleUser) {
+    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log(id_token);
+    const token = {
+        'id_token': id_token
+    }
+    const URL = '/api/google-login';
+    fetch(URL, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(token)
+    }).then((res) => {
+        return res.json()
+    }).then((data) => {
+        if (data.ok === true) {
+            window.location.reload();
+            signOut();
+            loginNavBar();
+        }
+    })
+
+}
+function onFailure(error) {
+    console.log(error);
+}
+function renderButton() {
+    gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 310,
+        'height': 47,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+    });
+}

@@ -16,10 +16,15 @@
     border: 1px solid #777777;
     border-radius: 10px;
     margin: 20px;
+    background-image: url('/png/icon/user.png');
+    background-size: contain; /* 讓圖片是中大小塞在框框裡 */
+    
 }
 
-img {
-    max-width: 100%;
+.mem-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
 }
 .user-info {
     width: 1200px;
@@ -55,6 +60,7 @@ img {
 
 .mem-format{
     margin-top: 20px;
+    display: flex;
 }
 
 .active-status {
@@ -84,7 +90,7 @@ img {
 .select {
     display: flex;
     justify-content: center;
-    padding:20px;
+    padding:20px 0;
     
 }
 .select-button{
@@ -98,7 +104,9 @@ img {
     color: #f77e06;
     font-size: 18px;
 }
-
+.active-format {
+    margin-right: 10px;
+}
 .active-btn {
     background-color: #FFA042;
     color: #ffffff;
@@ -149,21 +157,44 @@ img {
     }
     .booking-box {
         width: 100%;
-        height: 400px;
+        /* height: 400px; */
         border: 1px solid #e7e7e7;
         margin: 20px 0;
     }
-    .select-button1{
-        width:80%;
-    }
-    .select-button2{
+    .select-button{
         width:80%;
     }
     .booking-class{
         font-size: 12px;
     }
+    .content-block {
+        margin: 0;
+
+    }
+    .class-btn {
+        font-size: 10px;
+    }
 }
 
 .history-form{
     display: none;
+}
+
+
+.card-block {
+    display: flex;
+    justify-content: center;
+}
+.card-box {
+    margin-bottom: 20px;
+    display: none;
+}
+/* 預定課程小螢幕 */
+@media(max-width:500px){
+    .booking-block{
+        display: block;
+    }
+    .card-box {
+        display: none;
+    }
 }

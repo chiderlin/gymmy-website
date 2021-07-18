@@ -10,7 +10,7 @@
 }
 .login-page-block1 {
     display:flex;
-    width:100%;height:310px;
+    width:100%;height:350px;
     justify-content:center;
     position:absolute;top:80px;
     
@@ -20,6 +20,7 @@
     width:340px;height:100%;
     background: #EA7500;
     border-radius:5px;
+    position: relative;
 }
 
 .login-page {
@@ -90,4 +91,62 @@
     margin: 5px 15px 0;
     position:absolute;bottom:15px;
     text-align: center;
+}
+
+
+.overlay-statement {
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0; bottom:0;
+    left:0; right:0;
+    z-index:100;
+    display:none;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.statement-block1 {
+    display:flex;
+    width:100%;height:200px;
+    justify-content:center;
+    position:absolute;top:80px;
+    
+}
+.statement-block {
+    display:block;
+    width:340px;height:100%;
+    background: #EA7500;
+    border-radius:5px;
+    position: relative;
+}
+
+.statement-page {
+    position:absolute;
+    margin-top:10px;
+    width:340px;height:95%;
+    background-color: #fff;
+    border-radius:5px;
+}
+.statement-msg{
+    padding:20px;
+    text-align: center;
+}
+.close-btn{
+    padding: 0 10px;
+    text-align: end;
+}
+.close{
+    width:100px;
+}
+#close-btn-for-img-statement {
+    position:absolute;
+    top:17px;
+    right:17px;
+    cursor: pointer;
+}
+
+#my-signin2 {
+    position: absolute;
+    bottom: 60px;
+    right:15px;
 }

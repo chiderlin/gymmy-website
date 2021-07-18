@@ -95,15 +95,15 @@ const User = sequelize.define('User',{
     },
     password: {
         type: Sequelize.STRING(200),
-        allowNull: false,
+
     },
     phone: {
         type: Sequelize.STRING(50),
-        allowNull: false,
+
     },
     plan:{
         type: Sequelize.INTEGER,
-        allowNull: false,
+
     },
     active: {
         type: Sequelize.STRING(50),
@@ -188,25 +188,83 @@ const Order = sequelize.define('Order',{
     updatedAt: false,
 });
 
-// const Booking = sequelize.define('Order', {
-//     id:{
-//         type: Sequelize.INTEGER,
-//         primaryKey: true,
-//         autoIncrement: true,
-//     },
+const Member = sequelize.define('Member',{
+    id:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    image_name:{
+        type: Sequelize.STRING(100),
+    },
+    image_address:{
+        type: Sequelize.STRING(100),
+    },
+
+});
 
 
-// },{ // 設定時間要不要有
-//     timestamps: true,
-//     createdAt: true,
-//     updatedAt: false,
-// });
+const Booking = sequelize.define('Booking', {
+    id:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    classId:{
+        type: Sequelize.INTEGER, 
+    },
+    month:{
+        type: Sequelize.INTEGER,
+    },
+    weekday:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+    class_date:{
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    start_time:{
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    end_time:{
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    class_time:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    class_name:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    teacher:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+    room:{
+        type: Sequelize.STRING(50),
+        allowNull: false,
+    },
+
+},{ // 設定時間要不要有
+    timestamps: true,
+    createdAt: true,
+    updatedAt: false,
+});
 
 // 雙向關聯
 User.hasOne(Payment);
 Payment.hasMany(Order);
+User.hasOne(Member);
+User.hasMany(Booking);
+
 Payment.belongsTo(User);
 Order.belongsTo(Payment);
+Booking.belongsTo(User);
+Member.belongsTo(User);
 
 const db = {};
 db.Sequelize = Sequelize;
@@ -215,6 +273,8 @@ db.Classes = Classes;
 db.User = User;
 db.Payment = Payment;
 db.Order = Order;
+db.Member = Member;
+db.Booking = Booking;
 module.exports = db;
 
 

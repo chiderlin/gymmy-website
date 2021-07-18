@@ -13,6 +13,35 @@
 </head>
 
 <body>
+  <div class="overlay-statement">
+    <div class="statement-block1">
+      <div class="statement-block">
+        <div class="statement-page">
+          <label for="state-close-btn">
+            <img id="close-btn-for-img-statement" src="/png/icon/icon_close.png">
+          </label>
+          <input type="button" name="close" id="state-close-btn">
+          <div class="title-block-state">
+            <div class="num">#</div>
+            <div class="username">學員名稱</div>
+            <div class="email">電子信箱</div>
+          </div>
+          <!-- <div class="member">
+            <input type="checkbox">
+            <div class="num">1</div>
+            <div class="username">111</div>
+            <div class="email">111@111</div>
+          </div> -->
+          
+          <div class="close-btn">
+            <button id="close-btn" class="btn btn-hover">確定</button>
+            <div class="add-msg"></div>
+            <!-- 每堂課程最多15人 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- bar -->
   <div class="d-flex">
     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light custom">
@@ -38,6 +67,14 @@
               <use xlink:href="#speedometer2" />
             </svg>
             預定管理
+          </a>
+        </li>
+        <li>
+          <a href="/backside-post" class="nav-link link-dark hover">
+            <svg class="bi me-2" width="16" height="16">
+              <use xlink:href="#speedometer2" />
+            </svg>
+            新增文章
           </a>
         </li>
       </ul>
@@ -71,7 +108,8 @@
           <option value="6">週六</option>
           <option value="7">週日</option>
         </select>
-        <select class="form-select" id="select_class" multiple aria-label="multiple select example">
+        <select class="form-select" id="select_class" onchange="select_class();" multiple
+          aria-label="multiple select example">
           <option selected>請選擇課程</option>
         </select>
         <div class="submit-div">
@@ -79,46 +117,42 @@
         </div>
       </div>
 
+
       <!-- member block -->
       <div class="member-block">
 
-        <h2>課程：強力瑜珈</h2>
-
+        <h2 class="class-title"></h2>
+        <!-- 課程：強力瑜珈 -->
         <div class="member-box">
           <div class="title-block">
-            <div class="title-name">學員名單</div>
+            <div class="num">#</div>
+            <div class="username">學員名稱</div>
+            <div class="email">電子信箱</div>
           </div>
-          <div class="p-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                1.123 checkbox
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                2.123 checkbox
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                3.123 checkbox
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
-                4.123 checkbox
-              </label>
-            </div>
+
+          <!-- <div class="member">
+            <input type="checkbox">
+            <div class="num">1</div>
+            <div class="username">111</div>
+            <div class="email">111@111</div>
           </div>
+          <div class="member">
+            <input type="checkbox">
+            <div class="num">2</div>
+            <div class="username">123</div>
+            <div class="email">123@123</div>
+          </div>
+          <div class="member">
+            <input type="checkbox">
+            <div class="num">3</div>
+            <div class="username">222</div>
+            <div class="email">222@222</div>
+          </div> -->
         </div>
       </div>
       <div class="update-btn-block">
-        <button type="button" class="btn btn-secondary">新增</button>
-        <button type="button" class="btn btn-secondary">刪除</button>
+        <button id="add-btn" type="button" class="btn btn-secondary">新增</button>
+        <button id="delete-btn" type="button" class="btn btn-secondary">刪除</button>
       </div>
     </div>
 

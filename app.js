@@ -5,7 +5,10 @@ const session = require('express-session');
 // const MemoryStore = session.MemoryStore;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
+const http = require('http');
+const server = http.createServer(app);
+const {Server} = require('socket.io')
+const io = new Server(server);
 
 app.set('views', './templates');
 app.set('view engine', 'ejs');
@@ -16,7 +19,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: false }));
-
+app.set('socket.io', io)
 // 設data 不能用
 // let expiryDate = new Date(Date.now() + 1000 * 60 * 60 * 24).toLocaleString('chinese',{hour12: false});
 app.use(session({
@@ -35,10 +38,14 @@ app.use(session({
 const classes = require('./apis/classes');
 const user = require('./apis/user');
 const payment = require('./apis/payment');
+const member = require('./apis/member');
+const booking = require('./apis/booking');
 const ipn = require('./apis/ipn_listener')
 app.use('/api', classes);
 app.use('/api', user); 
 app.use('/api', payment);
+app.use('/api', member);
+app.use('/api', booking);
 app.use('/ipn', ipn);
 
 
@@ -98,4 +105,8 @@ app.get('/backside-login', (req, res) => {
     return res.render('backside-login');
 });
 
-app.listen(3001);
+app.get('/backside-post',(req,res)=>{
+    return res.render('backside-post');
+})
+
+server.listen(3001); 

@@ -24,6 +24,8 @@ p {
     margin-top: 50px;
     display: flex;
     justify-content: center;
+    width: 100%;
+    height:100%;
 }
 
 img {
@@ -34,12 +36,13 @@ img {
 /* 預定課程按鈕 */
 
 .class-booking {
-    width:95%;
-    text-align: end;
+    width:100%;
+    text-align: center;
     margin-top: 50px;
 }
 
 .btn-hover{
+    width:200px;
     background-color:#FFA042;
     border-color: #FFA042;
     color: #ffffff;
@@ -49,4 +52,8 @@ img {
     background-color:#EA7500;
     border-color: #EA7500;
     color: #ffffff;
+}
+
+.statement-block{
+    display: none;
 }

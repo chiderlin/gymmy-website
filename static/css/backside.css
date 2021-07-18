@@ -1,5 +1,6 @@
 .custom {
   width: 280px;
+  height:100vh;
 }
 
 /* 選取欄位 */
@@ -20,11 +21,12 @@
   height: 500px;
   border-bottom: 1px solid #777777;
 }
-.form-select {
+.layout-block > .form-select {
   width: 150px;
-  height: 400px;
   margin-right: 30px;
 }
+
+
 .submit-div {
   width: 74px;
   height: 400px;
@@ -55,25 +57,139 @@
 
 .member-box {
   /* background-color: antiquewhite; */
-  width:100%;
-  height:50vh;
+  width:70%;
   border:1px solid #e7e7e7;
-  border-radius: 10px;
+
 }
 .title-block {
-  width: 100%;
-  height:60px;
+  display: flex;
+  align-items: center;
+  padding:10px;
+  /* height:60px; */
   background-color: #e7e7e7;
-  border-radius: 10px 10px 0 0;
 }
 
-.title-name {
-  padding:20px;
+.member {
+  display: flex;
+  align-items: center;
+  padding:10px;
+  /* height:60px; */
+  border-bottom: 1px solid #e7e7e7;
+}
 
+.num {
+  width:50%;
+  text-align: center;
+}
+
+.username {
+  width:50%;
+  text-align: center;
+}
+
+.email{
+  width:50%;
+  text-align: center;
 }
 
 .update-btn-block {
+  width:70%;
   text-align: end;
   margin-bottom: 50px;
-  padding:0 20px;
+  padding:10px 20px;
+}
+
+
+/* 小視窗 */
+.overlay-statement {
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0; bottom:0;
+  left:0; right:0;
+  z-index:100;
+  display:none;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.statement-block1 {
+  display:flex;
+  width:100%;height:200px;
+  justify-content:center;
+  position:absolute;top:80px;
+  
+}
+.statement-block {
+  display:block;
+  width:600px;height:400px;
+  background: #EA7500;
+  border-radius:5px;
+  position: relative;
+}
+
+.statement-page {
+  position:absolute;
+  margin-top:10px;
+  width:100%;height:100%;
+  background-color: #fff;
+  border-radius:5px;
+  overflow: scroll;
+}
+.statement-msg{
+  padding:20px;
+  text-align: center;
+}
+.close-btn{
+  padding:10px;
+  text-align: end;
+}
+
+#close-btn-for-img-statement {
+  position:absolute;
+  top:17px;
+  right:17px;
+  cursor: pointer;
+}
+
+.btn-hover{
+  width:100px;
+  background-color:#FFA042;
+  border-color: #FFA042;
+  color: #ffffff;
+}
+
+#state-close-btn {display:none;}
+
+.title-block-state {
+  display: flex;
+  align-items: center;
+  padding:10px;
+  /* height:60px; */
+  /* background-color: #e7e7e7; */
+  border-bottom: 1px solid #e7e7e7;
+  margin-top: 20px;
+}
+
+.student-list {
+  display: flex;
+  align-items: center;
+  padding:10px;
+  /* height:60px; */
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.add-msg{
+  text-align: end;
+  color: red;
+  position:absolute;
+  right:10px;
+}
+
+/*新增文章部分*/
+.cke-block{
+  width:500px;
+  height:100px;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
 }
