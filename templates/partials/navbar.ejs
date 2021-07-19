@@ -17,9 +17,9 @@
                 </form>
                 <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
                 <div id="my-signin2"></div>
+                <!-- 把google第三方登入script放底部，就順了 -->
                 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-                <script src="https://apis.google.com/js/api:client.js"></script>
-                <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
                 <!-- <a href="#" onclick="signOut();">Sign out</a> -->
                 <!-- <div class="login-msg">帳號密碼錯誤</div> -->
                 <div class="login-msg"></div>
@@ -98,3 +98,5 @@
     </div>
 </header>
 <script src="/js/base.js"></script>
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+<script src="https://apis.google.com/js/api:client.js"></script>

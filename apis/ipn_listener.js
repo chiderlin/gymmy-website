@@ -44,7 +44,7 @@ class IPNController {
                 default:
                     console.log('Unhandled transaction type: ', transactionType);
             }
-        } catch(e) {
+        } catch (e) {
             console.error(e);
         }
     }
