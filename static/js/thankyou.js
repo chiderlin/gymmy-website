@@ -16,14 +16,14 @@ function order_info(){
                 renderOrder(number);
                 setTimeout(() => {
                     logOut()
-                }, 5000);
+                }, 3000);
 
             } else if(data.payment.type === 'tappay') {
                 const number = data.payment.bank_transaction_id;
                 renderOrder(number);
                 setTimeout(() => {
                     logOut()
-                }, 5000);
+                }, 3000);
             }
         }
     });
