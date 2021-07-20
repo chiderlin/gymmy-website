@@ -54,12 +54,35 @@ big_tappay.addEventListener('submit', (event)=>{
             console.log(res.status);
             return;
         }
+        const phone_big = document.getElementById('phone-big').value;
+        const prime = res.card.prime;
+        if(register_user !== null) {
+            uploadPhone(phone_big, (res)=>{
+                sendPrime(prime);
+            });
+
+        }
+    })
+})
+
+small_tappay.addEventListener('submit', (event)=>{
+    event.preventDefault();
+    TPDirect.card.getPrime((res)=>{
+        if(res.status !== 0){
+            // render錯誤訊息
+            console.log(res.status);
+            return;
+        }
+        const phone_small = document.getElementById('phone-small').value;
         const prime = res.card.prime;
         if(register_user !== null) {
             sendPrime(prime);
         }
     })
 })
+
+
+
 
 // 根據plan不同，paypal顯示的plan也不同
 function switch_paypal_btn(){
@@ -95,6 +118,24 @@ function getUser(){
     })
 }
 
+function uploadPhone(phone,cb){
+    const url = '/api/phone';
+    const phone_info = {'phone':phone};
+    fetch(url,{
+        method:"PUT",
+        headers:{
+            "Content-Type": "application/json",
+        },
+        body:JSON.stringify(phone_info)
+    }).then((res)=>{
+        return res.json()
+    }).then((data)=>{
+        if(data.ok === true){
+            return cb(data)
+        }
+    })
+}
+
 function sendPrime(prime){
     const prime_data = {'prime':prime, 'info':register_user}
     console.log(prime_data);
@@ -111,22 +152,8 @@ function sendPrime(prime){
         if(data.ok === true){
             window.location.href = '/thankyou'
         }
-    })
-
-    // logOut_pay(); // 不確定需不需要
-    
+    }) 
 };
-
-function logOut_pay(){
-    const url = '/api/user';
-    fetch(url,{
-        method: "DELETE",
-    }).then((res)=>{
-        return res.json();
-    }).then((data)=>{
-        
-    })
-}
 
 function paypal_paid(subscriptionID){
     const url = '/api/paypal'
@@ -244,7 +271,7 @@ paypal.Buttons({
 
 // tappay
 TPDirect.setupSDK(20343, "app_PxPSoHZCppMvxjkyNzFnuRmqtgvENcu1rDkYKxl8ZOZHjJfKOkCtAxpmKKbW", "Sandbox");
-let fields = {
+let fields_big = {
     number: {
         element: "#card-number",
         placeholder: " 4242 4242 4242 4242"
@@ -258,8 +285,25 @@ let fields = {
         placeholder: " 123"
     }
 };
+
+let fields_sma = {
+    number: {
+        element: "#card-number-sma",
+        placeholder: " 4242 4242 4242 4242"
+    },
+    expirationDate: {
+        element: "#card-expiration-date-sma",
+        placeholder: " 01 / 23"
+    },
+    ccv: {
+        element: "#card-ccv-sma",
+        placeholder: " 123"
+    }
+};
+
+
 TPDirect.card.setup({
-    fields: fields,
+    fields: fields_big,
     styles: {
         'input': {
             'color': 'gray'
@@ -290,4 +334,34 @@ TPDirect.card.setup({
     }
 });
 
-
+TPDirect.card.setup({
+    fields: fields_sma,
+    styles: {
+        'input': {
+            'color': 'gray'
+        },
+        'input.ccv': {
+            'font-size': '16px'
+        },
+        'input.expiration-date': {
+            'font-size': '16px'
+        },
+        'input.card-number': {
+            'font-size': '16px'
+        },
+        ':focus': {
+            'color': 'black'
+        },
+        '.valid': {
+            'color': 'green'
+        },
+        '.invalid': {
+            'color': 'red'
+        },
+        '@media screen and (max-width: 400px)': {
+            'input': {
+                'color': 'orange'
+            }
+        }
+    }
+});

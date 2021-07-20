@@ -14,7 +14,7 @@ pro_plan.addEventListener('click',()=>{
     check_pay()
 });
 
-const overlay_statement = document.querySelector('.overlay-statement');
+
 function check_pay(){
     if(check_login) {
         if(check_active === 'yes') {
@@ -22,9 +22,7 @@ function check_pay(){
             renderStatement('已完成交易程序，即刻開始預定課程')
             overlay_statement.style.display = 'block'
         } else {
-            window.location.href = '/signup-payment';           
-            // renderStatement('請完成繳費程序')
-            // overlay_statement.style.display = 'block'
+            window.location.href = '/signup-payment';
         }
     } else {
         overlay_login_.style.display = 'block';

@@ -1,3 +1,6 @@
+let price;
+let member_info;
+
 // controller
 init()
 function init() {
@@ -27,6 +30,45 @@ select_button2.addEventListener('click', () => {
     booking_form.style.display = 'none';
     history_form.style.display = 'block';
 });
+
+// 選擇方案視窗
+function planBtnProcess(){
+
+    const plan_btn = document.getElementById('plan-btn');
+    const overlay_option = document.querySelector('.overlay-option');
+    plan_btn.addEventListener('click',()=>{
+        overlay_option.style.display = 'block';
+    });
+
+    //選擇方案視窗關閉按鈕
+    const close_btn_for_img_option = document.getElementById('close-btn-for-img-option');
+    close_btn_for_img_option.addEventListener('click', () => {
+        overlay_option.style.display = 'none';
+    });
+
+    //價格選項
+    const basic_plan = document.getElementById('basic-plan');
+    const pro = document.getElementById('pro-plan');
+    basic_plan.addEventListener('click',()=>{
+        price = 888;
+        console.log(price)
+    });
+    pro.addEventListener('click',()=>{
+        price = 1000;
+        console.log(price)
+    });
+
+    // 確認按鈕
+    const check_btn = document.getElementById('check-btn');
+    check_btn.addEventListener('click',()=>{
+        if(price === undefined){
+            renderErrMsg();
+        } else {
+            overlay_option.style.display = 'none';
+        }
+    });
+}
+
 
 // upload_img
 const upload_btn = document.getElementById('upload-btn');
@@ -72,18 +114,29 @@ function selectHistoryDay() {
 
 //開通按鈕流程
 function activeProcess() {
-    const active_btn = document.getElementById('active-btn');
-    if (active_btn === null) {
+    const payment_active_btn = document.getElementById('payment-active-btn');
+    if (payment_active_btn === null) { //已經開通的狀態這邊就會是null
         return;
     } else {
-        active_btn.addEventListener('click', () => {
-            window.location.href = '/signup-payment'
+        payment_active_btn.addEventListener('click', () => {
+            // 如果沒有選擇方案，就不能去開通頁面
+            if(member_info.plan===null || member_info.plan===0){
+                if(price === undefined){
+                    // 提示視窗，請先選擇方案
+                    overlay_statement.style.display = 'block';
+                    renderStatementMsg('請先選擇方案');
+                } else {
+                    // 把方案更新到user 資料庫
+                    uploadPlan(price);
+                    window.location.href = '/signup-payment'
+                }
+            } else {
+                window.location.href = '/signup-payment'
+            }
         })
     }
 }
-function render3data() {
 
-}
 
 
 
@@ -123,6 +176,7 @@ function getMember() {
     fetch(url).then((res) => {
         return res.json();
     }).then((data) => {
+        member_info = data;
         console.log(data);
         if (data !== null) {
             renderMemberInfo(data);
@@ -226,7 +280,19 @@ function deleteBooking(bookingId, callback) {
     })
 };
 
-
+function uploadPlan(plan_option){
+    const url = '/api/plan';
+    const plan = {'plan': plan_option}
+    fetch(url,{
+        method: "PUT",
+        headers:{
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(plan)
+    }).then((res)=>{
+        console.log(res);
+    })
+};
 
 
 // view
@@ -257,14 +323,26 @@ function renderMemberInfo(data) {
         active.appendChild(document.createTextNode('未開通'))
         active.className = 'active-format';
         const active_btn = document.createElement('button');
-        active_btn.id = 'active-btn'
+        active_btn.id = 'payment-active-btn'
         active_btn.className = 'btn class-btn';
         active_btn.appendChild(document.createTextNode('開通'))
         mem_active.appendChild(active);
         mem_active.appendChild(active_btn)
     }
+
+    if(data.plan === null || data.plan ===0){ // 用google登入
+        const plan_btn = document.createElement('button');
+        plan_btn.id = 'plan-btn'
+        plan_btn.className = 'btn class-btn';
+        plan_btn.appendChild(document.createTextNode('選擇方案'))
+        mem_plan.appendChild(plan_btn);
+        planBtnProcess();
+    } else {
+        plan.appendChild(document.createTextNode(format_plan))
+        mem_plan.appendChild(plan);
+    }
     email.appendChild(document.createTextNode(data.email));
-    plan.appendChild(document.createTextNode(format_plan))
+    
     let image_address = data.image;
     if (image_address !== null) { // null就是使用者沒有上傳照片
         img.setAttribute('src', image_address);
@@ -272,7 +350,7 @@ function renderMemberInfo(data) {
         img_box.appendChild(img);
     }
     mem_email.appendChild(email);
-    mem_plan.appendChild(plan);
+    
     activeProcess();
 };
 
@@ -333,7 +411,6 @@ function renderBookingClass(data, btn_or_not) {
 
 function renderHistory(data, search_days) {
     const booking_box = document.querySelector(`#history-booking-box-${search_days}`);
-    console.log(booking_box);
     const booking_class = document.createElement('div');
     const time = document.createElement('div');
     const class_ = document.createElement('div');
@@ -358,4 +435,26 @@ function renderHistory(data, search_days) {
     booking_class.appendChild(room);
     booking_class.appendChild(status);
     booking_box.appendChild(booking_class);
+};
+
+function renderErrMsg(){
+    const option_msg = document.querySelector('.option-msg');
+    option_msg.innerHTML = '';
+    option_msg.appendChild(document.createTextNode('請選擇方案'))  
+};
+
+function renderStatementMsg(msg){
+    const statement_msg_check = document.querySelectorAll('.statement-msg');
+    const statement_page = document.querySelector('.statement-page');
+    if(statement_msg_check.length !==0){ //先check有無render的資料，有先清空
+        for(let i=0; i<statement_msg_check.length; i++){
+            statement_page.removeChild(statement_msg_check[i]);
+        };
+    };
+    const close_btn = document.querySelector('.close-btn')
+    const statement_msg = document.createElement('div');
+    statement_msg.className = 'statement-msg';
+    statement_msg.appendChild(document.createTextNode(msg));
+    statement_page.appendChild(statement_msg);
+    statement_page.insertBefore(statement_msg,close_btn);
 };

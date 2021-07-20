@@ -7,8 +7,8 @@ const sequelize = db.sequelize;
 const User = db.User;
 const axios = require('axios');
 const { OAuth2Client } = require('google-auth-library');
-const CLIENT_ID = '316396796608-q5iv25epumdt98ur8ljs428a2qfsufu6.apps.googleusercontent.com'
-// const CLIENT_ID = '316396796608-1hfr0qr4pmpbgll2gh3d8ce2o9ofhjmb.apps.googleusercontent.com' // localhost
+// const CLIENT_ID = '316396796608-q5iv25epumdt98ur8ljs428a2qfsufu6.apps.googleusercontent.com'
+const CLIENT_ID = '316396796608-1hfr0qr4pmpbgll2gh3d8ce2o9ofhjmb.apps.googleusercontent.com' // localhost
 const client = new OAuth2Client(CLIENT_ID);
 
 
@@ -211,6 +211,7 @@ router.delete('/user', (req, res) => {
     })
 });
 
+
 router.post('/google-login', (req, res) => {
     let token = req.body.id_token;
     // console.log(token);
@@ -258,6 +259,44 @@ router.post('/google-login', (req, res) => {
         }).catch(console.error);
 });
 
+
+router.put('/plan',(req,res)=>{
+    const plan = req.body.plan;
+    User.findOne({
+        where: {
+            email: req.session.email,
+        }
+    }).then((user)=>{
+        user.update({
+            plan: plan,
+        })
+    }).then(()=>{
+        return res.json({'ok':true});
+    }).catch((e)=>{
+        e = e.toString();
+        return res.json({'error':true, 'message':e});
+    })
+    
+});
+
+router.put('/phone',(req,res)=>{
+    const phone = req.body.phone;
+    User.findOne({
+        where: {
+            email: req.session.email,
+        }
+    }).then((user)=>{
+        user.update({
+            phone: phone,
+        })
+    }).then(()=>{
+        return res.json({'ok':true});
+    }).catch((e)=>{
+        e = e.toString();
+        return res.json({'error':true, 'message':e});
+    })
+    
+});
 
 
 module.exports = router;

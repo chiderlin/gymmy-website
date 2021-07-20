@@ -1,22 +1,33 @@
 //controll
 // 價格選項
 const basic_plan = document.getElementById('basic-plan');
+const basic_plan_sma = document.getElementById('basic-plan-sma');
 const pro = document.getElementById('profession');
+const pro_sma = document.getElementById('pro-plan-sma');
 let price;
 let register_info = {}
 basic_plan.addEventListener('click',()=>{
     price = 888;
 
-})
+});
 pro.addEventListener('click',()=>{
     price = 1000;
 
-})
+});
+
+basic_plan_sma.addEventListener('click',()=>{
+    price = 888;
+
+});
+pro_sma.addEventListener('click',()=>{
+    price = 1000;
+
+});
 
 
 // 下一步按鈕
-const next_big = document.getElementById('next-big');
-const next_small = document.getElementById('next-small');
+// const next_big = document.getElementById('next-big');
+// const next_small = document.getElementById('next-small');
 
 
 // 註冊

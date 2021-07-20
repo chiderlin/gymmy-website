@@ -8,7 +8,7 @@ let check_login = false;
 let check_active;
 let num_of_class;
 let student_amount;
-const overlay_statement = document.querySelector('.overlay-statement');
+// const overlay_statement = document.querySelector('.overlay-statement');
 
 init();
 function init() {

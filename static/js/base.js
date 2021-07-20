@@ -71,6 +71,7 @@ login_form.addEventListener('submit', (event) => {
 });
 
 //提示視窗關閉按鈕
+const overlay_statement = document.querySelector('.overlay-statement');
 const close_btn = document.getElementById('close-btn');
 const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
 close_btn.addEventListener('click', () => {
