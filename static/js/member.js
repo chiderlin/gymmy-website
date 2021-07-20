@@ -191,7 +191,7 @@ function getBooking() {
     }).then((api_data) => {
         console.log(api_data);
         const data = api_data.data;
-        if (data !== null) {
+        if (data.length !== 0 && data !== "未登入") {
             for (let i = 0; i < data.length; i++) {
                 // 判斷時間 
                 const class_time = data[i].class_time.substring(0, 10)

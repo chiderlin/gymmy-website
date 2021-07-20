@@ -58,7 +58,7 @@ big_tappay.addEventListener('submit', (event)=>{
         const prime = res.card.prime;
         if(register_user !== null) {
             uploadPhone(phone_big, (res)=>{
-                sendPrime(prime);
+                sendPrime(prime,phone_big);
             });
 
         }
@@ -76,7 +76,9 @@ small_tappay.addEventListener('submit', (event)=>{
         const phone_small = document.getElementById('phone-small').value;
         const prime = res.card.prime;
         if(register_user !== null) {
-            sendPrime(prime);
+            uploadPhone(phone_small, (res)=>{
+                sendPrime(prime,phone_small);
+            });
         }
     })
 })
@@ -136,7 +138,8 @@ function uploadPhone(phone,cb){
     })
 }
 
-function sendPrime(prime){
+function sendPrime(prime, phone){
+    register_user.phone = phone // 一開始phone是null，改上填好的
     const prime_data = {'prime':prime, 'info':register_user}
     console.log(prime_data);
     const url = '/api/pay-by-prime';
