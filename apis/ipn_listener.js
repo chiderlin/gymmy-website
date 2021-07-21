@@ -44,17 +44,18 @@ class IPNController {
                     break;
                 case 'recurring_payment':
                     const status = body.payment_status;
-                    const amount = body.mc_gross;
-                    const amount2 = body.amount;
                     const curreny = body.mc_currency;
+                    const amount = body.amount;
                     const next_payment_date = body.next_payment_date;
                     const time_created = body.time_created;
                     console.log(status);
                     console.log(amount);
-                    console.log(amount2);
                     console.log(curreny);
+                    let test = new Date(next_payment_date).toLocaleString('chinese',{hour12: false});
                     console.log(next_payment_date);
+                    console.log(test);
                     console.log(time_created);
+                    break;
                 default:
                     console.log('Unhandled transaction type: ', transactionType);
             }
