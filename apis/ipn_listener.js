@@ -79,9 +79,8 @@ class PayPalService {
 
             // Make a post request to PayPal
             request(options, (error, response, resBody) => {
-                console.log(response.statusCode);
                 console.log(response);
-                if (error || response.statusCode !== 200) {
+                if (error) { //response.statusCode !== 200
                     reject(new Error(error));
                     return;
                 }
