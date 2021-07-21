@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const ipn = require('paypal-ipn');
-const request = require('request');
+// const request = require('request');
 
 class IPNController {
 
@@ -42,6 +42,19 @@ class IPNController {
                 case 'recurring_payment_suspended_due_to_max_failed_payment':
                     // Contact the user for more details
                     break;
+                case 'recurring_payment':
+                    const status = body.payment_status;
+                    const amount = body.mc_gross;
+                    const amount2 = body.amount;
+                    const curreny = body.mc_currency;
+                    const next_payment_date = body.next_payment_date;
+                    const time_created = body.time_created;
+                    console.log(status);
+                    console.log(amount);
+                    console.log(amount2);
+                    console.log(curreny);
+                    console.log(next_payment_date);
+                    console.log(time_created);
                 default:
                     console.log('Unhandled transaction type: ', transactionType);
             }
@@ -68,15 +81,7 @@ class PayPalService {
                 return key;
             });
             console.log(postreq);
-            const options = {
-                url: 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr',
-                method: 'POST',
-                headers: {
-                    'Content-Length': postreq.length,
-                },
-                encoding: 'utf-8',
-                body: postreq
-            };
+
 
             axios.post('https://ipnpb.sandbox.paypal.com/cgi-bin/webscr', postreq, {
                 headers:{
@@ -110,6 +115,17 @@ class PayPalService {
                     console.log('Error', error.message);
                 }
             })
+
+            // const options = {
+            //     url: 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr',
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Length': postreq.length,
+            //     },
+            //     encoding: 'utf-8',
+            //     body: postreq
+            // };
+
             // Make a post request to PayPal
             // request(options, (error, response, resBody) => {
             //     console.log(response.statusCode);
