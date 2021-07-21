@@ -78,7 +78,7 @@ class PayPalService {
                 body: postreq
             };
 
-            axios.post(url, postreq, {
+            axios.post('https://ipnpb.sandbox.paypal.com/cgi-bin/webscr', postreq, {
                 headers:{
                     'Content-Length': postreq.length,
                     'User-Agent': 'Nodejs-IPN-VerificationScript',
