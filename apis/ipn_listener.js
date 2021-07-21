@@ -29,6 +29,7 @@ class IPNController {
                 case 'subscr_payment':
                     const status = body.payment_status;
                     const amount = body.mc_gross;
+                    console.log('status:',status)
                     // Validate that the status is completed, 
                     // and the amount match your expectaions.
                     break;
@@ -66,7 +67,7 @@ class PayPalService {
                 postreq = `${postreq}&${key}=${body[key]}`;
                 return key;
             });
-            console.log('paypal body:', body);
+            console.log(postreq);
             const options = {
                 url: 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr',
                 method: 'POST',
@@ -77,23 +78,55 @@ class PayPalService {
                 body: postreq
             };
 
-            // Make a post request to PayPal
-            request(options, (error, response, resBody) => {
-                console.log(response.statusCode);
-                if (error || response.statusCode !== 200) { 
-                    reject(new Error(error));
-                    return;
-                }
+            axios.post(url, postreq, {
+                headers:{
+                    'Content-Length': postreq.length,
+                    'User-Agent': 'Nodejs-IPN-VerificationScript',
+                },
 
-                // Validate the response from PayPal and resolve / reject the promise.
-                if (resBody.substring(0, 8) === 'VERIFIED') {
+            }).then((result)=>{
+                console.log(result.status);
+                console.log(result.data);
+                if(result.data.substring(0,8) === 'VERIFIED') {
+                    console.log('VERIFIED');
                     resolve(true);
-                } else if (resBody.substring(0, 7) === 'INVALID') {
+                } else if (result.substring(0,7) === 'INVALID') {
+                    console.log('INVALID');
                     reject(new Error('IPN Message is invalid.'));
                 } else {
                     reject(new Error('Unexpected response body.'));
                 }
-            });
+            }).catch((error)=>{
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+            })
+            // Make a post request to PayPal
+            // request(options, (error, response, resBody) => {
+            //     console.log(response.statusCode);
+            //     if (error || response.statusCode !== 200) { 
+            //         reject(new Error(error));
+            //         return;
+            //     }
+
+            //     // Validate the response from PayPal and resolve / reject the promise.
+            //     if (resBody.substring(0, 8) === 'VERIFIED') {
+            //         resolve(true);
+            //     } else if (resBody.substring(0, 7) === 'INVALID') {
+            //         reject(new Error('IPN Message is invalid.'));
+            //     } else {
+            //         reject(new Error('Unexpected response body.'));
+            //     }
+            // });
         });
     }
 
