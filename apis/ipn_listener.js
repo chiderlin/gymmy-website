@@ -27,9 +27,9 @@ class IPNController {
             switch (transactionType) {
                 case 'web_accept':
                 case 'subscr_payment':
-                    const status = body.payment_status;
-                    const amount = body.mc_gross;
-                    console.log('status:',status)
+                    // const status = body.payment_status;
+                    // const amount = body.mc_gross;
+                    // console.log('status:',status)
                     // Validate that the status is completed, 
                     // and the amount match your expectaions.
                     break;
