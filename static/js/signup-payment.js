@@ -49,6 +49,7 @@ if(big_tappay_radio.checked === true) {
 big_tappay.addEventListener('submit', (event)=>{
     event.preventDefault();
     TPDirect.card.getPrime((res)=>{
+        console.log(res);
         if(res.status !== 0){
             // render錯誤訊息
             console.log(res.status);
@@ -56,6 +57,7 @@ big_tappay.addEventListener('submit', (event)=>{
         }
         const phone_big = document.getElementById('phone-big').value;
         const prime = res.card.prime;
+        console.log(register_user)
         if(register_user !== null) {
             uploadPhone(phone_big, (res)=>{
                 sendPrime(prime,phone_big);
@@ -121,7 +123,7 @@ function getUser(){
 }
 
 function uploadPhone(phone,cb){
-    const url = '/api/phone';
+    const url = '/api/user/phone';
     const phone_info = {'phone':phone};
     fetch(url,{
         method:"PUT",

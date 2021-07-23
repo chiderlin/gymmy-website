@@ -237,27 +237,6 @@ function getBooking() {
                         renderHistory(data[i], 7) // 四天～七天
                     }
                 }
-
-
-                // if(class_time>today){ // 不是今天的課
-                //     renderBookingClass(data[i], true);
-
-                // } else if(class_time_info.month === today_info.month && class_time_info.date === today_info.date){ //今天的課
-                //     // 要再判斷，開始上課時間一小時內不能取消預定
-                //     // 現在時間超過結束時間=>renderHistory
-
-                //     if(class_time_info.start_time>today_info.hour){ // 課程小時大
-
-                //         renderBookingClass(data[i],true);
-                //     } else if(class_time_info.start_time===today_info.hour){ //如果小時一樣
-                //         renderBookingClass(data[i],false);
-                //     } else {
-                //         renderHistory(data[i])
-                //     }
-
-                // } else if(class_time<today) {
-                //     renderHistory(data[i])
-
             }
             cancelBookingProcess(); // 等render完再加上取消預定按鈕的功能
         }

@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db_module.js');
-const Sequelize = db.Sequelize;
-const sequelize = db.sequelize;
 const Member = db.Member;
 const User = db.User;
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 const multer = require('multer'); //檔案處理
 const fs = require('fs');
+const auth = require('../middleware/auth.js')
 
 const storage = multer.diskStorage({
     destination: (req,res,callback)=>{
@@ -36,7 +35,7 @@ const upload = multer({
 
 
 const mybucket = 'gymmy';
-router.post('/upload', upload.single('img'),function(req,res,next){
+router.post('/upload', upload.single('img'),auth,function(req,res,next){
     // console.log(req.file);
 
     const stream = fs.createReadStream(`./upload/${req.file.originalname}`);
@@ -53,50 +52,45 @@ router.post('/upload', upload.single('img'),function(req,res,next){
                 if(err){return console.error(err)}
                 console.log('deleted');
             })
-            sequelize.sync().then(() => {
+            User.findOne({
+                where: {
+                    email: req.user.email, //req.session.email
+                },
+                include:Member,
+            }).then((result) => {
+                return JSON.stringify(result, null, 4);
+            }).then((data)=>{
+                data = JSON.parse(data);
+                const userId = data.id
+                const address = `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`
+                if(data.Member === null) { //member沒有這個會員圖片資料
+                    // 在這邊新增資料
+                    Member.create({
+                        image_name: req.file.originalname,
+                        image_address: address,
+                        UserId:userId,
+                    }).then(() => {
+                        // 執行成功印出
 
-                User.findOne({
-                    where: {
-                        email: req.session.email,
-                    },
-                    include:Member,
-                }).then((result) => {
-                    return JSON.stringify(result, null, 4);
-                }).then((data)=>{
-                    data = JSON.parse(data);
-                    const userId = data.id
-                    const address = `https://d1o9l25q4vdj2h.cloudfront.net/member_img/${req.file.originalname}`
-                    if(data.Member === null) { //member沒有這個會員圖片資料
-                        sequelize.sync().then(() => {
-                            // 在這邊新增資料
-                            Member.create({
-                                image_name: req.file.originalname,
-                                image_address: address,
-                                UserId:userId,
-                            }).then(() => {
-                                // 執行成功印出
-    
-                                return res.json({'ok':true, 'address':address});
-                            })
-                        })
-                    } else { //已經有紀錄->更新圖片  3.刪除原本s3上面的照片
-                        sequelize.sync().then(() => {
-                            Member.findOne({
-                                where: {
-                                    UserId: userId,
-                                }
-                            }).then((mem)=>{
-                                mem.update({
-                                    image_name: req.file.originalname,
-                                    image_address: address,
-                                })    
-                            }).then(()=>{
-                                console.log('update done')
-                                return res.json({'ok':true, 'address':address});
-                            })
-                        })
-                    }
-                })
+                        return res.json({'ok':true, 'address':address});
+                    })
+                    
+                } else { //已經有紀錄->更新圖片  3.刪除原本s3上面的照片
+                    Member.findOne({
+                        where: {
+                            UserId: userId,
+                        }
+                    }).then((mem)=>{
+                        mem.update({
+                            image_name: req.file.originalname,
+                            image_address: address,
+                        })    
+                    }).then(()=>{
+                        console.log('update done')
+                        return res.json({'ok':true, 'address':address});
+                    })
+                    
+                }
             })
         })
     } catch(e){
@@ -107,35 +101,33 @@ router.post('/upload', upload.single('img'),function(req,res,next){
 })
 
 // member頁面取得資料
-router.get('/member',(req,res)=>{
-    sequelize.sync().then(() => {
-        User.findOne({
-            where: {
-                email: req.session.email,
-            },
-            include:Member,
-        }).then((result) => {
-            return JSON.stringify(result, null, 4);
-        }).then((api_data)=>{
-            console.log(api_data);
-            api_data = JSON.parse(api_data);
-            const member_email = api_data.email;
-            const member_plan = api_data.plan;
-            const member_active = api_data.active;
-            let member_image;
-            if(api_data.Member !== null){
-                member_image = api_data.Member.image_address;
-            } else {
-                member_image = null;
-            }
-            const data = {
-                'email':member_email,
-                'plan':member_plan,
-                'active':member_active,
-                'image':member_image
-            }
-            return res.json(data);
-        });
+router.get('/member',auth,(req,res)=>{
+    User.findOne({
+        where: {
+            email: req.user.email, //req.session.email
+        },
+        include:Member,
+    }).then((result) => {
+        return JSON.stringify(result, null, 4);
+    }).then((api_data)=>{
+        console.log(api_data);
+        api_data = JSON.parse(api_data);
+        const member_email = api_data.email;
+        const member_plan = api_data.plan;
+        const member_active = api_data.active;
+        let member_image;
+        if(api_data.Member !== null){
+            member_image = api_data.Member.image_address;
+        } else {
+            member_image = null;
+        }
+        const data = {
+            'email':member_email,
+            'plan':member_plan,
+            'active':member_active,
+            'image':member_image
+        }
+        return res.json(data);
     });
 });
 

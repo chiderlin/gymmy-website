@@ -5,7 +5,6 @@ const burger_menu = document.querySelectorAll('.menu-format');
 const big_menu = document.querySelectorAll('li');
 let login_status = false;
 let login_user_info;
-
 init();
 function init() {
     checkLogIn()
@@ -85,10 +84,20 @@ close_btn_for_img_statement.addEventListener('click', () => {
 // module
 function checkLogIn() {
     const url = '/api/user';
-    fetch(url).then((res) => {
+    let token = document.cookie.split('=')[1];
+    fetch(url,{
+        method: "GET",
+        mode: 'no-cors',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res) => {
         return res.json();
     }).then((api_data) => {
         initRenderMenu(api_data);
+        if(api_data.error === true){
+            return;
+        }
         if (api_data.data !== null) {
             login_status = true;
             login_user_info = api_data; //為了會員中心的網址跳轉，把資料變成全域變數
@@ -109,6 +118,7 @@ function login(email, pwd) {
         return res.json();
     }).then((data) => {
         if (data.ok === true) {
+            console.log(data);
             window.location.reload(); // 通過的話 重新load頁面
             loginNavBar();
         }
@@ -152,7 +162,7 @@ function loginNavBar() {
 };
 
 function initRenderMenu(api_data) {
-    if (api_data.data !== null) {
+    if (api_data.data !== undefined) {
         // 登入狀態
         // big screen
         big_menu[0].classList.remove('hide'); // 最新消息
@@ -165,7 +175,7 @@ function initRenderMenu(api_data) {
         burger_menu[1].classList.remove('hide'); // 本月課程
         burger_menu[3].classList.remove('hide'); // 會員中心
         burger_menu[5].classList.remove('hide'); // 登出系統
-    } else {
+    } else if(api_data.error === true){
         // 未登入狀態
         // big screen
         big_menu[0].classList.remove('hide'); // 最新消息

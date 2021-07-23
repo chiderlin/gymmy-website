@@ -1,6 +1,6 @@
 
 let tmp;
-let socket = io();
+// let socket = io();
 let booking_list = []
 let count = 0;
 
