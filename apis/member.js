@@ -35,7 +35,7 @@ const upload = multer({
 
 
 const mybucket = 'gymmy';
-router.post('/upload', upload.single('img'),auth,function(req,res,next){
+router.post('/member/img-upload', upload.single('img'),auth,function(req,res,next){
     // console.log(req.file);
 
     const stream = fs.createReadStream(`./upload/${req.file.originalname}`);
@@ -101,7 +101,7 @@ router.post('/upload', upload.single('img'),auth,function(req,res,next){
 })
 
 // member頁面取得資料
-router.get('/member',auth,(req,res)=>{
+router.get('/member/info',auth,(req,res)=>{
     User.findOne({
         where: {
             email: req.user.email, //req.session.email

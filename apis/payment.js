@@ -7,7 +7,7 @@ const User = db.User;
 const auth = require('../middleware/auth.js')
 
 // order資料
-router.get('/order',auth,(req,res)=>{
+router.get('/payment',auth,(req,res)=>{
     const email = req.user.email
     if(email) { //req.session.email
         const number = req.query.number;
@@ -73,7 +73,7 @@ router.get('/order',auth,(req,res)=>{
 });
 
 // 取得Prime => 付款
-router.post('/pay-by-prime',auth,(req,res)=>{
+router.post('/payment/pay-by-prime',auth,(req,res)=>{
     const email = req.user.email
     // find data
     User.findOne({ // 註冊過
@@ -109,7 +109,7 @@ router.post('/pay-by-prime',auth,(req,res)=>{
 // 1.先確認是不是註冊過
 // 2.建立payment資料
 // 3.更新user active狀態 
-router.post('/paypal',auth,(req,res)=>{
+router.post('/payment/paypal',auth,(req,res)=>{
     const sub_id = req.body.sub_id;
     const email = req.user.email
     User.findOne({ 

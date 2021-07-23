@@ -2,7 +2,7 @@
 order_info();
 
 function order_info(){
-    const url = '/api/order';
+    const url = '/api/payment';
     fetch(url).then((res)=>{
         return res.json()
     }).then((api_data)=>{

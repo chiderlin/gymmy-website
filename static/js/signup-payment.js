@@ -144,7 +144,7 @@ function sendPrime(prime, phone){
     register_user.phone = phone // 一開始phone是null，改上填好的
     const prime_data = {'prime':prime, 'info':register_user}
     console.log(prime_data);
-    const url = '/api/pay-by-prime';
+    const url = '/api/payment/pay-by-prime';
     fetch(url, {
         method: 'POST',
         headers: {
@@ -161,7 +161,7 @@ function sendPrime(prime, phone){
 };
 
 function paypal_paid(subscriptionID){
-    const url = '/api/paypal'
+    const url = '/api/payment/paypal'
     const sub_id = {'sub_id': subscriptionID}
     fetch(url,{
         method: "POST",
@@ -196,7 +196,7 @@ paypal.Buttons({
     },
     onApprove: function(data, actions) {
         //TODO: 呼叫/paypal
-        const url = '/api/paypal'
+        const url = '/api/payment/paypal'
         const userId = {'id':register_user.id};
         paypal_paid(data.subscriptionID)
     //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
@@ -219,7 +219,7 @@ paypal.Buttons({
     },
     onApprove: function(data, actions) {
     //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
-        const url = '/api/paypal'
+        const url = '/api/payment/paypal'
         const userId = {'id':register_user.id};
         paypal_paid(data.subscriptionID)
     
@@ -244,7 +244,7 @@ paypal.Buttons({
       },
       onApprove: function(data, actions) {
         // alert(data.subscriptionID);
-        const url = '/api/paypal'
+        const url = '/api/payment/paypal'
         const userId = {'id':register_user.id};
         paypal_paid(data.subscriptionID)
       }

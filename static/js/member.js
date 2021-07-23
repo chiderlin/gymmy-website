@@ -156,7 +156,7 @@ function uploadImg() {
     const img_file = document.getElementById('img');
     const form = new FormData();
     form.append('img', img_file.files[0]) // get file object
-    const url = "/api/upload"
+    const url = "/api/member/img-upload"
     fetch(url, {
         method: "POST",
         body: form,
@@ -172,7 +172,7 @@ function uploadImg() {
 };
 
 function getMember() {
-    const url = '/api/member'
+    const url = '/api/member/info'
     fetch(url).then((res) => {
         return res.json();
     }).then((data) => {
@@ -260,7 +260,7 @@ function deleteBooking(bookingId, callback) {
 };
 
 function uploadPlan(plan_option){
-    const url = '/api/plan';
+    const url = '/api/user/plan';
     const plan = {'plan': plan_option}
     fetch(url,{
         method: "PUT",

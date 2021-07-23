@@ -245,7 +245,7 @@ router.delete('/user',auth, (req, res) => {
 });
 
 
-router.post('/google-login', (req, res) => {
+router.post('/user/google-login', (req, res) => {
     let token = req.body.id_token;
     // console.log(token);
     let user = {}
@@ -293,7 +293,7 @@ router.post('/google-login', (req, res) => {
 });
 
 
-router.put('/plan',auth,(req, res) => {
+router.put('/user/plan',auth,(req, res) => {
     const plan = req.body.plan;
     const email = req.user.email
     User.findOne({

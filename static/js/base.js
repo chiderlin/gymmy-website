@@ -162,7 +162,7 @@ function loginNavBar() {
 };
 
 function initRenderMenu(api_data) {
-    if (api_data.data !== undefined) {
+    if (api_data.data !== null) {
         // 登入狀態
         // big screen
         big_menu[0].classList.remove('hide'); // 最新消息
@@ -175,7 +175,7 @@ function initRenderMenu(api_data) {
         burger_menu[1].classList.remove('hide'); // 本月課程
         burger_menu[3].classList.remove('hide'); // 會員中心
         burger_menu[5].classList.remove('hide'); // 登出系統
-    } else if(api_data.error === true){
+    } else {
         // 未登入狀態
         // big screen
         big_menu[0].classList.remove('hide'); // 最新消息
@@ -244,7 +244,7 @@ function onSuccess(googleUser) {
     const token = {
         'id_token': id_token
     }
-    const URL = '/api/google-login';
+    const URL = '/api/user/google-login';
     fetch(URL, {
         method: "POST",
         headers: {
