@@ -10,6 +10,19 @@ function init() {
     checkLogIn()
 };
 
+// back to top button
+const back_to_top = document.querySelector('.top');
+back_to_top.addEventListener('click',()=>{
+    document.body.scrollTop = 0; // for Safari
+    document.documentElement.scrollTop = 0; // for chrome, firefox...
+})
+window.onscroll = ()=>{
+    if(document.documentElement.scrollTop>20 || document.body.scrollTop>20){
+        back_to_top.style.display = 'block';
+    } else {
+        back_to_top.style.display = 'none';
+    }
+}
 
 // 登出按鈕
 big_menu[5].addEventListener('click', () => {
@@ -79,6 +92,31 @@ close_btn.addEventListener('click', () => {
 close_btn_for_img_statement.addEventListener('click', () => {
     overlay_statement.style.display = 'none';
 })
+
+// 客服按鈕
+const customer_service_box = document.querySelector('.customer-service-box');
+const customer_service = document.querySelector('.customer-service');
+customer_service.addEventListener('click',()=>{
+    customer_service_box.style.display = 'block';
+})
+
+
+// 客服視窗關閉
+const close_btn_for_img_customer = document.getElementById('close-btn-for-img-customer');
+close_btn_for_img_customer.addEventListener('click', () => {
+    customer_service_box.style.display = 'none';
+})
+
+// 送出客服表單
+const customer_form = document.getElementById('customer-form');
+customer_form.addEventListener('submit',(event)=>{
+    event.preventDefault();
+    const customer_name = document.getElementById('customer-name').value;
+    const customer_email = document.getElementById('customer-email').value;
+    const customer_msg = document.getElementById('customer-msg').value;
+
+})
+
 
 
 // module
@@ -197,6 +235,7 @@ function renderErrorMsg(msg) {
     login_msg.appendChild(document.createTextNode(msg));
 };
 
+
 // ===========================
 
 
@@ -229,6 +268,7 @@ function renderErrorMsg(msg) {
 //     // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 // }
 
+// google sign in
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {

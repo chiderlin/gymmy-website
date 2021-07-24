@@ -1,11 +1,13 @@
 let check_login = false;
 let check_active;
-checkLogIn();
-
 const basic_plan = document.getElementById('888-btn');
 const pro_plan = document.getElementById('1000-btn');
 const contact  = document.getElementById('contact');
 const overlay_login_ = document.querySelector('.overlay-login');
+
+
+// controller
+checkLogIn();
 basic_plan.addEventListener('click',()=>{
     check_pay();
 });

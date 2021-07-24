@@ -11,10 +11,11 @@ let student_amount;
 // const overlay_statement = document.querySelector('.overlay-statement');
 
 init();
-function init() {
+async function init() {
     getClassData();
     checkLogIn();
-    bookingStudent(classId);
+    await bookingStudent(classId);
+    checkRender()
 };
 
 // 預定按鈕流程
@@ -215,4 +216,9 @@ function renderStatement(msg){
     statement_msg.appendChild(document.createTextNode(msg));
     statement_page.appendChild(statement_msg);
     statement_page.insertBefore(statement_msg,close_btn);
+};
+
+function checkRender() {
+    const loading_circle = document.querySelector('.loading-box');
+    loading_circle.style.display = 'none';
 };

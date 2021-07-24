@@ -18,7 +18,7 @@
     margin: 20px;
     background-image: url('/png/icon/user.png');
     background-size: contain; /* 讓圖片是中大小塞在框框裡 */
-    
+    position: relative;
 }
 
 .mem-photo {
@@ -264,4 +264,33 @@
     text-align: end;
     padding: 0 15px;
     color: red;
+}
+
+
+/* loading */
+.loading-box{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0; bottom:0;
+    left:0; right:0;
+    z-index:200;
+    /* display:none; */
+    background-color: rgba(255, 250, 250, 0.5);
+}
+
+
+.loading-space{
+    display:flex;
+    justify-content:center;
+    position:absolute;
+    top:50%;
+    left:50%;
+}
+
+.img-circle{
+    position: absolute;
+    top:40%;
+    left:40%;
+    display: none;
 }

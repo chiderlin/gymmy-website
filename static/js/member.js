@@ -3,10 +3,11 @@ let member_info;
 
 // controller
 init()
-function init() {
+async function init() {
     checkLogIn();
     getMember();
-    getBooking();
+    await getBooking();
+    checkRender()
 }
 
 const select_button1 = document.querySelector('#booking');
@@ -74,6 +75,7 @@ function planBtnProcess(){
 const upload_btn = document.getElementById('upload-btn');
 upload_btn.addEventListener('click', () => {
     uploadImg();
+    imgLoadingCircle();
 })
 
 function cancelBookingProcess() {
@@ -279,10 +281,17 @@ function renderUpload(img_address) {
     const img_box = document.querySelector('.img-box');
     img_box.innerHTML = ''
     const img = document.createElement('img');
+    const circle = document.createElement('div');
+    const span = document.createElement('span')
     img.setAttribute('src', img_address);
+    circle.className = 'spinner-border text-secondary img-circle'
+    span.className = 'visually-hidden'
     img.className = 'mem-photo';
     img_box.appendChild(img);
+    circle.appendChild(span);
+    img_box.appendChild(circle);
 };
+
 
 function renderMemberInfo(data) {
     const mem_email = document.getElementById('email');
@@ -290,11 +299,15 @@ function renderMemberInfo(data) {
     const mem_active = document.getElementById('active')
     const img_box = document.querySelector('.img-box');
     const img = document.createElement('img');
+    const circle = document.createElement('div');
+    const span = document.createElement('span')
     const email = document.createElement('div');
     const plan = document.createElement('div');
     const active = document.createElement('div');
     const format_plan = plan_transform(data.plan);
     const active_check = check_active(data.active);
+    circle.className = 'spinner-border text-secondary img-circle'
+    span.className = 'visually-hidden'
     if (active_check) {
         active.appendChild(document.createTextNode('開通'))
         mem_active.appendChild(active);
@@ -329,6 +342,8 @@ function renderMemberInfo(data) {
         img_box.appendChild(img);
     }
     mem_email.appendChild(email);
+    circle.appendChild(span);
+    img_box.appendChild(circle);
     
     activeProcess();
 };
@@ -437,3 +452,14 @@ function renderStatementMsg(msg){
     statement_page.appendChild(statement_msg);
     statement_page.insertBefore(statement_msg,close_btn);
 };
+
+function checkRender() {
+    const loading_circle = document.querySelector('.loading-box');
+    loading_circle.style.display = 'none';
+};
+
+function imgLoadingCircle(){
+    const img_circle = document.querySelector('.img-circle');
+    console.log(img_circle);
+    img_circle.style.display = 'block';
+}
