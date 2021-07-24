@@ -23,14 +23,17 @@ p {
 .class-img-block {
     margin-top: 50px;
     display: flex;
+    width:90%;
+    height: 90%;
     justify-content: center;
+    margin-left: 30px;
     background-color: gray;
 }
-/* 
+
 .img-class {
     max-width: 100%;
     max-height: 100%;
-} */
+}
 
 
 
