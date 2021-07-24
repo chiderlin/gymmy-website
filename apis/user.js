@@ -257,6 +257,7 @@ router.post('/user/google-login', (req, res) => {
             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         });
         const payload = ticket.getPayload();
+        console.log(payload);
         user.name = payload.name;
         user.email = payload.email
     };
@@ -278,14 +279,26 @@ router.post('/user/google-login', (req, res) => {
                         auth: 2,
                         active: 'no',
                     }).then(() => {
-                        req.session.email = user.email;
-                        res.cookie('jwt-token', token)
+                        const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '7 days' });
+                        res.cookie('jwt', token, {
+                            secure:false,
+                            httpOnly:false,
+                            maxAge: 1000*60*60*60 // 1 hr
+                        });
+                        // req.session.email = user.email;
+
                         return res.json({ 'ok': true });
                     })
                 } else {
-                    req.session.userid = data.id;
-                    req.session.email = user.email;
-                    res.cookie('jwt-token', token)
+                    const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '7 days' });
+                    res.cookie('jwt', token, {
+                        secure:false,
+                        httpOnly:false,
+                        maxAge: 1000*60*60*60 // 1 hr
+                    });
+                    // req.session.userid = data.id;
+                    // req.session.email = user.email;
+                    res.cookie('jwt', token)
                     return res.json({ 'ok': true });
                 }
             })
