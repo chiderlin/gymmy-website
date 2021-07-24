@@ -179,7 +179,7 @@ function renderClass(class_name_zh, desc, img){
     const booking_btn = document.createElement('button');
     booking_btn.className = 'btn btn-lg btn-hover';
     booking_btn.id = 'booking-btn';
-    image.className = 'img-class'
+    
     // desc = desc.replace(' ','');
     // desc = desc.replaceAll('。', '。\n\n')
     let list_desc = Array.from(desc);
@@ -195,7 +195,8 @@ function renderClass(class_name_zh, desc, img){
         
     }
     title_name.appendChild(document.createTextNode(class_name_zh));
-    // image.className = 'img-fluid';
+    // image.className = 'img-class'
+    image.className = 'img-fluid';
     image.setAttribute('src', img);
     class_img_block.appendChild(image);
     booking_btn.appendChild(document.createTextNode('預定課程'))
