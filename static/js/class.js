@@ -179,6 +179,7 @@ function renderClass(class_name_zh, desc, img){
     const booking_btn = document.createElement('button');
     booking_btn.className = 'btn btn-lg btn-hover';
     booking_btn.id = 'booking-btn';
+    image.className = 'img-class'
     // desc = desc.replace(' ','');
     // desc = desc.replaceAll('。', '。\n\n')
     let list_desc = Array.from(desc);

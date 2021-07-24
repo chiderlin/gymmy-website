@@ -26,7 +26,8 @@ p {
     justify-content: center;
 }
 
-img {
+.img-class {
+    display: block;
     max-width: 100%;
 }
 
