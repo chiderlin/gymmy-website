@@ -88,35 +88,48 @@ const close_btn = document.getElementById('close-btn');
 const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
 close_btn.addEventListener('click', () => {
     overlay_statement.style.display = 'none';
-})
+});
 close_btn_for_img_statement.addEventListener('click', () => {
     overlay_statement.style.display = 'none';
-})
+});
 
 // 客服按鈕
 const customer_service_box = document.querySelector('.customer-service-box');
 const customer_service = document.querySelector('.customer-service');
 customer_service.addEventListener('click',()=>{
     customer_service_box.style.display = 'block';
-})
+});
 
 
 // 客服視窗關閉
 const close_btn_for_img_customer = document.getElementById('close-btn-for-img-customer');
 close_btn_for_img_customer.addEventListener('click', () => {
     customer_service_box.style.display = 'none';
-})
+});
 
 // 送出客服表單
 const customer_form = document.getElementById('customer-form');
 customer_form.addEventListener('submit',(event)=>{
     event.preventDefault();
-    const customer_name = document.getElementById('customer-name').value;
-    const customer_email = document.getElementById('customer-email').value;
-    const customer_msg = document.getElementById('customer-msg').value;
+    let customer_name = document.getElementById('customer-name').value;
+    let customer_email = document.getElementById('customer-email').value;
+    let customer_msg = document.getElementById('customer-msg').value;
+    const data = {
+        name:customer_name,
+        email:customer_email,
+        msg:customer_msg  
+    }
+    sendEmail(data)
+});
 
-})
-
+function sendEmailProcess(){
+    renderStatement('信件已寄送完成')
+    document.getElementById('customer-name').value = ''
+    document.getElementById('customer-email').value= ''
+    document.getElementById('customer-msg').value = ''
+    customer_service_box.style.display = 'none';
+    overlay_statement.style.display = 'block';
+};
 
 
 // module
@@ -179,6 +192,23 @@ function logOut() {
     })
 };
 
+function sendEmail(customer_data){
+    const url = '/api/mail';
+    fetch(url,{
+        method:"POST",
+        headers:{
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customer_data)
+    })
+    .then(res=>res.json())
+    .then(data => {
+        console.log(data)
+        if(data.ok === true){
+            sendEmailProcess();
+        }
+    });
+};
 
 
 // view
@@ -235,6 +265,21 @@ function renderErrorMsg(msg) {
     login_msg.appendChild(document.createTextNode(msg));
 };
 
+function renderStatement(msg){
+    const statement_msg_check = document.querySelectorAll('.statement-msg');
+    const statement_page = document.querySelector('.statement-page');
+    if(statement_msg_check.length !==0){ //先check有無render的資料，有先清空
+        for(let i=0; i<statement_msg_check.length; i++){
+            statement_page.removeChild(statement_msg_check[i]);
+        };
+    };
+    const close_btn = document.querySelector('.close-btn')
+    const statement_msg = document.createElement('div');
+    statement_msg.className = 'statement-msg';
+    statement_msg.appendChild(document.createTextNode(msg));
+    statement_page.appendChild(statement_msg);
+    statement_page.insertBefore(statement_msg,close_btn);
+};
 
 // ===========================
 
@@ -274,7 +319,7 @@ function signOut() {
     auth2.signOut().then(function () {
         console.log('User signed out.');
     });
-}
+};
 
 
 function onSuccess(googleUser) {
@@ -301,10 +346,12 @@ function onSuccess(googleUser) {
         }
     })
 
-}
+};
+
 function onFailure(error) {
     console.log(error);
-}
+};
+
 function renderButton() {
     gapi.signin2.render('my-signin2', {
         'scope': 'profile email',
@@ -315,4 +362,4 @@ function renderButton() {
         'onsuccess': onSuccess,
         'onfailure': onFailure
     });
-}
+};

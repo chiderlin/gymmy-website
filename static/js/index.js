@@ -50,7 +50,7 @@ function checkLogIn(){
             check_login = false;
         }
     })
-}
+};
 
 //view
 function renderStatement(msg){

@@ -41,12 +41,14 @@ const user = require('./apis/user');
 const payment = require('./apis/payment');
 const member = require('./apis/member');
 const booking = require('./apis/booking');
+const mail = require('./apis/mail');
 const ipn = require('./apis/ipn_listener')
 app.use('/api', classes);
 app.use('/api', user); 
 app.use('/api', payment);
 app.use('/api', member);
 app.use('/api', booking);
+app.use('/api', mail);
 app.use('/ipn', ipn);
 
 
