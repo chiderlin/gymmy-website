@@ -1,9 +1,10 @@
 let check_login = false;
 let check_active;
+let check_plan;
 const basic_plan = document.getElementById('888-btn');
 const pro_plan = document.getElementById('1000-btn');
 const contact  = document.getElementById('contact');
-const overlay_login_ = document.querySelector('.overlay-login');
+
 
 
 // controller
@@ -16,6 +17,9 @@ pro_plan.addEventListener('click',()=>{
     check_pay()
 });
 
+contact.addEventListener('click',()=>{
+    customer_service_box.style.display = 'block';
+})
 
 function check_pay(){
     if(check_login) {
@@ -24,10 +28,15 @@ function check_pay(){
             renderStatement('已完成交易程序，即刻開始預定課程')
             overlay_statement.style.display = 'block'
         } else {
-            window.location.href = '/signup-payment';
+            if(check_plan){
+                window.location.href = '/signup-payment';
+            } else {
+                renderStatement('請到會員中心選擇方案')
+                overlay_statement.style.display = 'block'
+            }
         }
     } else {
-        overlay_login_.style.display = 'block';
+        overlay_login.style.display = 'block';
     }
 };
 
@@ -46,6 +55,7 @@ function checkLogIn(){
         if(api_data.data !== null) {
             check_login = true;
             check_active = api_data.data.active
+            check_plan = api_data.data.plan
         } else {
             check_login = false;
         }

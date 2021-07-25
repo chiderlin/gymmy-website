@@ -33,11 +33,6 @@ p {
     max-height: 100%;
 }
 
-@media(max-width:366px) {
-    .class-img-block {
-        height: 300px;
-    }
-}
 
 
 /* 預定課程按鈕 */
