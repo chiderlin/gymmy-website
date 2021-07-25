@@ -48,7 +48,7 @@ register_form_small.addEventListener('submit',(event)=>{
     const pwd_sma = document.getElementById('pwd-small').value;
     // const phone_sma = document.getElementById('phone-small').value;
     if(price === undefined){
-        renderMsg('請選擇方案');
+        renderMsgSma('請選擇方案');
     } else {
         register_info = {'name': name_sma, 'email':email_sma, 'pwd':pwd_sma, 'price':price};
         user_register(register_info);
@@ -82,6 +82,12 @@ function user_register(register_info) {
 //view
 function renderMsg(msg){
     const renderMsg = document.getElementById('msg');
+    renderMsg.innerHTML = '';
+    renderMsg.appendChild(document.createTextNode(msg));
+}
+
+function renderMsgSma(msg){
+    const renderMsg = document.getElementById('msg-sma');
     renderMsg.innerHTML = '';
     renderMsg.appendChild(document.createTextNode(msg));
 }
