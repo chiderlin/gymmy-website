@@ -236,7 +236,7 @@ main {
     display:none;
     width:60px;height:60px;
     background-color: #FFA042;
-    position:fixed;top:70%;right:2%; /*top&tight要給相對位置% 才能正確顯示出來， 因為螢幕大小不同不能給固定數字*/
+    position:fixed;bottom:150px;right:2%; 
     z-index:99;
     border-radius: 4px;
     font-size: 20px;color:white;
@@ -254,7 +254,7 @@ main {
     width:60px;height:60px;
     background-color: #575656;
     border-radius: 50%;
-    position:fixed;top:80%;right:2%; /*top&tight要給相對位置% 才能正確顯示出來， 因為螢幕大小不同不能給固定數字*/
+    position:fixed;bottom:80px ;right:2%; /*top&tight要給相對位置% 才能正確顯示出來， 因為螢幕大小不同不能給固定數字*/
     z-index:99;
     border-radius: 4px;
     font-size: 20px;color:white;

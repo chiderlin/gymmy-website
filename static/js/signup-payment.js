@@ -108,9 +108,6 @@ if (divBlock_status === 'none') {
 }
 
 // controller
-
-
-
 const small_tappay_radio = document.getElementById('small-tappay-radio');
 const small_paypal_radio = document.getElementById('small-paypal-radio');
 const small_tappay = document.getElementById('small-tappay');
@@ -157,6 +154,7 @@ big_tappay.addEventListener('submit', (event) => {
         console.log(res);
         if (res.status !== 0) {
             // render錯誤訊息
+            renderErrMsg('信用卡驗證不正確')
             console.log(res.status);
             return;
         }
@@ -178,6 +176,7 @@ small_tappay.addEventListener('submit', (event) => {
         console.log(res);
         if (res.status !== 0) {
             // render錯誤訊息
+            renderErrMsg('信用卡驗證不正確')
             console.log(res.status);
             return;
         }
@@ -283,6 +282,20 @@ function paypal_paid(subscriptionID) {
         // logOut_pay(); //不確定需不需要
     })
 }
+
+// view 
+function renderErrMsg(msg){
+    const error_msg = document.querySelectorAll('.msg');
+    console.log(error_msg);
+    if(divBlock_status === 'none'){
+        error_msg[1].innerHTML = ''
+        error_msg[1].appendChild(document.createTextNode(msg))
+    } else {
+        error_msg[0].innerHTML = ''
+        error_msg[0].appendChild(document.createTextNode(msg))
+    }
+}
+
 
 // 金流
 // paypal 大
