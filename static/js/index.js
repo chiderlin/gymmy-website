@@ -43,24 +43,48 @@ function check_pay(){
 
 
 //model
-function checkLogIn(){
+// function checkLogIn(){
+//     const url = '/api/user';
+//     fetch(url).then((res)=>{
+//         return res.json();
+//     }).then((api_data)=>{
+//         console.log(api_data)
+//         if(api_data.error === true){
+//             return
+//         }
+//         if(api_data.data !== null) {
+//             check_login = true;
+//             check_active = api_data.data.active
+//             check_plan = api_data.data.plan
+//         } else {
+//             check_login = false;
+//         }
+//     })
+// };
+function checkLogIn() {
     const url = '/api/user';
-    fetch(url).then((res)=>{
+    // let token = document.cookie.split('=')[2];
+    // console.log(token)
+    fetch(url,{
+        method: "GET",
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
+    }).then((res) => {
         return res.json();
-    }).then((api_data)=>{
-        console.log(api_data)
+    }).then((api_data) => {
         if(api_data.error === true){
-            return
+            return;
         }
-        if(api_data.data !== null) {
-            check_login = true;
-            check_active = api_data.data.active
-            check_plan = api_data.data.plan
-        } else {
-            check_login = false;
+        if (api_data.data !== null) {
+            login_status = true;
+            login_user_info = api_data; //為了會員中心的網址跳轉，把資料變成全域變數
         }
     })
 };
+
+
 
 //view
 function renderStatement(msg){

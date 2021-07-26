@@ -11,8 +11,9 @@ const client = new OAuth2Client(CLIENT_ID);
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth.js')
 // GET ALL USERS
-router.get('/users', (req, res) => {
-    if (req.session.email === 'admin@admin') {
+router.get('/users',auth, (req, res) => {
+    if(req.user.email === 'admin@admin'){
+    // if (req.session.email === 'admin@admin') {
         User.findAll()
             .then((result) => {
                 return JSON.stringify(result, null, 4);
@@ -47,7 +48,7 @@ router.get('/users', (req, res) => {
 
 // CHECK STATUS(login check)
 router.get('/user',auth, (req, res) => {
-    // console.log(req.user);
+    console.log(req.user);
     User.findOne({
         where: {
             email: req.user.email,
@@ -76,55 +77,6 @@ router.get('/user',auth, (req, res) => {
         }
         return res.json(mem_info);
     })
-
-    // if (req.session.email === undefined) {
-    //     return res.json({ 'data': null });
-    // } else {
-    //     // 查詢db比對
-    //     if (req.session.email === null) {
-    //         return res.json({ 'data': null });
-    //     } else {
-    //         try {
-    //             sequelize.sync().then(() => {
-    //                 User.findOne({
-    //                     where: {
-    //                         email: req.session.email,
-    //                     }
-    //                 }).then((result) => {
-    //                     return JSON.stringify(result, null, 4);
-    //                 }).then((data) => {
-    //                     console.log(data);
-    //                     data = JSON.parse(data);
-    //                     const id = data.id;
-    //                     const name = data.name;
-    //                     const email = data.email;
-    //                     const price = data.plan;
-    //                     const phone = data.phone;
-    //                     const auth = data.auth;
-    //                     const active = data.active;
-    //                     const mem_info = {
-    //                         'data': {
-    //                             'id': id,
-    //                             'name': name,
-    //                             'email': email,
-    //                             'phone': phone,
-    //                             'plan': price,
-    //                             'auth': auth,
-    //                             'active': active,
-    //                         }
-    //                     }
-    //                     return res.json(mem_info);
-    //                 })
-    //             }).catch((e) => {
-    //                 e = e.toString();
-    //                 return res.status(500).json({ 'error': true, 'message': e });
-    //             })
-    //         } catch (e) {
-    //             e = e.toString();
-    //             return res.status(500).json({ 'error': true, 'message': e });
-    //         }
-    //     }
-    // }
 });
 
 
@@ -257,7 +209,7 @@ router.post('/user/google-login', (req, res) => {
             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         });
         const payload = ticket.getPayload();
-        console.log(payload);
+        // console.log(payload);
         user.name = payload.name;
         user.email = payload.email
     };

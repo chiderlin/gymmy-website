@@ -136,17 +136,20 @@ function sendEmailProcess(){
 // module
 function checkLogIn() {
     const url = '/api/user';
-    let token = document.cookie.split('=')[1];
+    // let token = document.cookie.split('=')[2];
+    // console.log(token)
     fetch(url,{
         method: "GET",
-        mode: 'no-cors',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
     }).then((res) => {
         return res.json();
     }).then((api_data) => {
+        console.log(api_data)
         initRenderMenu(api_data);
+        
         if(api_data.error === true){
             return;
         }
@@ -184,8 +187,14 @@ function login(email, pwd) {
 
 function logOut() {
     const url = '/api/user';
+    let token = document.cookie.split('=')[2];
+    console.log(token)
     fetch(url, {
         method: "DELETE",
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
     }).then((res) => {
         return res.json();
     }).then((data) => {
@@ -231,6 +240,18 @@ function loginNavBar() {
 };
 
 function initRenderMenu(api_data) {
+    if(api_data.error === true){
+        // 未登入狀態
+        big_menu[0].classList.remove('hide'); // 本月課程
+        big_menu[1].classList.remove('hide'); // 會員方案
+        big_menu[3].classList.remove('hide'); // 登入/註冊
+
+        // small screen
+        burger_menu[0].classList.remove('hide'); // 本月課程
+        burger_menu[1].classList.remove('hide'); // 會員方案
+        burger_menu[3].classList.remove('hide'); // 登入/註冊
+        return
+    }
     if (api_data.data !== null) {
         // 登入狀態
         // big screen
