@@ -39,19 +39,24 @@
                     <form class="row g-3 p-4 size-control" id="big-tappay">
                         <h3>付款資料</h3>
                         <div class="col-md-12">
+                            <label for="inputPassword4" class="form-label">手機</label>
+                            <input id="phone-big" type="text" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-12">
                             <label for="inputEmail4" class="form-label">信用卡卡號</label>
                             <!-- <input type="email" class="form-control" required> -->
-                            <div class="form-control" id="card-number"></div>
+                            <div class="form-control card-number" ></div>
                         </div>
                         <div class="col-md-12">
                             <label for="inputPassword4" class="form-label">有效日期</label>
                             <!-- <input type="password" class="form-control" required> -->
-                            <div class="form-control" id="card-expiration-date"></div>
+                            <div class="form-control card-expiration-date" ></div>
                         </div>
                         <div class="col-md-12">
                             <label for="inputPassword4" class="form-label">安全碼</label>
                             <!-- <input type="text" class="form-control" required> -->
-                            <div class="form-control" id="card-ccv"></div>
+                            <div class="form-control card-ccv" ></div>
                         </div>
                         <div class="col-12 d-flex justify-content-end align-items-end">
                             <button type="submit" class="btn btn-hover" id="next-big">確定訂閱(2/2)</button>
@@ -122,19 +127,23 @@
                 <form class="row g-3 p-4 size-control shadow" id="small-tappay">
                     <h3>付款資料</h3>
                     <div class="col-md-12">
+                        <label for="inputPassword4" class="form-label">手機</label>
+                        <input id="phone-small" type="text" class="form-control" required>
+                    </div>
+                    <div class="col-md-12">
                         <label for="inputEmail4" class="form-label">信用卡卡號</label>
                         <!-- <input type="email" class="form-control" required> -->
-                        <div class="form-control" id="card-number"></div>
+                        <div class="form-control card-number" id="card-number-sma"></div>
                     </div>
                     <div class="col-md-12">
                         <label for="inputPassword4" class="form-label">有效日期</label>
                         <!-- <input type="password" class="form-control" required> -->
-                        <div class="form-control" id="card-expiration-date"></div>
+                        <div class="form-control card-expiration-date"></div>
                     </div>
                     <div class="col-md-12">
                         <label for="inputPassword4" class="form-label">安全碼</label>
                         <!-- <input type="text" class="form-control" required> -->
-                        <div class="form-control" id="card-ccv"></div>
+                        <div class="form-control card-ccv"></div>
                     </div>
                     <div class="col-12 d-flex justify-content-end align-items-end">
                         <button type="submit" class="btn btn-hover" id="next-small">確定訂閱(2/2)</button>
@@ -160,7 +169,6 @@
                 </div>
 
 
-            </div>
             </div>
     </body>
 

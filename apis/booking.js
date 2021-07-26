@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db_module.js');
-const Sequelize = db.Sequelize;
-const sequelize = db.sequelize;
 const Booking = db.Booking;
 const User = db.User;
 const moment = require('moment');
+const auth = require('../middleware/auth.js')
+
 
 // 後台統計每堂課學員人數
 router.get('/booking/student/:classId', (req, res) => {
@@ -37,7 +37,7 @@ router.get('/booking/student/:classId', (req, res) => {
                     'username': username,
                     'email': email
                 }
-                if (current_date <= class_date) { //大於等於今天的日期，才可以被query出來，不然會跟之前的課重複到
+                if (class_date >= current_date) { //大於等於今天的日期，才可以被query出來，不然會跟之前的課重複到
                     student_list.push(student_info)
                 }
             }
@@ -53,12 +53,13 @@ router.get('/booking/student/:classId', (req, res) => {
 });
 
 // 會員中心預約的課程(本月紀錄)
-router.get('/booking', (req, res) => {
-    if(req.session.userid){
+router.get('/booking',auth, (req, res) => {
+    console.log(req.user);
+    if(req.user.userId){ //req.session.userid
         let list_of_class = []
         Booking.findAll({
             where: {
-                UserId: req.session.userid,
+                UserId: req.user.userId //req.session.userid
             },
             order: [
                 ['class_date', 'asc'],
@@ -103,20 +104,18 @@ router.get('/booking', (req, res) => {
 router.delete('/booking', (req, res) => {
     // 要傳該bookingId近來才可以取消課程/刪除課程
     const bookingId = req.body.bookingId;
-    sequelize.sync().then(() => {
-        Booking.findOne({
-            where: {
-                id: bookingId,
-            }
-        }).then(booking => {
-            booking.destroy().then(() => {
-                return res.json({ 'ok': true });
-            });
+    Booking.findOne({
+        where: {
+            id: bookingId,
+        }
+    }).then(booking => {
+        booking.destroy().then(() => {
+            return res.json({ 'ok': true });
         });
     });
 });
 
-router.post('/booking', (req, res) => {
+router.post('/booking',auth,(req, res) => {
     const class_info = req.body.data;
     if(class_info === undefined){
         return
@@ -161,75 +160,71 @@ router.post('/booking', (req, res) => {
         }).then(() => {
             return res.json({ 'ok': true });
         })
-    } else if (req.session.email) { //一般使用者就會跑這邊
-        sequelize.sync().then(() => {
-            User.findOne({
-                where: {
-                    email: req.session.email,
-                },
-                include: Booking,
-            }).then((result) => {
-                return JSON.stringify(result, null, 4);
-            }).then((data) => {
-                console.log(data);
-                data = JSON.parse(data);
-                const userId = data.id;
-                sequelize.sync().then(() => {
-                    if (JSON.stringify(data.Bookings) === '[]') { //沒有booking資料
-                        // 在這邊新增資料
-                        Booking.create({
-                            UserId: userId,
-                            classId: class_info.classId,
-                            month: class_info.month,
-                            weekday: class_info.weekday,
-                            class_date: class_date,
-                            class_time: class_data_format,
-                            start_time: class_info.start_time,
-                            end_time: class_info.end_time,
-                            class_name: class_info.class_name,
-                            teacher: class_info.teacher,
-                            room: class_info.room,
-
-                        }).then(() => {
-
-                            return res.json({ 'ok': true });
-                        })
-                    } else {
-                        //比對日期＆classId如果一樣表示booking過了
-                        let new_booking = class_info.classId;
-                        const bookings = data.Bookings
-                        for (let i = 0; i < bookings.length; i++) {
-                            const class_time = bookings[i].class_time.substring(0, 10)
-                            if (bookings[i].classId === new_booking) {
-                                if (class_time === class_date) {// 比對日期
-                                    return res.status(400).json({ 'error': true, 'message': '此課程已預訂過' })
-                                }
-                            }
-                        }
-                        Booking.create({
-                            UserId: userId,
-                            classId: class_info.classId,
-                            month: class_info.month,
-                            weekday: class_info.weekday,
-                            class_time: class_data_format,
-                            class_date: class_date,
-                            start_time: class_info.start_time,
-                            end_time: class_info.end_time,
-                            class_name: class_info.class_name,
-                            teacher: class_info.teacher,
-                            room: class_info.room,
-
-                        }).then(() => {
-
-                            return res.json({ 'ok': true });
-                        })
-                    }
+    } else if (req.user.email) { //一般使用者就會跑這邊 //req.session.email
+        
+        User.findOne({
+            where: {
+                email: req.user.email,
+            },
+            include: Booking,
+        }).then((result) => {
+            return JSON.stringify(result, null, 4);
+        }).then((data) => {
+            console.log(data);
+            data = JSON.parse(data);
+            const userId = data.id;
+            if (JSON.stringify(data.Bookings) === '[]') { //沒有booking資料
+                // 在這邊新增資料
+                Booking.create({
+                    UserId: userId,
+                    classId: class_info.classId,
+                    month: class_info.month,
+                    weekday: class_info.weekday,
+                    class_date: class_date,
+                    class_time: class_data_format,
+                    start_time: class_info.start_time,
+                    end_time: class_info.end_time,
+                    class_name: class_info.class_name,
+                    teacher: class_info.teacher,
+                    room: class_info.room,
+                }).then(() => {
+                    return res.json({ 'ok': true });
                 })
-            }).catch((e) => {
-                e = e.toString();
-                return res.status(500).json({ 'error': true, 'message': e });
-            })
+            } else {
+                //比對日期＆classId如果一樣表示booking過了
+                let new_booking = class_info.classId;
+                const bookings = data.Bookings
+                for (let i = 0; i < bookings.length; i++) {
+                    const class_time = bookings[i].class_time.substring(0, 10)
+                    if (bookings[i].classId === new_booking) {
+                        if (class_time === class_date) {// 比對日期
+                            return res.status(400).json({ 'error': true, 'message': '此課程已預訂過' })
+                        }
+                    }
+                }
+                Booking.create({
+                    UserId: userId,
+                    classId: class_info.classId,
+                    month: class_info.month,
+                    weekday: class_info.weekday,
+                    class_time: class_data_format,
+                    class_date: class_date,
+                    start_time: class_info.start_time,
+                    end_time: class_info.end_time,
+                    class_name: class_info.class_name,
+                    teacher: class_info.teacher,
+                    room: class_info.room,
+
+                }).then(() => {
+                    return res.json({ 'ok': true });
+                })
+            }
+            
+        }).catch((e) => {
+            e = e.toString();
+            return res.status(500).json({ 'error': true, 'message': e });
         })
+        
     } else {
         return res.status(400).json({ 'error': true, 'message': '請先登入' });
     }

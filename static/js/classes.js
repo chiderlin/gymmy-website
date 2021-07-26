@@ -1,6 +1,6 @@
 
 let tmp;
-let socket = io();
+// let socket = io();
 let booking_list = []
 let count = 0;
 
@@ -38,8 +38,9 @@ function getClassList() {
             renderBigClass(renderBox)
             renderSmallClass(renderBox)
         }
-        // changeLoadingStatus()
-
+        setTimeout(() => {
+            checkRender();
+        }, 2000);
     }).catch((err) => {
         console.log(err);
     })
@@ -117,14 +118,14 @@ function renderBigClass(renderBox) {
         'start_time': renderBox.start_time,
         'end_time': renderBox.end_time
     }
-    socket_listener(class_block, current_class, compare_time)
+    currentClassCheck(class_block, current_class, compare_time)
     bookingStudent(renderBox.id, renderBox.weekday, class_block)
-    setInterval(() => {
-        socket_listener(class_block, current_class, compare_time)
-    }, 1000*60);
+    // setInterval(() => {
+    //     socket_listener(class_block, current_class, compare_time)
+    // }, 1000 * 60);
 };
 
-function socket_listener(block, current_class, compare_time) {
+function currentClassCheck(block, current_class, compare_time) {
 
     const current = new Date();
     let current_day = current.getDay();
@@ -278,10 +279,10 @@ function renderSmallClass(renderBox) {
         'start_time': renderBox.start_time,
         'end_time': renderBox.end_time
     }
-    socket_listener(col_12, current_class, compare_time)
-    setInterval(() => {
-        socket_listener(col_12, current_class, compare_time)
-    }, 1000*60);
+    currentClassCheck(col_12, current_class, compare_time)
+    // setInterval(() => {
+    //     socket_listener(col_12, current_class, compare_time)
+    // }, 1000 * 60);
     bookingStudent(renderBox.id, renderBox.weekday, col_12)
 };
 
@@ -297,6 +298,11 @@ function renderBookingStatus(msg, class_block) {
     }
     status.appendChild(document.createTextNode(msg));
     class_block.appendChild(status);
+};
+
+function checkRender() {
+    const loading_circle = document.querySelector('.loading-box');
+    loading_circle.style.display = 'none';
 };
 
 

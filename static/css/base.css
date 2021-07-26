@@ -20,7 +20,6 @@ a:hover {
 
 body {
     margin: 0;
-    overflow-x:hidden;
 }
 
 main {
@@ -35,14 +34,15 @@ main {
 }
 .img-block {
     position: absolute;
-    top:5px;
     right:30px;
+}
+.img-box-github-icon{
     width:50px;
-    height:30px;
-
+    height:40px;
 }
 .img-fluid{
-    max-width: 60%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 
@@ -59,7 +59,8 @@ main {
 
 /* navbar是bootstrap有預設的  */
 .navbar-c {
-    width: 1920px; /*讓navbar開到最大(最兩邊)*/
+    /*讓navbar開到最大(最兩邊)*/
+    width: 1920px; 
     display: flex;
 }
 
@@ -228,4 +229,39 @@ main {
 /* navbar切換 */
 .hide {
     display: none;
+}
+
+/* back to top button */
+.top{
+    display:none;
+    width:60px;height:60px;
+    background-color: #FFA042;
+    position:fixed;bottom:150px;right:2%; 
+    z-index:99;
+    border-radius: 4px;
+    font-size: 20px;color:white;
+    text-align: center;
+    line-height:2.8;
+}
+.top:hover{
+    background-color:#7B7B7B;
+    cursor:pointer;
+}
+
+/* 客服按鈕 */
+.customer-service{
+    /* display:none; */
+    width:60px;height:60px;
+    background-color: #575656;
+    border-radius: 50%;
+    position:fixed;bottom:80px ;right:2%; /*top&tight要給相對位置% 才能正確顯示出來， 因為螢幕大小不同不能給固定數字*/
+    z-index:99;
+    border-radius: 4px;
+    font-size: 20px;color:white;
+    text-align: center;
+    line-height:2.8;
+}
+.customer-service:hover{
+    background-color:#7B7B7B;
+    cursor:pointer;
 }

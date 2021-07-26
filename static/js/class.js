@@ -7,12 +7,15 @@ let class_info;
 let check_login = false;
 let check_active;
 let num_of_class;
-const overlay_statement = document.querySelector('.overlay-statement');
+let student_amount;
+// const overlay_statement = document.querySelector('.overlay-statement');
 
 init();
-function init() {
+async function init() {
     getClassData();
     checkLogIn();
+    await bookingStudent(classId);
+    checkRender()
 };
 
 // 預定按鈕流程
@@ -35,6 +38,11 @@ function checkBookingBtn(weekday){
         // 呼叫booking api
         if(check_login) {
             if(check_active === 'yes') {
+                if(student_amount === 15) {
+                    renderStatement('課程人數已額滿');
+                    overlay_statement.style.display = 'block';
+                    return
+                }
                 if(check_plan === 888){
                     if(weekday === 6 || weekday === 7){
                         renderStatement('方案入門版只能預定週一至週五課程');
@@ -144,12 +152,20 @@ function getBooking(cb){
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        console.log(api_data);
         return cb(api_data.data.length)
-        
     });
 };
 
+function bookingStudent(classId) {
+    const url = `/api/booking/student/${classId}`
+    fetch(url)
+        .then(res => res.json())
+        .then((api_data) => {
+            console.log(api_data);
+            student_amount = api_data.data.length
+        })
+
+};
 
 
 //view
@@ -163,6 +179,7 @@ function renderClass(class_name_zh, desc, img){
     const booking_btn = document.createElement('button');
     booking_btn.className = 'btn btn-lg btn-hover';
     booking_btn.id = 'booking-btn';
+    
     // desc = desc.replace(' ','');
     // desc = desc.replaceAll('。', '。\n\n')
     let list_desc = Array.from(desc);
@@ -178,6 +195,7 @@ function renderClass(class_name_zh, desc, img){
         
     }
     title_name.appendChild(document.createTextNode(class_name_zh));
+    image.className = 'img-class'
     // image.className = 'img-fluid';
     image.setAttribute('src', img);
     class_img_block.appendChild(image);
@@ -200,4 +218,9 @@ function renderStatement(msg){
     statement_msg.appendChild(document.createTextNode(msg));
     statement_page.appendChild(statement_msg);
     statement_page.insertBefore(statement_msg,close_btn);
+};
+
+function checkRender() {
+    const loading_circle = document.querySelector('.loading-box');
+    loading_circle.style.display = 'none';
 };

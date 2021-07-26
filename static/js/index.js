@@ -1,11 +1,14 @@
 let check_login = false;
 let check_active;
-checkLogIn();
-
+let check_plan;
 const basic_plan = document.getElementById('888-btn');
 const pro_plan = document.getElementById('1000-btn');
 const contact  = document.getElementById('contact');
-const overlay_login_ = document.querySelector('.overlay-login');
+
+
+
+// controller
+checkLogIn();
 basic_plan.addEventListener('click',()=>{
     check_pay();
 });
@@ -14,7 +17,10 @@ pro_plan.addEventListener('click',()=>{
     check_pay()
 });
 
-const overlay_statement = document.querySelector('.overlay-statement');
+contact.addEventListener('click',()=>{
+    customer_service_box.style.display = 'block';
+})
+
 function check_pay(){
     if(check_login) {
         if(check_active === 'yes') {
@@ -22,31 +28,63 @@ function check_pay(){
             renderStatement('已完成交易程序，即刻開始預定課程')
             overlay_statement.style.display = 'block'
         } else {
-            window.location.href = '/signup-payment';           
-            // renderStatement('請完成繳費程序')
-            // overlay_statement.style.display = 'block'
+            if(check_plan){
+                window.location.href = '/signup-payment';
+            } else {
+                renderStatement('請到會員中心選擇方案')
+                overlay_statement.style.display = 'block'
+            }
         }
     } else {
-        overlay_login_.style.display = 'block';
+        overlay_login.style.display = 'block';
     }
 };
 
 
 
 //model
-function checkLogIn(){
+// function checkLogIn(){
+//     const url = '/api/user';
+//     fetch(url).then((res)=>{
+//         return res.json();
+//     }).then((api_data)=>{
+//         console.log(api_data)
+//         if(api_data.error === true){
+//             return
+//         }
+//         if(api_data.data !== null) {
+//             check_login = true;
+//             check_active = api_data.data.active
+//             check_plan = api_data.data.plan
+//         } else {
+//             check_login = false;
+//         }
+//     })
+// };
+function checkLogIn() {
     const url = '/api/user';
-    fetch(url).then((res)=>{
+    // let token = document.cookie.split('=')[2];
+    // console.log(token)
+    fetch(url,{
+        method: "GET",
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
+    }).then((res) => {
         return res.json();
-    }).then((api_data)=>{
-        if(api_data.data !== null) {
-            check_login = true;
-            check_active = api_data.data.active
-        } else {
-            check_login = false;
+    }).then((api_data) => {
+        if(api_data.error === true){
+            return;
+        }
+        if (api_data.data !== null) {
+            login_status = true;
+            login_user_info = api_data; //為了會員中心的網址跳轉，把資料變成全域變數
         }
     })
-}
+};
+
+
 
 //view
 function renderStatement(msg){

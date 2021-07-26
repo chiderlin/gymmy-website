@@ -2,12 +2,68 @@
     <link rel="stylesheet" href="/css/member.css">
 
     <body>
+        <!-- loading circle -->
+        <div class="loading-box">
+            <div class="loading-space">
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
         <%- include('./partials/navbar.ejs') %>
+        <div class="overlay-option">
+            <div class="option-block1">
+                <div class="option-block">
+                    <div class="option-page">
+                        <label for="login-close-btn">
+                            <img id="close-btn-for-img-option" src="/png/icon/icon_close.png">
+                        </label>
+                        <input type="button" name="close" id="login-close-btn">
+                        <div class="login-title">選擇方案</div>
+                        <!-- price card -->
+                        <div class="price-card">
+                            <div class="card text-center m-2 price-card-format">
+                                <div class="card-body">
+                                    <h5 class="card-title">入門方案</h5>
+                                    <p class="card-text">NT$888/月</p>
+                                    <div class="form-check d-flex justify-content-center">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="basic-plan">
+                                        <label class="form-check-label" for="basic-plan">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card text-center m-2 price-card-format">
+                                <div class="card-body">
+                                    <h5 class="card-title">專業方案</h5>
+                                    <p class="card-text">NT$1000/月</p>
+                                    <div class="form-check d-flex justify-content-center">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                            id="pro-plan">
+                                        <label class="form-check-label" for="pro-plan">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="check-btn">
+                            <button id="check-btn" class="btn btn-hover close">確認</button>
+                        </div>
+                        <div class="option-msg"></div>
+                        <!-- 請選擇方案 -->
+                    </div>
+                </div>
+            </div>
+        </div>
             <h1 class="title-name">會員中心</h1>
             <div class="block-format">
                 <div class="user-info shadow">
                     <div class="upper-block">
                         <div class="img-box">
+                            <!-- <div class="spinner-border text-secondary img-circle" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div> -->
                             <!-- <img src="/png/icon/user.png" class=""> -->
                         </div>
                         <div class="info-block">
@@ -17,7 +73,7 @@
                             <div class="mem-format" id="plan">會員方案：
                                 <!-- <div>專業版</div> -->
                             </div>
-                            <div id="active" class="mem-format active-status">繳費狀態：
+                            <div id="active" class="mem-format">繳費狀態：
                                 <!-- <div style="margin-right: 10px;">未開通</div>
                         <button class="btn class-btn">開通</button> -->
                             </div>

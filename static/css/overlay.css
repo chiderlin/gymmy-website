@@ -150,3 +150,77 @@
     bottom: 60px;
     right:15px;
 }
+
+/* 客服視窗 */
+.customer-service-box{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0; bottom:0;
+    left:0; right:0;
+    z-index:100;
+    display:none;
+}
+
+.customer-block1 {
+    display:flex;
+    width:100%;
+    /* height:200px; */
+    justify-content:flex-end;
+    position:absolute;top:80px;
+    
+}
+.customer-block {
+    display:block;
+    width:340px;height:100%;
+    /* margin: 20px; */
+    background: #ffffff;
+    border-radius:5px;
+    position: relative;
+}
+
+.customer-msg{
+    padding:20px;
+    text-align: center;
+}
+
+.send-btn{
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.send{
+    width:100%; 
+}
+
+.form-format{
+    margin: 10px;
+}
+
+.input-box {
+    margin-bottom: 10px;
+}
+
+.customer-input-format {
+    width:100%;
+    height:40px;
+    padding:10px;
+    border:1px solid #CCCCCC;
+    border-radius:5px;
+    outline:medium;
+}
+.customer-textarea{
+    width:100%;
+    height: 120px;
+    padding:10px;
+    border:1px solid #CCCCCC;
+    border-radius:5px;
+    outline:medium;
+}
+
+#close-btn-for-img-customer {
+    position:absolute;
+    top:17px;
+    right:17px;
+    cursor: pointer;
+}
