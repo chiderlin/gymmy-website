@@ -68,7 +68,6 @@ router.get('/booking',auth, (req, res) => {
         }).then((result) => {
             return JSON.stringify(result, null, 4);
         }).then((data) => {
-            console.log(data);
             data = JSON.parse(data)
             if (data !== null) {
                 for (let i = 0; i < data.length; i++) {
