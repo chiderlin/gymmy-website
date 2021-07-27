@@ -1,12 +1,11 @@
 
-order_info();
+orderInfo();
 
-function order_info(){
+function orderInfo(){
     const url = '/api/payment';
     fetch(url).then((res)=>{
         return res.json()
     }).then((api_data)=>{
-        console.log(api_data);
         const data = api_data.data;
         if(api_data.error === true && api_data.message === '尚未登入系統') {
             window.location.href = '/';

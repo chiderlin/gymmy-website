@@ -85,7 +85,7 @@ function checkLogIn(){
     fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        console.log(api_data);
+
         if(api_data.data !== null) {
             check_login = true;
             check_active = api_data.data.active;
@@ -107,7 +107,7 @@ function getClassData(){
         return res.json();
     }).then((api_data)=>{
         class_info = api_data;
-        console.log(class_info)
+
         const weekday = class_info.weekday;
         const class_name_zh = api_data.class_name_zh;
         const desc = api_data.desc;
@@ -161,7 +161,7 @@ function bookingStudent(classId) {
     fetch(url)
         .then(res => res.json())
         .then((api_data) => {
-            console.log(api_data);
+
             student_amount = api_data.data.length
         })
 
