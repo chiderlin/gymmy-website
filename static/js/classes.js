@@ -1,6 +1,5 @@
 
 let tmp;
-// let socket = io();
 let booking_list = []
 let count = 0;
 
@@ -171,55 +170,6 @@ function currentClassCheck(block, current_class, compare_time) {
             }
         }
     }
-
-
-    // socket.on('current class', (msg)=>{
-
-    //     const current = new Date(msg);
-    //     let current_day = current.getDay();
-    //     if(current_day === 0){
-    //         current_day = 7;
-    //     }
-    //     if(compare_time.weekday === current_day) { 
-    //         const current_hour = current.getHours();
-    //         const current_min = current.getMinutes();
-    //         const start_hour = new Date(compare_time.start_time).getHours();
-    //         const start_min = new Date(compare_time.start_time).getMinutes();
-    //         const end_hour = new Date(compare_time.end_time).getHours();
-    //         const end_min = new Date(compare_time.end_time).getMinutes();
-
-    //         // 小時/分鐘都要比對 
-    //         if(start_hour<current_hour){
-    //             if(current_hour<end_hour){
-    //                 block.classList.add('active-class');
-    //                 block.appendChild(current_class)
-    //             } else if (current_hour === end_hour) {
-    //                 if(current_min<end_min){
-    //                     block.classList.add('active-class');
-    //                     block.appendChild(current_class)
-    //                 }
-    //             }
-    //         } else if(start_hour===current_hour) {
-    //             if(start_min<=current_min){
-    //                 if(current_hour<end_hour){
-
-    //                     block.classList.add('active-class');
-    //                     block.appendChild(current_class)
-    //                 } else if (current_hour === end_hour) {
-    //                     if(current_min<end_min){
-
-    //                         block.classList.add('active-class');
-    //                         block.appendChild(current_class)
-    //                     } else if(current_min === end_min) {
-    //                         current_class.innerHTML = '';
-    //                         block.classList.remove('active-class');
-    //                         block.appendChild(current_class)
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // })
 };
 
 function renderSmallClass(renderBox) {
@@ -305,68 +255,3 @@ function checkRender() {
     loading_circle.style.display = 'none';
 };
 
-
-
-
-//=================
-// renderBigClass裡面的內容： 不用了
-    // const status = document.createElement('div');
-    // status.className = 'status'
-    // class_block.appendChild(status);
-    // let today = new Date().getDay()
-    // if(today === 0){
-    //     today = 7;
-    // }
-    // if(today === renderBox.weekday) {
-    //     status.style.backgroundColor = 'orange';
-    //     status.appendChild(document.createTextNode('不可預定'));
-    // } else {
-    //     if(booking_list[count]>=15){
-    //         status.style.backgroundColor = 'red';
-    //         status.appendChild(document.createTextNode('已額滿'));
-    //     } else {
-    //         status.style.backgroundColor = 'green';
-    //         status.appendChild(document.createTextNode('可預約'))
-    //     }
-    // }
-
-
-    // renderSmallClass裡面的內容： 不用了
-    // const status = document.createElement('div');
-    // let today = new Date().getDay()
-    // if(today === 0){
-    //     today = 7;
-    // }
-    // if(today === renderBox.weekday) {
-    //     status.style.backgroundColor = 'orange';
-    //     status.appendChild(document.createTextNode('不可預定'));
-    // } else {
-    //     if(booking_list[count]>=15){
-    //         status.style.backgroundColor = 'red';
-    //         status.appendChild(document.createTextNode('已額滿'));
-    //     } else {
-    //         status.style.backgroundColor = 'green';
-    //         status.appendChild(document.createTextNode('可預約'))
-    //     }
-    // }
-    // col_12.appendChild(status);
-
-
-
-// async function bookingStudent(classId){ //計算每堂課booking人數
-//     const url = `/api/booking/student/${classId}`
-//     await fetch(url)
-//     .then(res=>res.json())
-//     .then((api_data)=>{
-
-//         const data = api_data.data;
-//         let people;
-
-//         if(data === null){
-//             people = 0
-//         } else{
-//             people = data.length
-//         }
-//         booking_list.push(people)
-//     });
-// };
