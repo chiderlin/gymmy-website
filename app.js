@@ -101,7 +101,12 @@ app.get('/backside-login', (req, res) => {
 
 app.get('/backside-post',(req,res)=>{
     return res.render('backside-post');
-})
+});
+
+// 404 page
+app.get('*',(req,res)=>{
+    res.render('404');
+});
 
 
 app.listen(3001)
