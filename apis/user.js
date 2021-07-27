@@ -11,9 +11,9 @@ const client = new OAuth2Client(CLIENT_ID);
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth.js')
 // GET ALL USERS
-router.get('/users',auth, (req, res) => {
-    if(req.user.email === 'admin@admin'){
-    // if (req.session.email === 'admin@admin') {
+router.get('/users', auth, (req, res) => {
+    if (req.user.email === 'admin@admin') {
+        // if (req.session.email === 'admin@admin') {
         User.findAll()
             .then((result) => {
                 return JSON.stringify(result, null, 4);
@@ -38,7 +38,7 @@ router.get('/users',auth, (req, res) => {
                         user_list.push(user_info)
                     }
                 }
-                return res.json({ 'data': user_list });
+                return res.json({ data: user_list });
             })
     }
 
@@ -47,8 +47,8 @@ router.get('/users',auth, (req, res) => {
 
 
 // CHECK STATUS(login check)
-router.get('/user',auth, (req, res) => {
-    console.log(req.user);
+router.get('/user', auth, (req, res) => {
+
     User.findOne({
         where: {
             email: req.user.email,
@@ -103,7 +103,7 @@ router.post('/user', async (req, res) => {
                     name: name,
                     email: email
                 }
-                const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '7 days' }) // 
+                const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' }) // 
                 User.create({
                     name: name,
                     email: email,
@@ -116,19 +116,19 @@ router.post('/user', async (req, res) => {
                     // 記錄在session
                     // req.session.email = email;
                     res.cookie('jwt', token, {
-                        secure:false,
-                        httpOnly:false,
-                        maxAge: 1000*60*60*60 // 1 hr
+                        secure: false,
+                        httpOnly: false,
+                        maxAge: 1000 * 60 * 60 * 60 // 1 hr
                     });
-                    return res.json({ 'ok': true, token });
+                    return res.json({ ok: true, token });
                 })
             } else {
-                return res.status(400).json({ 'error': true, 'message': '此帳號已註冊過' });
+                return res.status(400).json({ error: true, message: '此帳號已註冊過' });
             }
         })
     } catch (e) {
         e = e.toString();
-        return res.status(500).json({ 'error': true, 'message': e });
+        return res.status(500).json({ error: true, message: e });
     }
 });
 
@@ -153,38 +153,38 @@ router.patch('/user', (req, res) => {
                     // console.log(res); bool
                     if (compare) {
                         const payload = {
-                            userId:userid,
-                            email:email
+                            userId: userid,
+                            email: email
                         }
-                        const token = jwt.sign(payload,process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '7 days' });
+                        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
                         res.cookie('jwt', token, {
-                            secure:false,
-                            httpOnly:false,
-                            maxAge: 1000*60*60*60 // 1 hr
+                            secure: false,
+                            httpOnly: false,
+                            maxAge: 1000 * 60 * 60 * 60 // 1 hr
                         });
                         // req.session.email = email;
                         // req.session.userid = userid;
-                        return res.json({ 'ok': true, token});
+                        return res.json({ ok: true, token });
                     } else {
-                        return res.status(400).json({ 'error': true, 'message': '帳號或密碼錯誤' });
+                        return res.status(400).json({ error: true, message: '帳號或密碼錯誤' });
                     }
                 })
 
             } else {
-                return res.status(400).json({ 'error': true, 'message': '帳號或密碼錯誤' });
+                return res.status(400).json({ error: true, message: '帳號或密碼錯誤' });
             }
         })
     } catch (e) {
         e = e.toString();
-        return res.status(500).json({ 'error': true, 'message': e });
+        return res.status(500).json({ error: true, message: e });
     }
 });
 
 
 // LOGOUT
-router.delete('/user',auth, (req, res) => {
+router.delete('/user', auth, (req, res) => {
     res.clearCookie('jwt');
-    return res.json({ 'ok': true });
+    return res.json({ ok: true });
     // req.session.destroy((err) => {
     //     if (err) {
     //         throw err;
@@ -231,34 +231,37 @@ router.post('/user/google-login', (req, res) => {
                         auth: 2,
                         active: 'no',
                     }).then(() => {
-                        const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '7 days' });
+                        const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
                         res.cookie('jwt', token, {
-                            secure:false,
-                            httpOnly:false,
-                            maxAge: 1000*60*60*60 // 1 hr
+                            secure: false,
+                            httpOnly: false,
+                            maxAge: 1000 * 60 * 60 * 60 // 1 hr
                         });
                         // req.session.email = user.email;
 
-                        return res.json({ 'ok': true });
+                        return res.json({ ok: true });
                     })
                 } else {
-                    const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '7 days' });
+                    const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
                     res.cookie('jwt', token, {
-                        secure:false,
-                        httpOnly:false,
-                        maxAge: 1000*60*60*60 // 1 hr
+                        secure: false,
+                        httpOnly: false,
+                        maxAge: 1000 * 60 * 60 * 60 // 1 hr
                     });
                     // req.session.userid = data.id;
                     // req.session.email = user.email;
                     res.cookie('jwt', token)
-                    return res.json({ 'ok': true });
+                    return res.json({ ok: true });
                 }
             })
-        }).catch(console.error);
+        }).catch((e) => {
+            e = e.toString();
+            return res.json({ error: true, message: e });
+        })
 });
 
 
-router.put('/user/plan',auth,(req, res) => {
+router.put('/user/plan', auth, (req, res) => {
     const plan = req.body.plan;
     const email = req.user.email
     User.findOne({
@@ -270,15 +273,15 @@ router.put('/user/plan',auth,(req, res) => {
             plan: plan,
         })
     }).then(() => {
-        return res.json({ 'ok': true });
+        return res.json({ ok: true });
     }).catch((e) => {
         e = e.toString();
-        return res.json({ 'error': true, 'message': e });
+        return res.json({ error: true, message: e });
     })
 
 });
 
-router.put('/user/phone',auth,(req, res) => {
+router.put('/user/phone', auth, (req, res) => {
     const phone = req.body.phone;
     const email = req.user.email
     User.findOne({
@@ -290,10 +293,10 @@ router.put('/user/phone',auth,(req, res) => {
             phone: phone,
         })
     }).then(() => {
-        return res.json({ 'ok': true });
+        return res.json({ ok: true });
     }).catch((e) => {
         e = e.toString();
-        return res.json({ 'error': true, 'message': e });
+        return res.json({ error: true, message: e });
     })
 
 });

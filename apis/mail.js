@@ -2,19 +2,19 @@ const nodemailer = require('nodemailer')
 const express = require('express');
 const router = express.Router()
 
-router.post('/mail',(req,res)=>{
+router.post('/mail', (req, res) => {
     const name = req.body.name
     const email = req.body.email
     const msg = req.body.msg
 
-    if(name === undefined){
-        return res.json({'error':true, 'message': 'name格式錯誤'});
+    if (name === undefined) {
+        return res.json({ error: true, message: 'name格式錯誤' });
     }
-    if(email === undefined){
-        return res.json({'error':true, 'message': 'email格式錯誤'});
+    if (email === undefined) {
+        return res.json({ error: true, message: 'email格式錯誤' });
     }
-    if(msg === undefined){
-        return res.json({'error':true, 'message': 'msg格式錯誤'});
+    if (msg === undefined) {
+        return res.json({ error: true, message: 'msg格式錯誤' });
     }
     const mail = nodemailer.createTransport({
         service: 'Gmail',
@@ -23,24 +23,24 @@ router.post('/mail',(req,res)=>{
             pass: process.env.GMAIL_PWD,
         }
     })
-    
+
     const options = {
         from: process.env.GMAIL,
         to: process.env.GMAIL,
         subject: '系統來信：客服詢問',
-        html:`
+        html: `
         <h2>姓名: ${name}</h2>
         <h2>email: ${email}</h2>
         <h2>訊息: ${msg}</h2>
         `
     }
-    mail.sendMail(options,(err,info)=>{
-        if(err){
+    mail.sendMail(options, (err, info) => {
+        if (err) {
             console.log(err)
-            return res.json({'error':true, 'message': '信件寄送失敗'});
+            return res.json({ error: true, message: '信件寄送失敗' });
         } else {
             console.log('訊息發送：', info.response)
-            return res.json({'ok':true});
+            return res.json({ ok: true });
         }
     })
 
