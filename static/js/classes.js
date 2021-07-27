@@ -45,8 +45,8 @@ function getClassList() {
     })
 };
 
-function bookingStudent(classId, weekday, class_block) {
-    const url = `/api/booking/student/${classId}`
+function bookingStudent(booking_info, class_block) {
+    const url = `/api/booking/student/${booking_info.classId}`
     fetch(url)
         .then(res => res.json())
         .then((api_data) => {
@@ -55,11 +55,9 @@ function bookingStudent(classId, weekday, class_block) {
             if (today_weekday === 0) {
                 today_weekday = 7;
             }
-            if (weekday === today_weekday) {
+            if (booking_info.weekday === today_weekday) {
                 renderBookingStatus('不可預定', class_block);
-
             } else {
-
                 if (data === null) {
                     renderBookingStatus('可預約', class_block);
                 } else {
@@ -117,14 +115,19 @@ function renderBigClass(renderBox) {
         'start_time': renderBox.start_time,
         'end_time': renderBox.end_time
     }
-    currentClassCheck(class_block, current_class, compare_time)
-    bookingStudent(renderBox.id, renderBox.weekday, class_block)
-    // setInterval(() => {
-    //     socket_listener(class_block, current_class, compare_time)
-    // }, 1000 * 60);
+    const render_info = {
+        'class_block': class_block,
+        'current_class': current_class
+    }
+    const booking_info = {
+        'classId': renderBox.id,
+        'weekday': renderBox.weekday,
+    }
+    currentClassCheck(render_info, compare_time)
+    bookingStudent(booking_info, class_block)
 };
 
-function currentClassCheck(block, current_class, compare_time) {
+function currentClassCheck(render_info, compare_time) {
 
     const current = new Date();
     let current_day = current.getDay();
@@ -142,29 +145,29 @@ function currentClassCheck(block, current_class, compare_time) {
         // 小時/分鐘都要比對 
         if (start_hour < current_hour) {
             if (current_hour < end_hour) {
-                block.classList.add('active-class');
-                block.appendChild(current_class)
+                render_info.class_block.classList.add('active-class');
+                render_info.class_block.appendChild(render_info.current_class)
             } else if (current_hour === end_hour) {
                 if (current_min < end_min) {
-                    block.classList.add('active-class');
-                    block.appendChild(current_class)
+                    render_info.class_block.classList.add('active-class');
+                    render_info.class_block.appendChild(render_info.current_class)
                 }
             }
         } else if (start_hour === current_hour) {
             if (start_min <= current_min) {
                 if (current_hour < end_hour) {
 
-                    block.classList.add('active-class');
-                    block.appendChild(current_class)
+                    render_info.class_block.classList.add('active-class');
+                    render_info.class_block.appendChild(render_info.current_class)
                 } else if (current_hour === end_hour) {
                     if (current_min < end_min) {
 
-                        block.classList.add('active-class');
-                        block.appendChild(current_class)
+                        render_info.class_block.classList.add('active-class');
+                        render_info.class_block.appendChild(render_info.current_class)
                     } else if (current_min === end_min) {
-                        current_class.innerHTML = '';
-                        block.classList.remove('active-class');
-                        block.appendChild(current_class)
+                        render_info.current_class.innerHTML = '';
+                        render_info.class_block.classList.remove('active-class');
+                        render_info.class_block.appendChild(render_info.current_class)
                     }
                 }
             }
@@ -229,11 +232,16 @@ function renderSmallClass(renderBox) {
         'start_time': renderBox.start_time,
         'end_time': renderBox.end_time
     }
-    currentClassCheck(col_12, current_class, compare_time)
-    // setInterval(() => {
-    //     socket_listener(col_12, current_class, compare_time)
-    // }, 1000 * 60);
-    bookingStudent(renderBox.id, renderBox.weekday, col_12)
+    const render_info = {
+        'class_block': col_12,
+        'current_class': current_class
+    }
+    const booking_info = {
+        'classId': renderBox.id,
+        'weekday': renderBox.weekday,
+    }
+    currentClassCheck(render_info, compare_time)
+    bookingStudent(booking_info, col_12)
 };
 
 function renderBookingStatus(msg, class_block) {

@@ -26,7 +26,8 @@ function orderInfo(){
             }
         }
     });
-}
+};
+
 function renderOrder(number){
     const title = document.querySelector('.title-name');
     const trade_num = document.querySelector('.trade-num');
