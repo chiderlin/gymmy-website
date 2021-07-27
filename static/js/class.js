@@ -8,6 +8,7 @@ let check_login = false;
 let check_active;
 let num_of_class;
 let student_amount;
+// let next_pay_date;
 
 init();
 async function init() {
@@ -15,17 +16,18 @@ async function init() {
     checkLogIn();
     await bookingStudent(classId);
     checkRender()
+    getPayment();
 };
 
 // 預定按鈕流程
 function checkBookingBtn(weekday){
     const overlay_login = document.querySelector('.overlay-login');
     const booking_btn = document.getElementById('booking-btn');
-    let today_weekday = new Date().getDay();
+    const today_weekday = new Date().getDay();
+    // const today = new Date();
     if(today_weekday ===0){
         today_weekday = 7;
     }
-    
     // 今天不可預定
     if(weekday === today_weekday){
         booking_btn.disabled = true;
@@ -37,6 +39,10 @@ function checkBookingBtn(weekday){
         // 呼叫booking api
         if(check_login) {
             if(check_active === 'yes') {
+                // 判斷next_pay_date
+                // if(next_pay_date < today){
+                //     renderStatement('請補繳費');
+                // }
                 if(student_amount === 15) {
                     renderStatement('課程人數已額滿');
                     overlay_statement.style.display = 'block';
@@ -160,11 +166,17 @@ function bookingStudent(classId) {
     fetch(url)
         .then(res => res.json())
         .then((api_data) => {
-
             student_amount = api_data.data.length
         })
-
 };
+
+// function getPayment(){
+//     const url = '/api/payment'
+//     fetch(url).then(res=> res.json())
+//     .then((api_data)=>{
+//         next_pay_date = new Date(api_data.data.payment.next_pay_date)
+//     })
+// }
 
 
 //view

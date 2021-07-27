@@ -12,7 +12,7 @@ function readFile(filename, callback) {
 
 // 非同步 所以在這邊是undifined
 // console.log(class_data);
-readFile('./data/taipei-101', function (class_data) { // callback回來的json data
+readFile('./crawler/taipei-101', function (class_data) { // callback回來的json data
     console.log(class_data.data.length);
     for(let j=0; j<class_data.data.length; j++) {
         let class_ =  class_data.data[j].class;

@@ -149,7 +149,6 @@ function checkLogIn() {
     }).then((api_data) => {
         console.log(api_data)
         initRenderMenu(api_data);
-        
         if(api_data.error === true){
             return;
         }
