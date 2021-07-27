@@ -84,9 +84,9 @@ router.get('/booking',auth, (req, res) => {
                     }
                     const class_time = new Date(data[i].class_time.substring(0,10)).getMonth()+1;
                     const current_mon = new Date().getMonth()+1;
-                    if(class_time === current_mon) { // 限定放本月的課程data
+                    // if(class_time === current_mon || class_time>current_mon) { 
                         list_of_class.push(booking_data)
-                    }
+                    // }
                 }
                 const class_data = {
                     'data': list_of_class
