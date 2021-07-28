@@ -53,7 +53,7 @@ router.post('/member/img-upload', upload.single('img'), auth, function (req, res
             })
             User.findOne({
                 where: {
-                    email: req.user.email, //req.session.email
+                    email: req.user.email,
                 },
                 include: Member,
             }).then((result) => {
@@ -100,7 +100,7 @@ router.post('/member/img-upload', upload.single('img'), auth, function (req, res
 router.get('/member/info', auth, (req, res) => {
     User.findOne({
         where: {
-            email: req.user.email, //req.session.email
+            email: req.user.email,
         },
         include: Member,
     }).then((result) => {

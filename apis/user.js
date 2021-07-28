@@ -10,10 +10,10 @@ const CLIENT_ID = '316396796608-q5iv25epumdt98ur8ljs428a2qfsufu6.apps.googleuser
 const client = new OAuth2Client(CLIENT_ID);
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth.js')
+
 // GET ALL USERS
 router.get('/users', auth, (req, res) => {
     if (req.user.email === 'admin@admin') {
-        // if (req.session.email === 'admin@admin') {
         User.findAll()
             .then((result) => {
                 return JSON.stringify(result, null, 4);
@@ -118,7 +118,7 @@ router.post('/user', async (req, res) => {
                     res.cookie('jwt', token, {
                         secure: false,
                         httpOnly: false,
-                        maxAge: 1000 * 60 * 60 * 60 // 1 hr
+                        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
                     });
                     return res.json({ ok: true, token });
                 })
@@ -150,7 +150,7 @@ router.patch('/user', (req, res) => {
                 const userid = data.id;
                 const comparePwd = data.password
                 bcrypt.compare(pwd, comparePwd).then((compare) => {
-                    // console.log(res); bool
+
                     if (compare) {
                         const payload = {
                             userId: userid,
@@ -160,10 +160,8 @@ router.patch('/user', (req, res) => {
                         res.cookie('jwt', token, {
                             secure: false,
                             httpOnly: false,
-                            maxAge: 1000 * 60 * 60 * 60 // 1 hr
+                            maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
                         });
-                        // req.session.email = email;
-                        // req.session.userid = userid;
                         return res.json({ ok: true, token });
                     } else {
                         return res.status(400).json({ error: true, message: '帳號或密碼錯誤' });
@@ -185,15 +183,6 @@ router.patch('/user', (req, res) => {
 router.delete('/user', auth, (req, res) => {
     res.clearCookie('jwt');
     return res.json({ ok: true });
-    // req.session.destroy((err) => {
-    //     if (err) {
-    //         throw err;
-    //     } else {
-    //         res.clearCookie('sessionId');
-    //         res.clearCookie('jwt-token');
-    //         return res.json({ 'ok': true });
-    //     }
-    // })
 });
 
 
@@ -204,18 +193,14 @@ router.post('/user/google-login', (req, res) => {
     async function verify() {
         const ticket = await client.verifyIdToken({
             idToken: token,
-            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-            // Or, if multiple clients access the backend:
-            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+            audience: CLIENT_ID,
         });
         const payload = ticket.getPayload();
-        // console.log(payload);
         user.name = payload.name;
         user.email = payload.email
     };
     verify()
         .then(() => {
-
             User.findOne({
                 where: {
                     email: user.email,
@@ -235,10 +220,8 @@ router.post('/user/google-login', (req, res) => {
                         res.cookie('jwt', token, {
                             secure: false,
                             httpOnly: false,
-                            maxAge: 1000 * 60 * 60 * 60 // 1 hr
+                            maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
                         });
-                        // req.session.email = user.email;
-
                         return res.json({ ok: true });
                     })
                 } else {
@@ -246,10 +229,8 @@ router.post('/user/google-login', (req, res) => {
                     res.cookie('jwt', token, {
                         secure: false,
                         httpOnly: false,
-                        maxAge: 1000 * 60 * 60 * 60 // 1 hr
+                        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
                     });
-                    // req.session.userid = data.id;
-                    // req.session.email = user.email;
                     res.cookie('jwt', token)
                     return res.json({ ok: true });
                 }

@@ -9,7 +9,7 @@ const auth = require('../middleware/auth.js')
 // 第一次付款，thankyou頁面的編號
 router.get('/payment', auth, (req, res) => {
     const email = req.user.email
-    if (email) { //req.session.email
+    if (email) {
         User.findOne({
             where: {
                 email: email,
