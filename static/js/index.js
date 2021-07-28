@@ -6,22 +6,21 @@ const pro_plan = document.getElementById('1000-btn');
 const contact  = document.getElementById('contact');
 
 
-
 // controller
 checkLogIn();
 basic_plan.addEventListener('click',()=>{
-    check_pay();
+    checkPay();
 });
 
 pro_plan.addEventListener('click',()=>{
-    check_pay()
+    checkPay()
 });
 
 contact.addEventListener('click',()=>{
     customer_service_box.style.display = 'block';
 })
 
-function check_pay(){
+function checkPay(){
     if(check_login) {
         if(check_active === 'yes') {
             // 提醒視窗，顯示已完成繳費程序，可以開始預訂課程
@@ -41,26 +40,7 @@ function check_pay(){
 };
 
 
-
 //model
-// function checkLogIn(){
-//     const url = '/api/user';
-//     fetch(url).then((res)=>{
-//         return res.json();
-//     }).then((api_data)=>{
-//         console.log(api_data)
-//         if(api_data.error === true){
-//             return
-//         }
-//         if(api_data.data !== null) {
-//             check_login = true;
-//             check_active = api_data.data.active
-//             check_plan = api_data.data.plan
-//         } else {
-//             check_login = false;
-//         }
-//     })
-// };
 function checkLogIn() {
     const url = '/api/user';
     // let token = document.cookie.split('=')[2];
@@ -83,7 +63,6 @@ function checkLogIn() {
         }
     })
 };
-
 
 
 //view

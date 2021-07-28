@@ -9,7 +9,7 @@ let all_student_list;
 
 init();
 
-// controll
+// controller
 function init() {
     getAllClass();
     checkLogIn();
@@ -59,7 +59,7 @@ const overlay_statement = document.querySelector('.overlay-statement');
 const add_btn = document.getElementById('add-btn');
 add_btn.addEventListener('click',()=>{
     overlay_statement.style.display = 'block';
-})
+});
 
 // 確認新增按鈕
 const confirm_btn = document.getElementById('close-btn');
@@ -106,9 +106,7 @@ confirm_btn.addEventListener('click',()=>{
 const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
 close_btn_for_img_statement.addEventListener('click',()=>{
     overlay_statement.style.display = 'none';
-})
-
-
+});
 
 const delete_btn = document.getElementById('delete-btn');
 delete_btn.addEventListener('click',()=>{
@@ -129,6 +127,7 @@ delete_btn.addEventListener('click',()=>{
         }
     }
 });
+
 
 // view
 function renderClass(classid,zh_name){
@@ -223,7 +222,7 @@ function renderErrMsg(msg){
     const add_msg = document.querySelector('.add-msg');
     add_msg.innerHTML = '';
     add_msg.appendChild(document.createTextNode(msg));
-}
+};
 
 
 // model

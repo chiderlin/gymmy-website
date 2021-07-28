@@ -1,6 +1,8 @@
-
+//controller
 orderInfo();
 
+
+// model
 function orderInfo(){
     const url = '/api/payment';
     fetch(url).then((res)=>{
@@ -28,6 +30,19 @@ function orderInfo(){
     });
 };
 
+function logOut() {
+    const url = '/api/user';
+    fetch(url, {
+        method: "DELETE",
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        window.location.href = '/';
+    })
+};
+
+
+//view
 function renderOrder(number){
     const title = document.querySelector('.title-name');
     const trade_num = document.querySelector('.trade-num');
@@ -41,13 +56,3 @@ function renderOrder(number){
 };
 
 
-function logOut() {
-    const url = '/api/user';
-    fetch(url, {
-        method: "DELETE",
-    }).then((res) => {
-        return res.json();
-    }).then((data) => {
-        window.location.href = '/';
-    })
-};

@@ -68,7 +68,7 @@ function planBtnProcess(){
             overlay_option.style.display = 'none';
         }
     });
-}
+};
 
 
 // upload_img
@@ -76,7 +76,7 @@ const upload_btn = document.getElementById('upload-btn');
 upload_btn.addEventListener('click', () => {
     uploadImg();
     imgLoadingCircle();
-})
+});
 
 function cancelBookingProcess() {
     const cancel_btn = document.querySelectorAll('.class-btn');
@@ -96,7 +96,6 @@ function cancelBookingProcess() {
     }
 
 };
-
 
 // 查詢天數選單
 function selectHistoryDay() {
@@ -137,9 +136,7 @@ function activeProcess() {
             }
         })
     }
-}
-
-
+};
 
 
 // model
@@ -292,7 +289,6 @@ function renderUpload(img_address) {
     circle.appendChild(span);
     img_box.appendChild(circle);
 };
-
 
 function renderMemberInfo(data) {
     const mem_email = document.getElementById('email');
@@ -463,4 +459,4 @@ function imgLoadingCircle(){
     const img_circle = document.querySelector('.img-circle');
     console.log(img_circle);
     img_circle.style.display = 'block';
-}
+};

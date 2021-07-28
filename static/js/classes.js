@@ -1,4 +1,3 @@
-
 let tmp;
 let booking_list = []
 let count = 0;
@@ -9,10 +8,6 @@ function init() {
     getClassList()
 };
 
-//用/api/booking/student 查看人數，render對應的資料在網頁上
-//1.可預約
-//2.已額滿
-//3.當日不可預約
 
 //model
 function getClassList() {

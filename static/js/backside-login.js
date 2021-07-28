@@ -1,18 +1,18 @@
 
 const login_form = document.getElementById('login-form');
 
-
+// controller
 login_form.addEventListener('submit', (event)=>{
     event.preventDefault();
     const email = document.getElementById('email').value;
     const pwd = document.getElementById('pwd').value;
-    console.log(email);
-    console.log(pwd);
     // 呼叫user 登入 => 檢查權限是1才可以
     login(email, pwd)
 
-})
+});
 
+
+// model
 function login(email, pwd){
     const url = '/api/user';
     const login_info = {'email':email, 'password':pwd}
@@ -51,6 +51,8 @@ function loginStatus() {
     })
 };
 
+
+// view
 function renderError(msg){
     const error_msg = document.querySelector('.error-msg');
     error_msg.innerHTML = '';

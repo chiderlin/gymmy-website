@@ -17,6 +17,8 @@ const login_register_burger = burger_menu[3]
 const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
+
+// controller
 init();
 function init() {
     checkLogIn()
@@ -27,14 +29,15 @@ const back_to_top = document.querySelector('.top');
 back_to_top.addEventListener('click',()=>{
     document.body.scrollTop = 0; // for Safari
     document.documentElement.scrollTop = 0; // for chrome, firefox...
-})
+});
+
 window.onscroll = ()=>{
     if(document.documentElement.scrollTop>20 || document.body.scrollTop>20){
         back_to_top.style.display = 'block';
     } else {
         back_to_top.style.display = 'none';
     }
-}
+};
 
 // 登出按鈕
 logout_big.addEventListener('click', () => {
@@ -51,6 +54,7 @@ member_center_big.addEventListener('click', () => {
         window.location.href = `/member/${username}`;
     }
 });
+
 member_center_burger.addEventListener('click', () => {
     if (login_status) {
         const username = login_user_info.data.name;
@@ -66,7 +70,6 @@ openbtn.addEventListener('click', () => {
 closebtn.addEventListener('click', () => {
     burger_overlay.style.height = '0%';
 });
-
 
 
 const overlay_login = document.querySelector('.overlay-login');
@@ -101,6 +104,7 @@ const close_btn_for_img_statement = document.getElementById('close-btn-for-img-s
 close_btn.addEventListener('click', () => {
     overlay_statement.style.display = 'none';
 });
+
 close_btn_for_img_statement.addEventListener('click', () => {
     overlay_statement.style.display = 'none';
 });
@@ -111,7 +115,6 @@ const customer_service = document.querySelector('.customer-service');
 customer_service.addEventListener('click',()=>{
     customer_service_box.style.display = 'block';
 });
-
 
 // 客服視窗關閉
 const close_btn_for_img_customer = document.getElementById('close-btn-for-img-customer');
