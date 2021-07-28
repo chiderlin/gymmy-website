@@ -2,14 +2,9 @@ const express = require('express');
 const app = express();
 require('dotenv/config');
 const session = require('express-session');
-// const MemoryStore = session.MemoryStore;
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-// const http = require('http');
-// const server = http.createServer(app);
-// const {Server} = require('socket.io')
-// const io = new Server(server);
 
 app.set('views', './templates');
 app.set('view engine', 'ejs');
@@ -20,15 +15,11 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: false }));
-// app.set('socket.io', io)
-// 設data 不能用
-// let expiryDate = new Date(Date.now() + 1000 * 60 * 60 * 24).toLocaleString('chinese',{hour12: false});
 app.use(session({
     secret: process.env.SECRET_KEY,
     name: 'sessionId',
     resave: false, // 設false才會刪除sessionId的cookie
     saveUninitialized: false, // 設false才會刪除sessionId的cookie
-    // store: new MemoryStore(),
     cookie: {
         secure: false,
         httpOnly: true,
@@ -110,7 +101,12 @@ app.get('/backside-login', (req, res) => {
 
 app.get('/backside-post',(req,res)=>{
     return res.render('backside-post');
-})
+});
 
-// server.listen(3001); 
+// 404 page
+app.get('*',(req,res)=>{
+    res.render('404');
+});
+
+
 app.listen(3001)

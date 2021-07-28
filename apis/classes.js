@@ -2,31 +2,18 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db_module.js');
 const Classes = db.Classes;
-// const app = express();
-// const io = app.get('socket.io')
 
-
-
-
+// 照上課時間排小到大
 router.get('/class', (req, res) => {
-    // let io = req.app.get('socket.io');
-    // // console.log(io);
-    // io.on('connection',(socket)=>{
-    //     console.log('a user connected');
-    //     setInterval(() => {
-    //         socket.emit('current class', new Date());
-    //     }, 5000); //1秒
-    // })
-
     try {
         Classes.findAll({
-            order:[
+            order: [
                 ['weekday', 'asc'],
                 ['start_time', 'asc']
             ]
         }).then((res) => {
             return JSON.stringify(res, null, 4);
-        }).then((data)=>{
+        }).then((data) => {
             data = data.replace(/(?:\\[rn])+/g, ''); // 把\r\n replace
             data = JSON.parse(data);
             for (let i = 0; i < data.length; i++) {
@@ -35,18 +22,18 @@ router.get('/class', (req, res) => {
                 data[i].end_time = new Date(data[i].end_time).toLocaleString('chinese', { hour12: false });
             }
             const all_data = {
-                "data": data,
+                data: data,
             }
             return res.json(all_data);
-        })   
+        })
     } catch (e) {
         e = e.toString();
-        return res.status(500).json({ 'error': true, 'message': e });
+        return res.status(500).json({ error: true, message: e });
     }
 
 });
 
-
+// 單一課程介紹
 router.get('/class/:classId', (req, res) => {
     const classId = req.params.classId;
     try {
@@ -56,10 +43,10 @@ router.get('/class/:classId', (req, res) => {
             },
         }).then((res) => {
             return JSON.stringify(res, null, 4);
-        }).then((data)=>{
-            console.log(data);
+        }).then((data) => {
+
             if (data === 'null') {
-                return res.json({ 'data': null });
+                return res.json({ data: null });
             } else {
                 data = data.replace(/(?:\\[rn])+/g, '');
                 data = JSON.parse(data);
@@ -68,7 +55,7 @@ router.get('/class/:classId', (req, res) => {
         })
     } catch (e) {
         e = e.toString();
-        return res.status(500).json({ 'error': true, 'message': e });
+        return res.status(500).json({ error: true, message: e });
     }
 });
 

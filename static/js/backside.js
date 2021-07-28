@@ -16,7 +16,7 @@ function init() {
     getStudentList();
 };
 
-function select_day() {
+function selectDay() {
     // 如果有選過的話 先清空option選項(週一～週日)
     let option = document.querySelectorAll('option');
     if(option.length > 8) {
@@ -39,7 +39,7 @@ function select_day() {
 };
 
 //TODO:選取課程=>查詢=>取得學員名單
-function select_class(){
+function selectClass(){
     selected_classId = document.getElementById('select_class').value;
     getSelectedClass(selected_classId,(res)=>{ //傳classId過去
         const class_name_zh = res.class_name_zh
@@ -114,7 +114,7 @@ const delete_btn = document.getElementById('delete-btn');
 delete_btn.addEventListener('click',()=>{
     let checked = [];
     const checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
-    console.log(checkboxes);
+
     for(let i=0; i<checkboxes.length; i++){
         const bookingId = parseInt(checkboxes[i].value);
         checked.push(bookingId)
@@ -265,7 +265,7 @@ function checkStudent(classId){
         return res.json();
     })
     .then((api_data)=>{
-        console.log(api_data);
+
         const data = api_data.data;
         if(data === null){
             student_amount = 0;

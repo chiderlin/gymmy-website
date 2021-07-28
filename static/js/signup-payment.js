@@ -194,7 +194,7 @@ small_tappay.addEventListener('submit', (event) => {
 
 
 // 根據plan不同，paypal顯示的plan也不同
-function switch_paypal_btn() {
+function switchPaypalBtn() {
     // 大
     const paypal_big_888 = document.getElementById('paypal-button-container-P-888');
     const paypal_big_1000 = document.getElementById('paypal-button-container-P-1000');
@@ -223,7 +223,7 @@ function getUser() {
         return res.json();
     }).then((api_data) => {
         register_user = api_data.data;
-        switch_paypal_btn();
+        switchPaypalBtn();
     })
 }
 
@@ -265,7 +265,7 @@ function sendPrime(prime, phone) {
     })
 };
 
-function paypal_paid(subscriptionID) {
+function paypalPaid(subscriptionID) {
     const url = '/api/payment/paypal'
     const sub_id = { 'sub_id': subscriptionID }
     fetch(url, {
@@ -317,7 +317,7 @@ paypal.Buttons({
         //TODO: 呼叫/paypal
         const url = '/api/payment/paypal'
         const userId = { 'id': register_user.id };
-        paypal_paid(data.subscriptionID)
+        paypalPaid(data.subscriptionID)
         //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
     }
 }).render('#paypal-button-container-P-888'); // Renders the PayPal button
@@ -340,7 +340,7 @@ paypal.Buttons({
         //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
         const url = '/api/payment/paypal'
         const userId = { 'id': register_user.id };
-        paypal_paid(data.subscriptionID)
+        paypalPaid(data.subscriptionID)
 
     }
 }).render('#paypal-button-container-P-1000'); // Renders the PayPal button
@@ -365,7 +365,7 @@ paypal.Buttons({
         // alert(data.subscriptionID);
         const url = '/api/payment/paypal'
         const userId = { 'id': register_user.id };
-        paypal_paid(data.subscriptionID)
+        paypalPaid(data.subscriptionID)
     }
 }).render('#small-paypal-btn-888');
 
@@ -386,7 +386,7 @@ paypal.Buttons({
     onApprove: function (data, actions) {
         // alert(data.subscriptionID);
 
-        paypal_paid(data.subscriptionID)
+        paypalPaid(data.subscriptionID)
     }
 }).render('#small-paypal-btn-1000');
 
@@ -395,27 +395,6 @@ paypal.Buttons({
 
 // tappay
 TPDirect.setupSDK(20343, "app_PxPSoHZCppMvxjkyNzFnuRmqtgvENcu1rDkYKxl8ZOZHjJfKOkCtAxpmKKbW", "Sandbox");
-
-console.log(document.querySelectorAll(".card-number"));
-
-
-
-
-// let fields_sma = {
-//     number: {
-//         element: "#card-number-sma",
-//         placeholder: " 4242 4242 4242 4242"
-//     },
-//     expirationDate: {
-//         element: "#card-expiration-date-sma",
-//         placeholder: " 01 / 23"
-//     },
-//     ccv: {
-//         element: "#card-ccv-sma",
-//         placeholder: " 123"
-//     }
-// };
-
 
 
 

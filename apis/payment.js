@@ -6,32 +6,29 @@ const Payment = db.Payment;
 const User = db.User;
 const auth = require('../middleware/auth.js')
 
-// order資料
-router.get('/payment',auth,(req,res)=>{
+// 第一次付款，thankyou頁面的編號
+router.get('/payment', auth, (req, res) => {
     const email = req.user.email
-    if(email) { //req.session.email
-        const number = req.query.number;
-        console.log(number)
-        
+    if (email) { //req.session.email
         User.findOne({
-            where:{
+            where: {
                 email: email,
             },
             include: Payment,
-        }).then((result)=>{
+        }).then((result) => {
             return JSON.stringify(result, null, 4);
-        }).then((find_data)=>{
+        }).then((find_data) => {
             find_data = JSON.parse(find_data);
-            console.log(find_data)
-            if(find_data.Payment.type === "tappay") {
+
+            if (find_data.Payment.type === "tappay") {
                 let return_data = {
-                    'data':{
-                        'name':find_data.name,
+                    'data': {
+                        'name': find_data.name,
                         'email': find_data.email,
                         'plan': find_data.plan,
                         'payment': {
                             'id': find_data.Payment.id,
-                            'bank_transaction_id':find_data.Payment.bank_transaction_id,
+                            'bank_transaction_id': find_data.Payment.bank_transaction_id,
                             'next_pay_date': find_data.Payment.next_pay_date,
                             'rec_trade_id': find_data.Payment.rec_trade_id,
                             'type': find_data.Payment.type,
@@ -39,17 +36,17 @@ router.get('/payment',auth,(req,res)=>{
                     }
                 }
                 return res.json(return_data)
-            } else if(find_data.Payment.type === "paypal"){
+            } else if (find_data.Payment.type === "paypal") {
                 const created_date = find_data.Payment.createdAt
-                let created_date_localtime = new Date(created_date).toLocaleString('chinese',{hour12: false});
+                let created_date_localtime = new Date(created_date).toLocaleString('chinese', { hour12: false });
                 let return_data = {
-                    'data':{
-                        'name':find_data.name,
+                    'data': {
+                        'name': find_data.name,
                         'email': find_data.email,
                         'plan': find_data.plan,
-                        'payment':{
+                        'payment': {
                             'id': find_data.Payment.id,
-                            'subscriptionId':find_data.Payment.subscriptionId,
+                            'subscriptionId': find_data.Payment.subscriptionId,
                             'next_pay_date': find_data.Payment.next_pay_date,
                             'created_date': created_date_localtime,
                             'type': find_data.Payment.type,
@@ -58,22 +55,17 @@ router.get('/payment',auth,(req,res)=>{
                 }
                 return res.json(return_data);
             }
-        }).catch((e)=>{
+        }).catch((e) => {
             e = e.toString();
-            return res.status(500).json({ 'error': true, 'message': e });
+            return res.status(500).json({ error: true, message: e });
         });
-        
-
     } else {
-        return res.status(400).json({'error': true, 'message': '尚未登入系統'})
+        return res.status(400).json({ error: true, message: '尚未登入系統' })
     }
-
-
-    
 });
 
 // 取得Prime => 付款
-router.post('/payment/pay-by-prime',auth,(req,res)=>{
+router.post('/payment/pay-by-prime', auth, (req, res) => {
     const email = req.user.email
     // find data
     User.findOne({ // 註冊過
@@ -83,83 +75,90 @@ router.post('/payment/pay-by-prime',auth,(req,res)=>{
         include: Payment
     }).then((result) => {
         return JSON.stringify(result, null, 4);
-    }).then((find_data)=>{
-        console.log(find_data);
+    }).then((find_data) => {
+
         find_data = JSON.parse(find_data);
         const userId = find_data.id;
 
-        if(find_data.Payment === null) { // 還沒付款才可以付款
+        if (find_data.Payment === null) { // 還沒付款才可以付款
             const prime = req.body.prime;
             const plan = req.body.info.plan;
             const phone = req.body.info.phone;
             const name = req.body.info.name;
             const email = req.body.info.email;
-            pay_by_prime(prime, plan, phone, name,email,userId, (data)=>{
+            const payload = {
+                prime:prime,
+                plan:plan,
+                phone:phone,
+                name:name,
+                email:email
+            }
+            pay_by_prime(payload, (data) => {
                 const bank_transaction_id = data
-                return res.json({'ok':true, 'message':bank_transaction_id})
+                return res.json({ ok: true, message: bank_transaction_id })
             });
-            return res.json({'ok':true,'message':bank_transaction_id});
+            return res.json({ ok: true, message: bank_transaction_id });
         } else {
-            return res.status(400).json({'error': true, 'message': '已完成付款手續'})
+            return res.status(400).json({ error: true, message: '已完成付款手續' })
         }
-    }); 
+    });
 })
 
 // paypal付款 => 自己存db
 // 1.先確認是不是註冊過
 // 2.建立payment資料
 // 3.更新user active狀態 
-router.post('/payment/paypal',auth,(req,res)=>{
+router.post('/payment/paypal', auth, (req, res) => {
     const sub_id = req.body.sub_id;
     const email = req.user.email
-    User.findOne({ 
+    User.findOne({
         where: {
             email: email,
         },
         include: Payment
     }).then((result) => {
         return JSON.stringify(result, null, 4);
-    }).then((find_data)=>{
+    }).then((find_data) => {
         console.log(find_data);
         find_data = JSON.parse(find_data);
         const userId = find_data.id;
-        if(find_data.Payment === null) { // 還沒付款才可以寫入資料庫
-            
+        if (find_data.Payment === null) { // 還沒付款才可以寫入資料庫
+
             Payment.create({
                 UserId: userId,
-                subscriptionId:sub_id,
+                subscriptionId: sub_id,
                 type: 'paypal',
             }).then((ok) => {
                 // 執行成功印出
-                return res.json({'ok':true, 'message': sub_id});
+                return res.json({ ok: true, message: sub_id });
             })
-                
+
             User.findOne({
                 where: {
                     id: userId,
                 }
-            }).then((user)=>{
+            }).then((user) => {
                 user.update({
                     active: 'yes',
                 })
-            }).then(()=>{
+            }).then(() => {
                 console.log('update done')
-            }) 
+            })
         }
     })
 });
 
-function pay_by_prime(prime, plan, phone, name,email,userId, callback){
+function pay_by_prime(payload, callback) {
     const post_data = {
-        'prime': prime,
-        'partner_key':'partner_PyJKIbMCqgsYpYiouacHI67J0jT0xOdGBGSO9e05OdiB1RHhYSDdjioD',
-        'merchant_id':'chi_CTBC',
-        'amount': plan,
+        'prime': payload.prime,
+        'partner_key': 'partner_PyJKIbMCqgsYpYiouacHI67J0jT0xOdGBGSO9e05OdiB1RHhYSDdjioD',
+        'merchant_id': 'chi_CTBC',
+        'amount': payload.plan,
         'details': 'gym service',
         'cardholder': {
-            'phone_number': phone,
-            'name': name,
-            'email': email
+            'phone_number': payload.phone,
+            'name': payload.name,
+            'email': payload.email
         }, // 裡面一定要有phone_number, name, email 
         'remember': true,
     }
@@ -169,10 +168,10 @@ function pay_by_prime(prime, plan, phone, name,email,userId, callback){
             'x-api-key': 'partner_PyJKIbMCqgsYpYiouacHI67J0jT0xOdGBGSO9e05OdiB1RHhYSDdjioD',
             'Content-Type': 'application/json',
         },
-    }).then((result)=>{
+    }).then((result) => {
         console.log(result.data);
         const data = result.data;
-        if(data.status === 0) {
+        if (data.status === 0) {
             // 1.付款成功，寫入Payments資料庫
             // 2.更新user active 狀態
             const card_key = data.card_secret.card_key;
@@ -187,7 +186,7 @@ function pay_by_prime(prime, plan, phone, name,email,userId, callback){
                 card_token: card_token,
                 rec_trade_id: rec_trade_id,
                 bank_transaction_id: bank_transaction_id,
-                next_pay_date: currentDate.setMonth(currentDate.getMonth()+1),
+                next_pay_date: currentDate.setMonth(currentDate.getMonth() + 1),
                 type: 'tappay',
             }).then((ok) => {
                 // 執行成功印出
@@ -195,22 +194,22 @@ function pay_by_prime(prime, plan, phone, name,email,userId, callback){
                     where: {
                         id: userId,
                     }
-                }).then((user)=>{
+                }).then((user) => {
                     user.update({
                         active: 'yes',
                     })
-                }).then(()=>{
+                }).then(() => {
                     console.log('update done')
                 })
                 return callback(bank_transaction_id)
             })
         } else {
-            return res.status(400).json({'error':true, 'message': '付款失敗'})
+            return res.status(400).json({ error: true, message: '付款失敗' })
         }
-    }).catch((e)=>{
+    }).catch((e) => {
         e = e.toString();
-        return res.status(500).json({'error': true, message: e})
-    }) 
+        return res.status(500).json({ error: true, message: e })
+    })
 };
 
 

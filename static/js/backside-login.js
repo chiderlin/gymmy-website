@@ -26,7 +26,7 @@ function login(email, pwd){
         return res.json(); 
     }).then((data)=>{
         if(data.ok === true) {
-            login_status();
+            loginStatus();
         } 
         if(data.error === true){
             renderError(data.message);
@@ -37,7 +37,7 @@ function login(email, pwd){
 
 };
 
-function login_status() {
+function loginStatus() {
     const url = '/api/user';
     fetch(url).then((res)=>{
         return res.json();
@@ -54,7 +54,6 @@ function login_status() {
 function renderError(msg){
     const error_msg = document.querySelector('.error-msg');
     error_msg.innerHTML = '';
-    console.log(error_msg);
     error_msg.appendChild(document.createTextNode(msg));
 
 }

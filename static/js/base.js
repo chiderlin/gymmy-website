@@ -3,7 +3,7 @@ const openbtn = document.getElementById('openbtn');
 const closebtn = document.getElementById('closebtn');
 const burger_menu = document.querySelectorAll('.menu-format');
 const big_menu = document.querySelectorAll('li');
-console.log(big_menu)
+
 let login_status = false;
 let login_user_info;
 init();
@@ -149,7 +149,6 @@ function checkLogIn() {
     }).then((api_data) => {
         console.log(api_data)
         initRenderMenu(api_data);
-        
         if(api_data.error === true){
             return;
         }

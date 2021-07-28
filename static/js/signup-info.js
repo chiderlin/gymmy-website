@@ -37,7 +37,7 @@ register_form_big.addEventListener('submit',(event)=>{
         renderMsg('請選擇方案');
     } else {
         register_info = {'name': name_big, 'email':email_big, 'pwd':pwd_big, 'price':price};
-        user_register(register_info);
+        userRegister(register_info);
     }
 });
 
@@ -51,7 +51,7 @@ register_form_small.addEventListener('submit',(event)=>{
         renderMsgSma('請選擇方案');
     } else {
         register_info = {'name': name_sma, 'email':email_sma, 'pwd':pwd_sma, 'price':price};
-        user_register(register_info);
+        userRegister(register_info);
     }
     
 })
@@ -59,7 +59,7 @@ register_form_small.addEventListener('submit',(event)=>{
 
 
 // model
-function user_register(register_info) {
+function userRegister(register_info) {
     const url = '/api/user'
     fetch(url,{
         method: 'POST',
@@ -70,7 +70,6 @@ function user_register(register_info) {
     }).then((res)=>{
         return res.json();
     }).then((msg)=>{
-        console.log(msg);
         if(msg.error === true) {
             renderMsg(msg.message);
         } else if(msg.ok === true) {

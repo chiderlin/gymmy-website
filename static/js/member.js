@@ -215,6 +215,7 @@ function getBooking() {
                     'day': today.getDay(),
                     'hour': today.getHours(),
                 }
+
                 if (class_time_info.class_time > today) {// 不是今天的課
                     renderBookingClass(data[i], true);
                 } else if (class_time_info.month === today_info.month && class_time_info.date === today_info.date) { //今天的課

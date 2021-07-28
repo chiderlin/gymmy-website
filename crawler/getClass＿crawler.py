@@ -168,10 +168,3 @@ if __name__ == "__main__":
 
     write_to_txt('taipei-101')
 
-
-# ====================================================
-# 重新試Dcard的爬蟲 改一下 還可以
-# url = "https://www.dcard.tw/f/softwareengineer"
-# data=soup.find("div","sc-1wisey8-0 buWRCP") # find(div, className)(只會有一個大包的)
-# da = data.find_all("a", "tgn9uw-3 cUGTXH") #find_all("a", className)裡面包網址跟標題
-# print(da)
