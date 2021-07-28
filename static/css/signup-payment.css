@@ -81,19 +81,6 @@ img {
     }
 }
 
-/* payment 頁面 */
-/* price選項怡到info 這邊先註解起來 */
-/* .price-card {
-    display: flex;
-    justify-content: center;
-}
-
-
-.price-card-format {
-    width:150px;
-    height: 150px;
-} */
-
 .form-check-input:checked {
     background-color:#777777 ;
     border-color: #777777;
@@ -158,13 +145,6 @@ img {
     display: none;
 }
 
-/* #flexRadioDefault4 input[type="radio"]:nth-of-type(1):checked ~ #small-tappay {
-    display: block;
-}
-
-#flexRadioDefault4 input[type="radio"]:nth-of-type(2):checked ~ #small-paypal {
-    display: block;
-} */
 .msg {
     text-align: end;
     color: red;
