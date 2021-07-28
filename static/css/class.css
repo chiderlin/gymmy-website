@@ -28,19 +28,23 @@ p {
     height: 100%;
 
 }
-@media(max-width:576px) {
-    .class-img-block {
-        margin-top: 0;
-        height: 50%;
-    }
-}
 
 .img-class {
     display: block;
     object-fit: scale-down;
     max-width: 100%;
+
 }
 
+@media(max-width:576px) {
+    .class-img-block {
+        margin-top: 0;
+    }
+
+    .img-class {
+        height:50%;
+    }
+}
 
 
 /* 預定課程按鈕 */
