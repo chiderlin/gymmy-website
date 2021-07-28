@@ -15,7 +15,6 @@ async function init() {
     checkLogIn();
     await bookingStudent(classId);
     checkRender()
-    getPayment();
 };
 
 // 預定按鈕流程
