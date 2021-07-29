@@ -118,7 +118,7 @@ router.post('/user', async (req, res) => {
                     name: name,
                     email: email
                 }
-                const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' }) // 
+                const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1 days' }) // 註冊
                 User.create({
                     name: name,
                     email: email,
@@ -130,7 +130,7 @@ router.post('/user', async (req, res) => {
                     res.cookie('jwt', token, {
                         secure: false,
                         httpOnly: false,
-                        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+                        maxAge: 1000 * 60 * 60 * 24 // 1 days
                     });
                     return res.json({ ok: true , token});
                 })
@@ -149,8 +149,6 @@ router.post('/user', async (req, res) => {
 router.patch('/user', (req, res) => {
     const email = req.body.email;
     const pwd = req.body.password;
-    console.log(email)
-    console.log(pwd)
     const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
     if(!email){
         return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
@@ -181,11 +179,11 @@ router.patch('/user', (req, res) => {
                             userId: userid,
                             email: email
                         }
-                        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
+                        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '3 days' });
                         res.cookie('jwt', token, {
                             secure: false,
                             httpOnly: false,
-                            maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+                            maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
                         });
                         return res.json({ ok: true, token });
                     } else {
@@ -298,8 +296,12 @@ router.put('/user/plan', auth, (req, res) => {
 router.put('/user/phone', auth, (req, res) => {
     const phone = req.body.phone;
     const email = req.user.email
+    const regex_phone = /^09\d{8}$/ 
     if(!phone){
         return res.json({ error: true, message: '手機號碼不可為空值' });
+    }
+    if(!regex_phone.test(phone)){
+        return res.json({ error: true, message: '手機號碼格式錯誤' });
     }
 
     User.findOne({
