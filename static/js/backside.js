@@ -6,7 +6,7 @@ let index = 1;
 let student_amount;
 let per_class_booking_student;
 let all_student_list;
-const token = document.cookie.split('=')[2];
+const token = document.cookie.split('=')[3];
 console.log(token)
 init();
 
