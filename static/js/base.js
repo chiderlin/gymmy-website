@@ -17,7 +17,8 @@ const login_register_burger = burger_menu[3]
 const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
-
+const token = document.cookie.split('=')[2];
+console.log(token)
 // controller
 init();
 function init() {
@@ -164,8 +165,10 @@ function onSuccess(googleUser) {
     const URL = '/api/user/google-login';
     fetch(URL, {
         method: "POST",
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(token)
     }).then((res) => {
@@ -201,14 +204,12 @@ function renderButton() {
 // module
 function checkLogIn() {
     const url = '/api/user';
-    // let token = document.cookie.split('=')[2];
-    // console.log(token)
     fetch(url,{
         method: "GET",
-        // credentials: 'include',
-        // headers: {
-        //     'Authorization': `Bearer ${token}`
-        // }
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     }).then((res) => {
         return res.json();
     }).then((api_data) => {
@@ -251,14 +252,12 @@ function login(email, pwd) {
 
 function logOut() {
     const url = '/api/user';
-    let token = document.cookie.split('=')[2];
-    console.log(token)
     fetch(url, {
         method: "DELETE",
-        // credentials: 'include',
-        // headers: {
-        //     'Authorization': `Bearer ${token}`
-        // }
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     }).then((res) => {
         return res.json();
     }).then((data) => {

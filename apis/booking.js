@@ -8,7 +8,7 @@ const auth = require('../middleware/auth.js')
 
 
 // 後台 顯示每堂課學員人數 ＆ classes page 累計每堂課人數（顯示可預約或已額滿）
-router.get('/booking/student/:classId', (req, res) => {
+router.get('/booking/student/:classId',auth, (req, res) => {
     const classId = req.params.classId;
     const student_list = []
     Booking.findAll({
@@ -99,7 +99,7 @@ router.get('/booking', auth, (req, res) => {
     }
 });
 
-router.delete('/booking', (req, res) => {
+router.delete('/booking',auth, (req, res) => {
     // 要傳該bookingId近來才可以取消課程/刪除課程
     const bookingId = req.body.bookingId;
     Booking.findOne({

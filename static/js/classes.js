@@ -2,6 +2,7 @@ let tmp;
 let booking_list = []
 let count = 0;
 
+
 // controller
 init();
 function init() {
@@ -42,7 +43,13 @@ function getClassList() {
 
 function bookingStudent(booking_info, class_block) {
     const url = `/api/booking/student/${booking_info.classId}`
-    fetch(url)
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
         .then(res => res.json())
         .then((api_data) => {
             const data = api_data.data;

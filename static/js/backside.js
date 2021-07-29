@@ -6,7 +6,8 @@ let index = 1;
 let student_amount;
 let per_class_booking_student;
 let all_student_list;
-
+const token = document.cookie.split('=')[2];
+console.log(token)
 init();
 
 // controller
@@ -228,7 +229,13 @@ function renderErrMsg(msg){
 // model
 function checkLogIn(){
     const url = '/api/user';
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
         if(api_data.data === null) {
@@ -241,6 +248,10 @@ function logout(){
     const url = '/api/user';
     fetch(url,{
         method: "DELETE",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     }).then((res)=>{
         return res.json();
     }).then((data)=>{
@@ -259,12 +270,17 @@ function getAllClass() {
 
 function checkStudent(classId){
     const url = `/api/booking/student/${classId}`
-    fetch(url)
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
     .then((res)=>{
         return res.json();
     })
     .then((api_data)=>{
-
         const data = api_data.data;
         if(data === null){
             student_amount = 0;
@@ -284,8 +300,10 @@ function deleteStudent(checked, callback){
         const booking_info = {'bookingId':checked[i]}
         fetch(url,{
             method:"DELETE",
+            credentials: 'include',
             headers:{
                 "Content-Type":"application/json",
+                'Authorization': `Bearer ${token}`
             },
             body:JSON.stringify(booking_info)
         }).then((res)=>{
@@ -299,7 +317,13 @@ function deleteStudent(checked, callback){
 
 function getStudentList(){
     const url = '/api/users';
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json()
     }).then((api_data)=>{
         console.log(api_data);
@@ -328,8 +352,10 @@ function booking(checkedUser, cb){
         const url = '/api/booking'
         fetch(url,{
             method:"POST",
+            credentials: 'include',
             headers:{
                 'Content-Type':'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(class_info),
         }).then((res)=>{

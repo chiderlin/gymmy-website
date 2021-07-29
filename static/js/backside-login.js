@@ -1,6 +1,7 @@
 
 const login_form = document.getElementById('login-form');
-
+const token = document.cookie.split('=')[2];
+console.log(token)
 // controller
 login_form.addEventListener('submit', (event)=>{
     event.preventDefault();
@@ -39,7 +40,13 @@ function login(email, pwd){
 
 function loginStatus() {
     const url = '/api/user';
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
         const auth = api_data.data.auth

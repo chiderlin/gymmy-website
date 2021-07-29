@@ -43,14 +43,12 @@ function checkPay(){
 //model
 function checkLogIn() {
     const url = '/api/user';
-    // let token = document.cookie.split('=')[2];
-    // console.log(token)
     fetch(url,{
         method: "GET",
-        // credentials: 'include',
-        // headers: {
-        //     'Authorization': `Bearer ${token}`
-        // }
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     }).then((res) => {
         return res.json();
     }).then((api_data) => {

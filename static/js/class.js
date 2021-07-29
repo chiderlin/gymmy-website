@@ -80,7 +80,13 @@ function checkBookingBtn(weekday){
 //model
 function checkLogIn(){
     const url = '/api/user';
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
 
@@ -134,8 +140,10 @@ function booking(cb){
     const url = '/api/booking'
     fetch(url,{
         method:"POST",
+        credentials: 'include',
         headers:{
             'Content-Type':'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(class_data),
     }).then((res)=>{
@@ -147,7 +155,13 @@ function booking(cb){
 
 function getBooking(cb){
     const url = '/api/booking'
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
         return cb(api_data.data.length)
@@ -156,7 +170,13 @@ function getBooking(cb){
 
 function bookingStudent(classId) {
     const url = `/api/booking/student/${classId}`
-    fetch(url)
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
         .then(res => res.json())
         .then((api_data) => {
             student_amount = api_data.data.length
