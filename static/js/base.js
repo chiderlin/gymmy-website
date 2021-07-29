@@ -17,8 +17,9 @@ const login_register_burger = burger_menu[3]
 const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
-const token = document.cookie.split('=')[2];
+const token = document.cookie.split('=');
 console.log(token)
+
 // controller
 init();
 function init() {
