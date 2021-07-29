@@ -303,7 +303,7 @@ router.put('/user/phone', auth, (req, res) => {
     if(!regex_phone.test(phone)){
         return res.json({ error: true, message: '手機號碼格式錯誤' });
     }
-
+    
     User.findOne({
         where: {
             email: email,
