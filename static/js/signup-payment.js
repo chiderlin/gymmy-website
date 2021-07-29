@@ -209,54 +209,6 @@ function switchPaypalBtn() {
 
 };
 
-// paypal 小
-//888
-paypal.Buttons({
-    style: {
-        color: 'silver',
-        shape: 'pill',
-        layout: 'horizontal',
-        label: 'paypal',
-    },
-    createSubscription: function (data, actions) {
-        return actions.subscription.create({
-            /* Creates the subscription */
-            plan_id: 'P-80U28316D6581411WMDOBS6Y'
-        });
-    },
-    onApprove: function (data, actions) {
-        // alert(data.subscriptionID);
-        const url = '/api/payment/paypal'
-        const userId = { 'id': register_user.id };
-        paypalPaid(data.subscriptionID)
-    }
-}).render('#small-paypal-btn-888');
-
-// 1000
-paypal.Buttons({
-    style: {
-        color: 'silver',
-        shape: 'pill',
-        layout: 'horizontal',
-        label: 'paypal',
-    },
-    createSubscription: function (data, actions) {
-        return actions.subscription.create({
-            /* Creates the subscription */
-            plan_id: 'P-1UR271328M306580FMDQUEEY'
-        });
-    },
-    onApprove: function (data, actions) {
-        // alert(data.subscriptionID);
-
-        paypalPaid(data.subscriptionID)
-    }
-}).render('#small-paypal-btn-1000');
-
-// tappay
-TPDirect.setupSDK(20343, "app_PxPSoHZCppMvxjkyNzFnuRmqtgvENcu1rDkYKxl8ZOZHjJfKOkCtAxpmKKbW", "Sandbox");
-
-
 
 // model
 function getUser() {
@@ -364,7 +316,7 @@ paypal.Buttons({
     createSubscription: function (data, actions) {
         return actions.subscription.create({
             /* Creates the subscription */
-            plan_id: 'P-80U28316D6581411WMDOBS6Y',
+            plan_id: 'P-9WN86235RV203443MMEBEUKA',
         });
     },
     onApprove: function (data, actions) {
@@ -387,7 +339,7 @@ paypal.Buttons({
     createSubscription: function (data, actions) {
         return actions.subscription.create({
             /* Creates the subscription */
-            plan_id: 'P-1UR271328M306580FMDQUEEY'
+            plan_id: 'P-9NB86150B1697750WMEBEUZI'
         });
     },
     onApprove: function (data, actions) {
@@ -399,3 +351,49 @@ paypal.Buttons({
     }
 }).render('#paypal-button-container-P-1000'); // Renders the PayPal button
 
+// paypal 小
+//888
+paypal.Buttons({
+    style: {
+        color: 'silver',
+        shape: 'pill',
+        layout: 'horizontal',
+        label: 'paypal',
+    },
+    createSubscription: function (data, actions) {
+        return actions.subscription.create({
+            /* Creates the subscription */
+            plan_id: 'P-9WN86235RV203443MMEBEUKA'
+        });
+    },
+    onApprove: function (data, actions) {
+        // alert(data.subscriptionID);
+        const url = '/api/payment/paypal'
+        const userId = { 'id': register_user.id };
+        paypalPaid(data.subscriptionID)
+    }
+}).render('#small-paypal-btn-888');
+
+// 1000
+paypal.Buttons({
+    style: {
+        color: 'silver',
+        shape: 'pill',
+        layout: 'horizontal',
+        label: 'paypal',
+    },
+    createSubscription: function (data, actions) {
+        return actions.subscription.create({
+            /* Creates the subscription */
+            plan_id: 'P-9NB86150B1697750WMEBEUZI'
+        });
+    },
+    onApprove: function (data, actions) {
+        // alert(data.subscriptionID);
+
+        paypalPaid(data.subscriptionID)
+    }
+}).render('#small-paypal-btn-1000');
+
+// tappay
+TPDirect.setupSDK(20343, "app_PxPSoHZCppMvxjkyNzFnuRmqtgvENcu1rDkYKxl8ZOZHjJfKOkCtAxpmKKbW", "Sandbox");
