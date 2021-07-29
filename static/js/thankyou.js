@@ -1,3 +1,5 @@
+let count = 3
+
 //controller
 orderInfo();
 
@@ -21,16 +23,12 @@ function orderInfo(){
             if(data.payment.type === 'paypal'){
                 const number = data.payment.subscriptionId
                 renderOrder(number);
-                setTimeout(() => {
-                    logOut()
-                }, 3000);
+                countDownProcess()
 
             } else if(data.payment.type === 'tappay') {
                 const number = data.payment.bank_transaction_id;
                 renderOrder(number);
-                setTimeout(() => {
-                    logOut()
-                }, 3000);
+                countDownProcess()
             }
         }
     });
@@ -52,6 +50,7 @@ function logOut() {
 };
 
 
+
 //view
 function renderOrder(number){
     const title = document.querySelector('.title-name');
@@ -64,5 +63,18 @@ function renderOrder(number){
     img.setAttribute('src', '/png/icon/checked.png');
     img_box.appendChild(img);
 };
+
+function countDownProcess(){
+    const logout_count_down = document.getElementById('logout-count-down');
+    logout_count_down.innerHTML = ''
+    logout_count_down.appendChild(document.createTextNode(`請重新登入，將於${count}秒後自動登出`))
+    count--;
+    if(count === 0) {
+        logOut();
+        
+    } else {
+        setTimeout(countDownProcess, 1000);
+    }
+}
 
 

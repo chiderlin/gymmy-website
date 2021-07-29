@@ -266,6 +266,9 @@ function sendPrime(prime, phone) {
         if (data.ok === true) {
             window.location.href = '/thankyou'
         }
+        if(data.error === true) {
+            renderErrMsg(data.message);
+        }
     })
 };
 

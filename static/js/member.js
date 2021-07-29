@@ -216,6 +216,14 @@ function getBooking() {
     }).then((api_data) => {
         console.log(api_data);
         const data = api_data.data;
+        if(data === "請重新登入"){
+            renderStatementMsg('請重新登入，三秒後自動登出');
+            overlay_statement.style.display = 'block';
+            setTimeout(() => {
+                logOut()
+            }, 3000);
+            return 
+        }
         if (data.length !== 0 && data !== "未登入") {
             for (let i = 0; i < data.length; i++) {
                 // 判斷時間 
@@ -267,6 +275,21 @@ function getBooking() {
             cancelBookingProcess(); // 等render完再加上取消預定按鈕的功能
         }
     });
+};
+
+function logOut() {
+    const url = '/api/user';
+    fetch(url, {
+        method: "DELETE",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        window.location.href = '/';
+    })
 };
 
 function deleteBooking(bookingId, callback) {

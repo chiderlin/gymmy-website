@@ -67,6 +67,7 @@ router.get('/payment', auth, (req, res) => {
 // 取得Prime => 付款
 router.post('/payment/pay-by-prime', auth, (req, res) => {
     const email = req.user.email
+    console.log(email);
     // find data
     User.findOne({ // 註冊過
         where: {
@@ -76,7 +77,7 @@ router.post('/payment/pay-by-prime', auth, (req, res) => {
     }).then((result) => {
         return JSON.stringify(result, null, 4);
     }).then((find_data) => {
-
+        console.log(find_data);
         find_data = JSON.parse(find_data);
         const userId = find_data.id;
 
@@ -87,6 +88,7 @@ router.post('/payment/pay-by-prime', auth, (req, res) => {
             const name = req.body.info.name;
             const email = req.body.info.email;
             const payload = {
+                userId:userId,
                 prime:prime,
                 plan:plan,
                 phone:phone,
@@ -94,10 +96,14 @@ router.post('/payment/pay-by-prime', auth, (req, res) => {
                 email:email
             }
             pay_by_prime(payload, (data) => {
-                const bank_transaction_id = data
-                return res.json({ ok: true, message: bank_transaction_id })
+                if(data.ok === true){
+                    const bank_transaction_id = data.message
+                    return res.json({ ok: true, message: bank_transaction_id })
+                }
+                if(data.error === true){
+                    return res.json({ error: true, message: data.message })
+                }
             });
-            return res.json({ ok: true, message: bank_transaction_id });
         } else {
             return res.status(400).json({ error: true, message: '已完成付款手續' })
         }
@@ -185,7 +191,7 @@ function pay_by_prime(payload, callback) {
             // insert data
             const currentDate = new Date(); // 下期付款日
             Payment.create({
-                UserId: userId,
+                UserId: payload.userId,
                 card_key: card_key,
                 card_token: card_token,
                 rec_trade_id: rec_trade_id,
@@ -196,7 +202,7 @@ function pay_by_prime(payload, callback) {
                 // 執行成功印出
                 User.findOne({
                     where: {
-                        id: userId,
+                        id: payload.userId,
                     }
                 }).then((user) => {
                     user.update({
@@ -205,14 +211,17 @@ function pay_by_prime(payload, callback) {
                 }).then(() => {
                     console.log('update done')
                 })
-                return callback(bank_transaction_id)
+                const ok_data = {ok:true, message:bank_transaction_id}
+                return callback(ok_data)
             })
         } else {
-            return res.status(400).json({ error: true, message: '付款失敗' })
+            const error_data = {error:true, message:'付款失敗'}
+            return callback(error_data)
         }
     }).catch((e) => {
         e = e.toString();
-        return res.status(500).json({ error: true, message: e })
+        const other_err_data = { error: true, message: e }
+        return callback(other_err_data)
     })
 };
 

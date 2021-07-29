@@ -97,7 +97,10 @@ router.get('/booking', auth, (req, res) => {
                 return res.json({ data: null });
             }
         })
-    } else {
+    } 
+    else if(req.user.email){
+        return res.json({ data: '請重新登入' })
+    }else {
         return res.json({ data: '未登入' })
     }
 });
@@ -122,6 +125,7 @@ router.delete('/booking',auth, (req, res) => {
 
 router.post('/booking', auth, (req, res) => {
     const class_info = req.body.data;
+    console.log(class_info)
     if (!class_info) {
         return res.status(400).json({ error: true, message: '提供正確post資料' });
     }
@@ -192,7 +196,7 @@ router.post('/booking', auth, (req, res) => {
         }).then(() => {
             return res.json({ ok: true });
         })
-    } else if (req.user.email) { //一般使用者就會跑這邊 //req.session.email
+    } else if (req.user.email) { //一般使用者就會跑這邊
 
         User.findOne({
             where: {

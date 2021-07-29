@@ -132,7 +132,7 @@ router.post('/user', async (req, res) => {
                         httpOnly: false,
                         maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
                     });
-                    return res.json({ ok: true, token });
+                    return res.json({ ok: true , token});
                 })
             } else {
                 return res.status(400).json({ error: true, message: '此帳號已註冊過' });
