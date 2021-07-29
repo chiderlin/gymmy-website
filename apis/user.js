@@ -158,9 +158,9 @@ router.patch('/user', (req, res) => {
     if(!pwd){
         return res.status(400).json({ error: true, message: '密碼不可為空值' });
     }
-    // if(!regex_email.test(email)){
-    //     return res.status(400).json({ error: true, message: 'email格式錯誤' });
-    // }
+    if(!regex_email.test(email)){
+        return res.status(400).json({ error: true, message: 'email格式錯誤' });
+    }
 
     try {
         User.findOne({
