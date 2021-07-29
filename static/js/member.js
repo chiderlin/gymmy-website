@@ -1,5 +1,6 @@
 let price;
 let member_info;
+let check_active;
 
 
 // controller
@@ -151,6 +152,8 @@ function checkLogIn() {
     }).then((res) => {
         return res.json();
     }).then((api_data) => {
+        console.log(api_data)
+        check_active = api_data.data.active
         if (api_data.data === null) {
             window.location.href = '/'
         }
@@ -196,7 +199,6 @@ function getMember() {
         return res.json();
     }).then((data) => {
         member_info = data;
-        console.log(data);
         if (data !== null) {
             renderMemberInfo(data);
         }
@@ -214,16 +216,17 @@ function getBooking() {
     }).then((res) => {
         return res.json();
     }).then((api_data) => {
-        console.log(api_data);
+        console.log(api_data)
         const data = api_data.data;
-        if(data === "請重新登入"){
-            renderStatementMsg('請重新登入，三秒後自動登出');
-            overlay_statement.style.display = 'block';
-            setTimeout(() => {
-                logOut()
-            }, 3000);
-            return 
-        }
+        console.log(check_active)
+        // if(data === '請重新登入'){
+        //     renderStatementMsg('請重新登入，三秒後自動登出');
+        //     overlay_statement.style.display = 'block';
+        //     setTimeout(() => {
+        //         logOut()
+        //     }, 3000);
+        //     return 
+        // }
         if (data.length !== 0 && data !== "未登入") {
             for (let i = 0; i < data.length; i++) {
                 // 判斷時間 
@@ -354,8 +357,8 @@ function renderMemberInfo(data) {
     const email = document.createElement('div');
     const plan = document.createElement('div');
     const active = document.createElement('div');
-    const format_plan = plan_transform(data.plan);
-    const active_check = check_active(data.active);
+    const format_plan = planTransform(data.plan);
+    const active_check = checkActive(data.active);
     circle.className = 'spinner-border text-secondary img-circle'
     span.className = 'visually-hidden'
     if (active_check) {
@@ -398,7 +401,7 @@ function renderMemberInfo(data) {
     activeProcess();
 };
 
-function plan_transform(plan) {
+function planTransform(plan) {
     if (plan === 888) {
         return '入門版';
     } else if (plan === 1000) {
@@ -406,7 +409,7 @@ function plan_transform(plan) {
     }
 };
 
-function check_active(active) {
+function checkActive(active) {
     if (active === 'yes') {
         return true
     } else if (active === 'no') {

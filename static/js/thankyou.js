@@ -1,10 +1,8 @@
 let count = 3
-
 //controller
-orderInfo();
+orderInfo()
 
 
-// model
 function orderInfo(){
     const url = '/api/payment';
     fetch(url,{
@@ -17,7 +15,8 @@ function orderInfo(){
         return res.json()
     }).then((api_data)=>{
         const data = api_data.data;
-        if(api_data.error === true && api_data.message === '尚未登入系統') {
+        console.log(data);
+        if(data === null) {
             window.location.href = '/';
         } else {
             if(data.payment.type === 'paypal'){

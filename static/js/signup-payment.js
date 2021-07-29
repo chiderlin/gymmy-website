@@ -241,7 +241,11 @@ function uploadPhone(phone, cb) {
     }).then((res) => {
         return res.json()
     }).then((data) => {
-        if (data.ok === true) {
+        console.log(data);
+        if(data.error === true){
+            renderErrMsg(data.message)
+        }
+        if(data.ok === true){
             return cb(data)
         }
     })
@@ -263,6 +267,7 @@ function sendPrime(prime, phone) {
     }).then((res) => {
         return res.json();
     }).then((data) => {
+        console.log(data);
         if (data.ok === true) {
             window.location.href = '/thankyou'
         }

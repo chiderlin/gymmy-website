@@ -4,7 +4,7 @@ classId = parseInt(classId);
 let class_info;
 let check_login = false;
 let check_active;
-let num_of_class;
+let amount_of_class;
 let student_amount;
 
 
@@ -47,7 +47,7 @@ function checkBookingBtn(weekday){
                         overlay_statement.style.display = 'block';
                         return
                     }
-                    if(num_of_class === 22){
+                    if(amount_of_class === 22){
                         renderStatement('本月課程數量已達上限22堂');
                         overlay_statement.style.display = 'block';
                         return
@@ -95,8 +95,8 @@ function checkLogIn(){
             check_active = api_data.data.active;
             check_plan = api_data.data.plan;
             if(check_plan === 888) {
-                getBooking((class_count)=>{ //這個api已經限定本月份課程累積數
-                    num_of_class = class_count
+                getBooking((class_count)=>{ 
+                    amount_of_class = class_count
                 });
             }
 
@@ -164,7 +164,22 @@ function getBooking(cb){
     }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        return cb(api_data.data.length)
+        const data = api_data.data
+        let current_month_class_amount = [] // for 888方案計算堂數
+        if (data.length !== 0 && data !== "未登入") {
+            for (let i = 0; i < data.length; i++) {
+                // 判斷時間 
+                const class_time = data[i].class_time.substring(0, 10)
+                const class_month = new Date(class_time).getMonth()+1
+                const current_month = new Date().getMonth()+1
+                // console.log(current_month)
+                if(class_month === current_month) {
+                    current_month_class_amount.push(data[i])
+                }
+            }
+            cb(current_month_class_amount.length)
+        }
+        // return cb(api_data.data.length)
     });
 };
 

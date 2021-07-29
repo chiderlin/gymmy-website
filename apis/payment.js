@@ -9,59 +9,55 @@ const auth = require('../middleware/auth.js')
 // 第一次付款，thankyou頁面的編號
 router.get('/payment', auth, (req, res) => {
     const email = req.user.email
-    if (email) {
-        User.findOne({
-            where: {
-                email: email,
-            },
-            include: Payment,
-        }).then((result) => {
-            return JSON.stringify(result, null, 4);
-        }).then((find_data) => {
-            find_data = JSON.parse(find_data);
+    User.findOne({
+        where: {
+            email: email,
+        },
+        include: Payment,
+    }).then((result) => {
+        return JSON.stringify(result, null, 4);
+    }).then((find_data) => {
+        find_data = JSON.parse(find_data);
 
-            if (find_data.Payment.type === "tappay") {
-                let return_data = {
-                    'data': {
-                        'name': find_data.name,
-                        'email': find_data.email,
-                        'plan': find_data.plan,
-                        'payment': {
-                            'id': find_data.Payment.id,
-                            'bank_transaction_id': find_data.Payment.bank_transaction_id,
-                            'next_pay_date': find_data.Payment.next_pay_date,
-                            'rec_trade_id': find_data.Payment.rec_trade_id,
-                            'type': find_data.Payment.type,
-                        }
+        if (find_data.Payment.type === "tappay") {
+            let return_data = {
+                'data': {
+                    'name': find_data.name,
+                    'email': find_data.email,
+                    'plan': find_data.plan,
+                    'payment': {
+                        'id': find_data.Payment.id,
+                        'bank_transaction_id': find_data.Payment.bank_transaction_id,
+                        'next_pay_date': find_data.Payment.next_pay_date,
+                        'rec_trade_id': find_data.Payment.rec_trade_id,
+                        'type': find_data.Payment.type,
                     }
                 }
-                return res.json(return_data)
-            } else if (find_data.Payment.type === "paypal") {
-                const created_date = find_data.Payment.createdAt
-                let created_date_localtime = new Date(created_date).toLocaleString('chinese', { hour12: false });
-                let return_data = {
-                    'data': {
-                        'name': find_data.name,
-                        'email': find_data.email,
-                        'plan': find_data.plan,
-                        'payment': {
-                            'id': find_data.Payment.id,
-                            'subscriptionId': find_data.Payment.subscriptionId,
-                            'next_pay_date': find_data.Payment.next_pay_date,
-                            'created_date': created_date_localtime,
-                            'type': find_data.Payment.type,
-                        }
-                    }
-                }
-                return res.json(return_data);
             }
-        }).catch((e) => {
-            e = e.toString();
-            return res.status(500).json({ error: true, message: e });
-        });
-    } else {
-        return res.status(400).json({ error: true, message: '尚未登入系統' })
-    }
+            return res.json(return_data)
+        } else if (find_data.Payment.type === "paypal") {
+            const created_date = find_data.Payment.createdAt
+            let created_date_localtime = new Date(created_date).toLocaleString('chinese', { hour12: false });
+            let return_data = {
+                'data': {
+                    'name': find_data.name,
+                    'email': find_data.email,
+                    'plan': find_data.plan,
+                    'payment': {
+                        'id': find_data.Payment.id,
+                        'subscriptionId': find_data.Payment.subscriptionId,
+                        'next_pay_date': find_data.Payment.next_pay_date,
+                        'created_date': created_date_localtime,
+                        'type': find_data.Payment.type,
+                    }
+                }
+            }
+            return res.json(return_data);
+        }
+    }).catch((e) => {
+        e = e.toString();
+        return res.status(500).json({ error: true, message: e });
+    });
 });
 
 // 取得Prime => 付款
