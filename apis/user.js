@@ -13,7 +13,7 @@ const auth = require('../middleware/auth.js')
 
 // GET ALL USERS
 router.get('/users', auth, (req, res) => {
-    if (req.user.email === 'admin@admin') {
+    if (req.user.email === 'admin@admin.com') {
         User.findAll()
             .then((result) => {
                 return JSON.stringify(result, null, 4);

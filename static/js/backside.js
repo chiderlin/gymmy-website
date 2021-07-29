@@ -6,6 +6,7 @@ let index = 1;
 let student_amount;
 let per_class_booking_student;
 let all_student_list;
+// const token = document.cookie.split('=')[2];
 const token = document.cookie.split('=')[3];
 console.log(token)
 init();
@@ -181,6 +182,7 @@ function renderStudentList(data, selected_day){
             statement_page.removeChild(student_list[i]);
         };
     };
+
     for(let i=0; i<data.length;i++){ // 六日方案888的學員不能顯示在增加名單裡面
         if(selected_day === 6 || selected_day===7){
             if(data[i].plan === 888){
@@ -326,10 +328,8 @@ function getStudentList(){
     }).then((res)=>{
         return res.json()
     }).then((api_data)=>{
-        console.log(api_data);
         const data = api_data.data
         all_student_list = data;
-        // renderStudentList(data);
     })
 };
 
