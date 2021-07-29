@@ -76,7 +76,6 @@ function planBtnProcess(){
 const upload_btn = document.getElementById('upload-btn');
 upload_btn.addEventListener('click', () => {
     uploadImg();
-    imgLoadingCircle();
 });
 
 function cancelBookingProcess() {
@@ -161,6 +160,10 @@ function checkLogIn() {
 function uploadImg() {
     const img_file = document.getElementById('img');
     const form = new FormData();
+    if(!img_file.files[0]){
+        return 
+    }
+    imgLoadingCircle();
     form.append('img', img_file.files[0]) // get file object
     const url = "/api/member/img-upload"
     fetch(url, {
@@ -173,10 +176,10 @@ function uploadImg() {
     }).then((res) => {
         return res.json();
     }).then((data) => {
+        console.log(data);
         if (data.ok === true) {
             const img = data.address;
             renderUpload(img);
-
         }
     })
 };

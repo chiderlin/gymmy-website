@@ -10,6 +10,9 @@ const auth = require('../middleware/auth.js')
 // 後台 顯示每堂課學員人數 ＆ classes page 累計每堂課人數（顯示可預約或已額滿）
 router.get('/booking/student/:classId',auth, (req, res) => {
     const classId = req.params.classId;
+    if(!classId){
+        return res.status(400).json({error:true,message:'課程id不可為空值'})
+    }
     const student_list = []
     Booking.findAll({
         where: {
@@ -102,6 +105,10 @@ router.get('/booking', auth, (req, res) => {
 router.delete('/booking',auth, (req, res) => {
     // 要傳該bookingId近來才可以取消課程/刪除課程
     const bookingId = req.body.bookingId;
+    if(!bookingId){
+        return res.status(400).json({error:true,message:'預定課程id不可為空值'})
+    }
+
     Booking.findOne({
         where: {
             id: bookingId,
@@ -115,8 +122,35 @@ router.delete('/booking',auth, (req, res) => {
 
 router.post('/booking', auth, (req, res) => {
     const class_info = req.body.data;
-    if (class_info === undefined) {
+    if (!class_info) {
         return res.status(400).json({ error: true, message: '提供正確post資料' });
+    }
+    if(!class_info.classId){
+        return res.status(400).json({ error: true, message: '課程id不可為空值' });
+    }
+    if(!class_info.month){
+        return res.status(400).json({ error: true, message: '月份不可為空值' });
+    }
+    if(!class_info.weekday){
+        return res.status(400).json({ error: true, message: '星期不可為空值' });
+    }
+    if(!class_info.class_time){
+        return res.status(400).json({ error: true, message: '課程時間不可為空值' });
+    }
+    if(!class_info.start_time){
+        return res.status(400).json({ error: true, message: '課程時間不可為空值' });
+    }
+    if(!class_info.end_time){
+        return res.status(400).json({ error: true, message: '課程時間不可為空值' });
+    }
+    if(!class_info.class_name){
+        return res.status(400).json({ error: true, message: '課程名稱不可為空值' });
+    }
+    if(!class_info.teacher){
+        return res.status(400).json({ error: true, message: '教練不可爲空值' });
+    }
+    if(!class_info.room){
+        return res.status(400).json({ error: true, message: '教室不可為空值' });
     }
     const weekday = class_info.weekday;
     const current = new Date()

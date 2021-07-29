@@ -36,7 +36,9 @@ const upload = multer({
 
 const mybucket = 'gymmy';
 router.post('/member/img-upload', upload.single('img'), auth, function (req, res, next) {
-    // console.log(req.file);
+    if(!req.file){
+        return res.status(400).json({error:true, message:'沒有選取檔案'})
+    }
 
     const stream = fs.createReadStream(`./upload/${req.file.originalname}`);
     const params = { Bucket: mybucket, Key: `member_img/${req.file.originalname}`, Body: stream, ACL: 'public-read' };

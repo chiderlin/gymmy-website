@@ -2,7 +2,11 @@
 const login_form = document.getElementById('login-form');
 const token = document.cookie.split('=')[2];
 console.log(token)
+
+
 // controller
+loginStatus();
+
 login_form.addEventListener('submit', (event)=>{
     event.preventDefault();
     const email = document.getElementById('email').value;
@@ -27,6 +31,7 @@ function login(email, pwd){
         return res.json(); 
     }).then((data)=>{
         if(data.ok === true) {
+            window.location.reload();
             loginStatus();
         } 
         if(data.error === true){
@@ -49,11 +54,13 @@ function loginStatus() {
     }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        const auth = api_data.data.auth
-        if(auth === 1) {
-            window.location.href = '/backside';
-        } else {
-            renderError('權限不足');
+        if(api_data.data !== null){
+            const auth = api_data.data.auth
+            if(auth === 1) {
+                window.location.href = '/backside';
+            } else {
+                renderError('權限不足');
+            }
         }
     })
 };

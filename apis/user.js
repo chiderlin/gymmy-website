@@ -48,7 +48,6 @@ router.get('/users', auth, (req, res) => {
 
 // CHECK STATUS(login check)
 router.get('/user', auth, (req, res) => {
-
     User.findOne({
         where: {
             email: req.user.email,
@@ -82,13 +81,29 @@ router.get('/user', auth, (req, res) => {
 
 // REGISTER 
 router.post('/user', async (req, res) => {
-
     const name = req.body.name;
     const email = req.body.email;
-    const phone = req.body.phone;
+    const pwd = req.body.pwd;
     const plan = req.body.price;
+    const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
+    if(!name){
+        return res.status(400).json({ error: true, message: '使用者名稱不可為空值' });
+    }
+    if(!email){
+        return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
+    }
+    if(!pwd){
+        return res.status(400).json({ error: true, message: '密碼不可為空值' });
+    }
+    if(!plan){
+        return res.status(400).json({ error: true, message: '方案不可為空值' });
+    }
+    if(!regex_email.test(email)){
+        return res.status(400).json({ error: true, message: 'email格式錯誤' });
+    }
+
     try {
-        const hashPwd = await bcrypt.hash(req.body.pwd, 10)
+        const hashPwd = await bcrypt.hash(pwd, 10)
         User.findOne({
             where: {
                 email: email,
@@ -108,13 +123,10 @@ router.post('/user', async (req, res) => {
                     name: name,
                     email: email,
                     password: hashPwd,
-                    phone: phone,
                     plan: plan,
                     auth: 2,
                     active: 'no',
                 }).then(() => {
-                    // 記錄在session
-                    // req.session.email = email;
                     res.cookie('jwt', token, {
                         secure: false,
                         httpOnly: false,
@@ -137,6 +149,19 @@ router.post('/user', async (req, res) => {
 router.patch('/user', (req, res) => {
     const email = req.body.email;
     const pwd = req.body.password;
+    console.log(email)
+    console.log(pwd)
+    const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
+    if(!email){
+        return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
+    }
+    if(!pwd){
+        return res.status(400).json({ error: true, message: '密碼不可為空值' });
+    }
+    // if(!regex_email.test(email)){
+    //     return res.status(400).json({ error: true, message: 'email格式錯誤' });
+    // }
+
     try {
         User.findOne({
             where: {
@@ -188,8 +213,12 @@ router.delete('/user', auth, (req, res) => {
 
 router.post('/user/google-login', (req, res) => {
     let token = req.body.id_token;
-    // console.log(token);
-    let user = {}
+    let user = {};
+
+    if(!token){
+        return res.status(400).json({ error: true, message: '無token' });
+    };
+
     async function verify() {
         const ticket = await client.verifyIdToken({
             idToken: token,
@@ -245,6 +274,10 @@ router.post('/user/google-login', (req, res) => {
 router.put('/user/plan', auth, (req, res) => {
     const plan = req.body.plan;
     const email = req.user.email
+    if(!plan){
+        return res.json({ error: true, message: '方案不可為空值' });
+    }
+
     User.findOne({
         where: {
             email: email,
@@ -265,6 +298,10 @@ router.put('/user/plan', auth, (req, res) => {
 router.put('/user/phone', auth, (req, res) => {
     const phone = req.body.phone;
     const email = req.user.email
+    if(!phone){
+        return res.json({ error: true, message: '手機號碼不可為空值' });
+    }
+
     User.findOne({
         where: {
             email: email,

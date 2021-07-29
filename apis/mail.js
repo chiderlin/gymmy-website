@@ -7,13 +7,13 @@ router.post('/mail', (req, res) => {
     const email = req.body.email
     const msg = req.body.msg
 
-    if (name === undefined) {
+    if (!name) {
         return res.json({ error: true, message: 'name格式錯誤' });
     }
-    if (email === undefined) {
+    if (!email) {
         return res.json({ error: true, message: 'email格式錯誤' });
     }
-    if (msg === undefined) {
+    if (!msg) {
         return res.json({ error: true, message: 'msg格式錯誤' });
     }
     const mail = nodemailer.createTransport({

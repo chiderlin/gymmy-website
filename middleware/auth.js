@@ -7,7 +7,7 @@ const auth = (req,res,next)=>{
     //     return res.json({data:null});
     // }
     const authHeader = req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : ''
-    console.log(authHeader)
+    // console.log(authHeader)
     if(authHeader === 'undefined'){
         return res.json({data:null})
     } else {

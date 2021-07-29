@@ -111,6 +111,10 @@ router.post('/payment/pay-by-prime', auth, (req, res) => {
 router.post('/payment/paypal', auth, (req, res) => {
     const sub_id = req.body.sub_id;
     const email = req.user.email
+    if(!sub_id){
+        return res.status(400).json({error:true, message:'請提供paypal交易id'})
+    }
+
     User.findOne({
         where: {
             email: email,
