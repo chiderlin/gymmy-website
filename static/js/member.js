@@ -1,5 +1,7 @@
 let price;
 let member_info;
+let check_active;
+
 
 // controller
 init()
@@ -68,15 +70,14 @@ function planBtnProcess(){
             overlay_option.style.display = 'none';
         }
     });
-}
+};
 
 
 // upload_img
 const upload_btn = document.getElementById('upload-btn');
 upload_btn.addEventListener('click', () => {
     uploadImg();
-    imgLoadingCircle();
-})
+});
 
 function cancelBookingProcess() {
     const cancel_btn = document.querySelectorAll('.class-btn');
@@ -96,7 +97,6 @@ function cancelBookingProcess() {
     }
 
 };
-
 
 // 查詢天數選單
 function selectHistoryDay() {
@@ -137,17 +137,23 @@ function activeProcess() {
             }
         })
     }
-}
-
-
+};
 
 
 // model
 function checkLogIn() {
     const url = '/api/user';
-    fetch(url).then((res) => {
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res) => {
         return res.json();
     }).then((api_data) => {
+        console.log(api_data)
+        check_active = api_data.data.active
         if (api_data.data === null) {
             window.location.href = '/'
         }
@@ -157,29 +163,42 @@ function checkLogIn() {
 function uploadImg() {
     const img_file = document.getElementById('img');
     const form = new FormData();
+    if(!img_file.files[0]){
+        return 
+    }
+    imgLoadingCircle();
     form.append('img', img_file.files[0]) // get file object
     const url = "/api/member/img-upload"
     fetch(url, {
         method: "POST",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         body: form,
     }).then((res) => {
         return res.json();
     }).then((data) => {
+        console.log(data);
         if (data.ok === true) {
             const img = data.address;
             renderUpload(img);
-
         }
     })
 };
 
 function getMember() {
     const url = '/api/member/info'
-    fetch(url).then((res) => {
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res) => {
         return res.json();
     }).then((data) => {
         member_info = data;
-        console.log(data);
         if (data !== null) {
             renderMemberInfo(data);
         }
@@ -188,11 +207,26 @@ function getMember() {
 
 function getBooking() {
     const url = '/api/booking';
-    fetch(url).then((res) => {
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res) => {
         return res.json();
     }).then((api_data) => {
-        console.log(api_data);
+        console.log(api_data)
         const data = api_data.data;
+        console.log(check_active)
+        // if(data === '請重新登入'){
+        //     renderStatementMsg('請重新登入，三秒後自動登出');
+        //     overlay_statement.style.display = 'block';
+        //     setTimeout(() => {
+        //         logOut()
+        //     }, 3000);
+        //     return 
+        // }
         if (data.length !== 0 && data !== "未登入") {
             for (let i = 0; i < data.length; i++) {
                 // 判斷時間 
@@ -246,13 +280,30 @@ function getBooking() {
     });
 };
 
+function logOut() {
+    const url = '/api/user';
+    fetch(url, {
+        method: "DELETE",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        window.location.href = '/';
+    })
+};
+
 function deleteBooking(bookingId, callback) {
     const url = '/api/booking';
     const booking_info = { 'bookingId': bookingId }
     fetch(url, {
         method: "DELETE",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(booking_info)
     }).then((res) => {
@@ -267,8 +318,10 @@ function uploadPlan(plan_option){
     const plan = {'plan': plan_option}
     fetch(url,{
         method: "PUT",
+        credentials: 'include',
         headers:{
             "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(plan)
     }).then((res)=>{
@@ -293,7 +346,6 @@ function renderUpload(img_address) {
     img_box.appendChild(circle);
 };
 
-
 function renderMemberInfo(data) {
     const mem_email = document.getElementById('email');
     const mem_plan = document.getElementById('plan');
@@ -305,8 +357,8 @@ function renderMemberInfo(data) {
     const email = document.createElement('div');
     const plan = document.createElement('div');
     const active = document.createElement('div');
-    const format_plan = plan_transform(data.plan);
-    const active_check = check_active(data.active);
+    const format_plan = planTransform(data.plan);
+    const active_check = checkActive(data.active);
     circle.className = 'spinner-border text-secondary img-circle'
     span.className = 'visually-hidden'
     if (active_check) {
@@ -349,7 +401,7 @@ function renderMemberInfo(data) {
     activeProcess();
 };
 
-function plan_transform(plan) {
+function planTransform(plan) {
     if (plan === 888) {
         return '入門版';
     } else if (plan === 1000) {
@@ -357,7 +409,7 @@ function plan_transform(plan) {
     }
 };
 
-function check_active(active) {
+function checkActive(active) {
     if (active === 'yes') {
         return true
     } else if (active === 'no') {
@@ -463,4 +515,4 @@ function imgLoadingCircle(){
     const img_circle = document.querySelector('.img-circle');
     console.log(img_circle);
     img_circle.style.display = 'block';
-}
+};

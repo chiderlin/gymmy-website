@@ -1,33 +1,56 @@
+let count = 3
+//controller
+orderInfo()
 
-orderInfo();
 
 function orderInfo(){
     const url = '/api/payment';
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json()
     }).then((api_data)=>{
         const data = api_data.data;
-        if(api_data.error === true && api_data.message === '尚未登入系統') {
+        console.log(data);
+        if(data === null) {
             window.location.href = '/';
         } else {
             if(data.payment.type === 'paypal'){
                 const number = data.payment.subscriptionId
                 renderOrder(number);
-                setTimeout(() => {
-                    logOut()
-                }, 3000);
+                countDownProcess()
 
             } else if(data.payment.type === 'tappay') {
                 const number = data.payment.bank_transaction_id;
                 renderOrder(number);
-                setTimeout(() => {
-                    logOut()
-                }, 3000);
+                countDownProcess()
             }
         }
     });
 };
 
+function logOut() {
+    const url = '/api/user';
+    fetch(url, {
+        method: "DELETE",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        window.location.href = '/';
+    })
+};
+
+
+
+//view
 function renderOrder(number){
     const title = document.querySelector('.title-name');
     const trade_num = document.querySelector('.trade-num');
@@ -40,14 +63,17 @@ function renderOrder(number){
     img_box.appendChild(img);
 };
 
+function countDownProcess(){
+    const logout_count_down = document.getElementById('logout-count-down');
+    logout_count_down.innerHTML = ''
+    logout_count_down.appendChild(document.createTextNode(`請重新登入，將於${count}秒後自動登出`))
+    count--;
+    if(count === 0) {
+        logOut();
+        
+    } else {
+        setTimeout(countDownProcess, 1000);
+    }
+}
 
-function logOut() {
-    const url = '/api/user';
-    fetch(url, {
-        method: "DELETE",
-    }).then((res) => {
-        return res.json();
-    }).then((data) => {
-        window.location.href = '/';
-    })
-};
+

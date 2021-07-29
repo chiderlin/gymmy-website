@@ -4,8 +4,24 @@ const closebtn = document.getElementById('closebtn');
 const burger_menu = document.querySelectorAll('.menu-format');
 const big_menu = document.querySelectorAll('li');
 
+const classes_big = big_menu[0]
+const member_plan_big = big_menu[1]
+const member_center_big = big_menu[2]
+const login_register_big = big_menu[3]
+const logout_big = big_menu[4]
+
+const classes_burger = burger_menu[0]
+const member_plan_burger = burger_menu[1]
+const member_center_burger = burger_menu[2]
+const login_register_burger = burger_menu[3]
+const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
+// const token = document.cookie.split('=')[2]; // localhost是2
+const token = document.cookie.split('=')[3]; // linux是3
+console.log(token)
+
+// controller
 init();
 function init() {
     checkLogIn()
@@ -16,31 +32,33 @@ const back_to_top = document.querySelector('.top');
 back_to_top.addEventListener('click',()=>{
     document.body.scrollTop = 0; // for Safari
     document.documentElement.scrollTop = 0; // for chrome, firefox...
-})
+});
+
 window.onscroll = ()=>{
     if(document.documentElement.scrollTop>20 || document.body.scrollTop>20){
         back_to_top.style.display = 'block';
     } else {
         back_to_top.style.display = 'none';
     }
-}
+};
 
 // 登出按鈕
-big_menu[4].addEventListener('click', () => {
+logout_big.addEventListener('click', () => {
     logOut();
 });
-burger_menu[4].addEventListener('click', () => {
+logout_burger.addEventListener('click', () => {
     logOut();
 });
 
 // 會員中心按鈕
-big_menu[2].addEventListener('click', () => {
+member_center_big.addEventListener('click', () => {
     if (login_status) {
         const username = login_user_info.data.name;
         window.location.href = `/member/${username}`;
     }
 });
-burger_menu[2].addEventListener('click', () => {
+
+member_center_burger.addEventListener('click', () => {
     if (login_status) {
         const username = login_user_info.data.name;
         window.location.href = `/member/${username}`;
@@ -57,15 +75,14 @@ closebtn.addEventListener('click', () => {
 });
 
 
-
 const overlay_login = document.querySelector('.overlay-login');
 const login_close_btn = document.getElementById('login-close-btn');
 // 登入/註冊按鈕
-big_menu[3].addEventListener('click', () => {
+login_register_big.addEventListener('click', () => {
     overlay_login.style.display = 'block';
 });
 
-burger_menu[3].addEventListener('click', () => {
+login_register_burger.addEventListener('click', () => {
     burger_overlay.style.height = '0%';
     overlay_login.style.display = 'block';
 });
@@ -90,6 +107,7 @@ const close_btn_for_img_statement = document.getElementById('close-btn-for-img-s
 close_btn.addEventListener('click', () => {
     overlay_statement.style.display = 'none';
 });
+
 close_btn_for_img_statement.addEventListener('click', () => {
     overlay_statement.style.display = 'none';
 });
@@ -100,7 +118,6 @@ const customer_service = document.querySelector('.customer-service');
 customer_service.addEventListener('click',()=>{
     customer_service_box.style.display = 'block';
 });
-
 
 // 客服視窗關閉
 const close_btn_for_img_customer = document.getElementById('close-btn-for-img-customer');
@@ -132,18 +149,69 @@ function sendEmailProcess(){
     overlay_statement.style.display = 'block';
 };
 
+// google sign in
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        console.log('User signed out.');
+    });
+};
+
+function onSuccess(googleUser) {
+    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log(id_token);
+    const token = {
+        'id_token': id_token
+    }
+    const URL = '/api/user/google-login';
+    fetch(URL, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(token)
+    }).then((res) => {
+        return res.json()
+    }).then((data) => {
+        if (data.ok === true) {
+            window.location.reload();
+            signOut();
+            loginNavBar();
+        }
+    })
+
+};
+
+function onFailure(error) {
+    console.log(error);
+};
+
+function renderButton() {
+    gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 310,
+        'height': 47,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+    });
+};
+
+
 
 // module
 function checkLogIn() {
     const url = '/api/user';
-    // let token = document.cookie.split('=')[2];
-    // console.log(token)
     fetch(url,{
         method: "GET",
-        // credentials: 'include',
-        // headers: {
-        //     'Authorization': `Bearer ${token}`
-        // }
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     }).then((res) => {
         return res.json();
     }).then((api_data) => {
@@ -186,14 +254,12 @@ function login(email, pwd) {
 
 function logOut() {
     const url = '/api/user';
-    let token = document.cookie.split('=')[2];
-    console.log(token)
     fetch(url, {
         method: "DELETE",
-        // credentials: 'include',
-        // headers: {
-        //     'Authorization': `Bearer ${token}`
-        // }
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     }).then((res) => {
         return res.json();
     }).then((data) => {
@@ -223,60 +289,54 @@ function sendEmail(customer_data){
 // view
 function loginNavBar() {
     // big screen
-    // big_menu[0].classList.remove('hide'); // 最新消息
-    big_menu[0].classList.remove('hide'); // 本月課程
-    big_menu[2].classList.remove('hide'); // 會員中心
-    big_menu[4].classList.remove('hide'); // 登出系統
-    big_menu[1].classList.add('hide'); // 會員方案
-    big_menu[3].classList.add('hide'); // 登入/註冊
+    classes_big.classList.remove('hide'); // 本月課程
+    member_center_big.classList.remove('hide'); // 會員中心
+    logout_big.classList.remove('hide'); // 登出系統
+    member_plan_big.classList.add('hide'); // 會員方案
+    login_register_big.classList.add('hide'); // 登入/註冊
     // small screen
-    // burger_menu[0].classList.remove('hide'); // 最新消息
-    burger_menu[0].classList.remove('hide'); // 本月課程
-    burger_menu[2].classList.remove('hide'); // 會員中心
-    burger_menu[4].classList.remove('hide'); // 登出系統
-    burger_menu[1].classList.add('hide'); // 會員方案
-    burger_menu[3].classList.add('hide'); // 登入/註冊
+    classes_burger.classList.remove('hide'); // 本月課程
+    member_center_burger.classList.remove('hide'); // 會員中心
+    logout_burger.classList.remove('hide'); // 登出系統
+    member_plan_burger.classList.add('hide'); // 會員方案
+    login_register_burger.classList.add('hide'); // 登入/註冊
 };
 
 function initRenderMenu(api_data) {
     if(api_data.error === true){
         // 未登入狀態
-        big_menu[0].classList.remove('hide'); // 本月課程
-        big_menu[1].classList.remove('hide'); // 會員方案
-        big_menu[3].classList.remove('hide'); // 登入/註冊
+        classes_big.classList.remove('hide'); // 本月課程
+        member_plan_big.classList.remove('hide'); // 會員方案
+        login_register_big.classList.remove('hide'); // 登入/註冊
 
         // small screen
-        burger_menu[0].classList.remove('hide'); // 本月課程
-        burger_menu[1].classList.remove('hide'); // 會員方案
-        burger_menu[3].classList.remove('hide'); // 登入/註冊
+        classes_burger.classList.remove('hide'); // 本月課程
+        member_plan_burger.classList.remove('hide'); // 會員方案
+        login_register_burger.classList.remove('hide'); // 登入/註冊
         return
     }
     if (api_data.data !== null) {
         // 登入狀態
         // big screen
-        // big_menu[0].classList.remove('hide'); // 最新消息
-        big_menu[0].classList.remove('hide'); // 本月課程
-        big_menu[2].classList.remove('hide'); // 會員中心
-        big_menu[4].classList.remove('hide'); // 登出系統
+        classes_big.classList.remove('hide'); // 本月課程
+        member_center_big.classList.remove('hide'); // 會員中心
+        logout_big.classList.remove('hide'); // 登出系統
 
         // small screen
-        // burger_menu[0].classList.remove('hide'); // 最新消息
-        burger_menu[0].classList.remove('hide'); // 本月課程
-        burger_menu[2].classList.remove('hide'); // 會員中心
-        burger_menu[4].classList.remove('hide'); // 登出系統
+        classes_burger.classList.remove('hide'); // 本月課程
+        member_center_burger.classList.remove('hide'); // 會員中心
+        logout_burger.classList.remove('hide'); // 登出系統
     } else {
         // 未登入狀態
         // big screen
-        // big_menu[0].classList.remove('hide'); // 最新消息
-        big_menu[0].classList.remove('hide'); // 本月課程
-        big_menu[1].classList.remove('hide'); // 會員方案
-        big_menu[3].classList.remove('hide'); // 登入/註冊
+        classes_big.classList.remove('hide'); // 本月課程
+        member_plan_big.classList.remove('hide'); // 會員方案
+        login_register_big.classList.remove('hide'); // 登入/註冊
 
         // small screen
-        // burger_menu[0].classList.remove('hide'); // 最新消息
-        burger_menu[0].classList.remove('hide'); // 本月課程
-        burger_menu[1].classList.remove('hide'); // 會員方案
-        burger_menu[3].classList.remove('hide'); // 登入/註冊
+        classes_burger.classList.remove('hide'); // 本月課程
+        member_plan_burger.classList.remove('hide'); // 會員方案
+        login_register_burger.classList.remove('hide'); // 登入/註冊
     }
 };
 
@@ -300,87 +360,4 @@ function renderStatement(msg){
     statement_msg.appendChild(document.createTextNode(msg));
     statement_page.appendChild(statement_msg);
     statement_page.insertBefore(statement_msg,close_btn);
-};
-
-// ===========================
-
-
-// function onSignIn(googleUser) {
-//     var id_token = googleUser.getAuthResponse().id_token;
-//     console.log(id_token);
-//     const token = {
-//         'id_token': id_token
-//     }
-//     const URL = '/api/google-login';
-//     fetch(URL, {
-//         method: "POST",
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(token)
-//     }).then((res) => {
-//         return res.json()
-//     }).then((data) => {
-//         if (data.ok === true) {
-//             signOut();
-//             window.location.reload();
-//             loginNavBar();
-//         }
-//     })
-//     // var profile = googleUser.getBasicProfile();
-//     // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-//     // console.log('Name: ' + profile.getName());
-//     // console.log('Image URL: ' + profile.getImageUrl());
-//     // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-// }
-
-// google sign in
-function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-        console.log('User signed out.');
-    });
-};
-
-
-function onSuccess(googleUser) {
-    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log(id_token);
-    const token = {
-        'id_token': id_token
-    }
-    const URL = '/api/user/google-login';
-    fetch(URL, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(token)
-    }).then((res) => {
-        return res.json()
-    }).then((data) => {
-        if (data.ok === true) {
-            window.location.reload();
-            signOut();
-            loginNavBar();
-        }
-    })
-
-};
-
-function onFailure(error) {
-    console.log(error);
-};
-
-function renderButton() {
-    gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
-        'width': 310,
-        'height': 47,
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': onSuccess,
-        'onfailure': onFailure
-    });
 };

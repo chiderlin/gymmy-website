@@ -10,10 +10,10 @@ const CLIENT_ID = '316396796608-q5iv25epumdt98ur8ljs428a2qfsufu6.apps.googleuser
 const client = new OAuth2Client(CLIENT_ID);
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth.js')
+
 // GET ALL USERS
 router.get('/users', auth, (req, res) => {
-    if (req.user.email === 'admin@admin') {
-        // if (req.session.email === 'admin@admin') {
+    if (req.user.email === 'admin@admin.com') {
         User.findAll()
             .then((result) => {
                 return JSON.stringify(result, null, 4);
@@ -48,7 +48,6 @@ router.get('/users', auth, (req, res) => {
 
 // CHECK STATUS(login check)
 router.get('/user', auth, (req, res) => {
-
     User.findOne({
         where: {
             email: req.user.email,
@@ -82,13 +81,29 @@ router.get('/user', auth, (req, res) => {
 
 // REGISTER 
 router.post('/user', async (req, res) => {
-
     const name = req.body.name;
     const email = req.body.email;
-    const phone = req.body.phone;
+    const pwd = req.body.pwd;
     const plan = req.body.price;
+    const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
+    if(!name){
+        return res.status(400).json({ error: true, message: '使用者名稱不可為空值' });
+    }
+    if(!email){
+        return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
+    }
+    if(!pwd){
+        return res.status(400).json({ error: true, message: '密碼不可為空值' });
+    }
+    if(!plan){
+        return res.status(400).json({ error: true, message: '方案不可為空值' });
+    }
+    if(!regex_email.test(email)){
+        return res.status(400).json({ error: true, message: 'email格式錯誤' });
+    }
+
     try {
-        const hashPwd = await bcrypt.hash(req.body.pwd, 10)
+        const hashPwd = await bcrypt.hash(pwd, 10)
         User.findOne({
             where: {
                 email: email,
@@ -103,24 +118,21 @@ router.post('/user', async (req, res) => {
                     name: name,
                     email: email
                 }
-                const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' }) // 
+                const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1 days' }) // 註冊
                 User.create({
                     name: name,
                     email: email,
                     password: hashPwd,
-                    phone: phone,
                     plan: plan,
                     auth: 2,
                     active: 'no',
                 }).then(() => {
-                    // 記錄在session
-                    // req.session.email = email;
                     res.cookie('jwt', token, {
                         secure: false,
                         httpOnly: false,
-                        maxAge: 1000 * 60 * 60 * 60 // 1 hr
+                        maxAge: 1000 * 60 * 60 * 24 // 1 days
                     });
-                    return res.json({ ok: true, token });
+                    return res.json({ ok: true , token});
                 })
             } else {
                 return res.status(400).json({ error: true, message: '此帳號已註冊過' });
@@ -137,6 +149,17 @@ router.post('/user', async (req, res) => {
 router.patch('/user', (req, res) => {
     const email = req.body.email;
     const pwd = req.body.password;
+    const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
+    if(!email){
+        return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
+    }
+    if(!pwd){
+        return res.status(400).json({ error: true, message: '密碼不可為空值' });
+    }
+    if(!regex_email.test(email)){
+        return res.status(400).json({ error: true, message: 'email格式錯誤' });
+    }
+
     try {
         User.findOne({
             where: {
@@ -150,20 +173,18 @@ router.patch('/user', (req, res) => {
                 const userid = data.id;
                 const comparePwd = data.password
                 bcrypt.compare(pwd, comparePwd).then((compare) => {
-                    // console.log(res); bool
+
                     if (compare) {
                         const payload = {
                             userId: userid,
                             email: email
                         }
-                        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
+                        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '3 days' });
                         res.cookie('jwt', token, {
                             secure: false,
                             httpOnly: false,
-                            maxAge: 1000 * 60 * 60 * 60 // 1 hr
+                            maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
                         });
-                        // req.session.email = email;
-                        // req.session.userid = userid;
                         return res.json({ ok: true, token });
                     } else {
                         return res.status(400).json({ error: true, message: '帳號或密碼錯誤' });
@@ -185,37 +206,28 @@ router.patch('/user', (req, res) => {
 router.delete('/user', auth, (req, res) => {
     res.clearCookie('jwt');
     return res.json({ ok: true });
-    // req.session.destroy((err) => {
-    //     if (err) {
-    //         throw err;
-    //     } else {
-    //         res.clearCookie('sessionId');
-    //         res.clearCookie('jwt-token');
-    //         return res.json({ 'ok': true });
-    //     }
-    // })
 });
 
 
 router.post('/user/google-login', (req, res) => {
     let token = req.body.id_token;
-    // console.log(token);
-    let user = {}
+    let user = {};
+
+    if(!token){
+        return res.status(400).json({ error: true, message: '無token' });
+    };
+
     async function verify() {
         const ticket = await client.verifyIdToken({
             idToken: token,
-            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-            // Or, if multiple clients access the backend:
-            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+            audience: CLIENT_ID,
         });
         const payload = ticket.getPayload();
-        // console.log(payload);
         user.name = payload.name;
         user.email = payload.email
     };
     verify()
         .then(() => {
-
             User.findOne({
                 where: {
                     email: user.email,
@@ -235,10 +247,8 @@ router.post('/user/google-login', (req, res) => {
                         res.cookie('jwt', token, {
                             secure: false,
                             httpOnly: false,
-                            maxAge: 1000 * 60 * 60 * 60 // 1 hr
+                            maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
                         });
-                        // req.session.email = user.email;
-
                         return res.json({ ok: true });
                     })
                 } else {
@@ -246,10 +256,8 @@ router.post('/user/google-login', (req, res) => {
                     res.cookie('jwt', token, {
                         secure: false,
                         httpOnly: false,
-                        maxAge: 1000 * 60 * 60 * 60 // 1 hr
+                        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
                     });
-                    // req.session.userid = data.id;
-                    // req.session.email = user.email;
                     res.cookie('jwt', token)
                     return res.json({ ok: true });
                 }
@@ -264,6 +272,10 @@ router.post('/user/google-login', (req, res) => {
 router.put('/user/plan', auth, (req, res) => {
     const plan = req.body.plan;
     const email = req.user.email
+    if(!plan){
+        return res.json({ error: true, message: '方案不可為空值' });
+    }
+
     User.findOne({
         where: {
             email: email,
@@ -284,6 +296,14 @@ router.put('/user/plan', auth, (req, res) => {
 router.put('/user/phone', auth, (req, res) => {
     const phone = req.body.phone;
     const email = req.user.email
+    const regex_phone = /^09\d{8}$/ 
+    if(!phone){
+        return res.json({ error: true, message: '手機號碼不可為空值' });
+    }
+    if(!regex_phone.test(phone)){
+        return res.json({ error: true, message: '手機號碼格式錯誤' });
+    }
+    
     User.findOne({
         where: {
             email: email,

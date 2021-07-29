@@ -8,8 +8,11 @@ const auth = require('../middleware/auth.js')
 
 
 // 後台 顯示每堂課學員人數 ＆ classes page 累計每堂課人數（顯示可預約或已額滿）
-router.get('/booking/student/:classId', (req, res) => {
+router.get('/booking/student/:classId',auth, (req, res) => {
     const classId = req.params.classId;
+    if(!classId){
+        return res.status(400).json({error:true,message:'課程id不可為空值'})
+    }
     const student_list = []
     Booking.findAll({
         where: {
@@ -54,12 +57,11 @@ router.get('/booking/student/:classId', (req, res) => {
 
 // 會員中心 所有預約的課程 => 前端做時間判斷，提取被顯示在網頁上的預約課程
 router.get('/booking', auth, (req, res) => {
-
-    if (req.user.userId) { //req.session.userid
+    if (req.user.userId) { 
         let list_of_class = []
         Booking.findAll({
             where: {
-                UserId: req.user.userId //req.session.userid
+                UserId: req.user.userId
             },
             order: [
                 ['class_date', 'asc'],
@@ -95,14 +97,21 @@ router.get('/booking', auth, (req, res) => {
                 return res.json({ data: null });
             }
         })
-    } else {
+    } 
+    else if(req.user.email){
+        return res.json({ data: '請重新登入' })
+    }else {
         return res.json({ data: '未登入' })
     }
 });
 
-router.delete('/booking', (req, res) => {
+router.delete('/booking',auth, (req, res) => {
     // 要傳該bookingId近來才可以取消課程/刪除課程
     const bookingId = req.body.bookingId;
+    if(!bookingId){
+        return res.status(400).json({error:true,message:'預定課程id不可為空值'})
+    }
+
     Booking.findOne({
         where: {
             id: bookingId,
@@ -116,8 +125,36 @@ router.delete('/booking', (req, res) => {
 
 router.post('/booking', auth, (req, res) => {
     const class_info = req.body.data;
-    if (class_info === undefined) {
+    console.log(class_info)
+    if (!class_info) {
         return res.status(400).json({ error: true, message: '提供正確post資料' });
+    }
+    if(!class_info.classId){
+        return res.status(400).json({ error: true, message: '課程id不可為空值' });
+    }
+    if(!class_info.month){
+        return res.status(400).json({ error: true, message: '月份不可為空值' });
+    }
+    if(!class_info.weekday){
+        return res.status(400).json({ error: true, message: '星期不可為空值' });
+    }
+    if(!class_info.class_time){
+        return res.status(400).json({ error: true, message: '課程時間不可為空值' });
+    }
+    if(!class_info.start_time){
+        return res.status(400).json({ error: true, message: '課程時間不可為空值' });
+    }
+    if(!class_info.end_time){
+        return res.status(400).json({ error: true, message: '課程時間不可為空值' });
+    }
+    if(!class_info.class_name){
+        return res.status(400).json({ error: true, message: '課程名稱不可為空值' });
+    }
+    if(!class_info.teacher){
+        return res.status(400).json({ error: true, message: '教練不可爲空值' });
+    }
+    if(!class_info.room){
+        return res.status(400).json({ error: true, message: '教室不可為空值' });
     }
     const weekday = class_info.weekday;
     const current = new Date()
@@ -159,7 +196,7 @@ router.post('/booking', auth, (req, res) => {
         }).then(() => {
             return res.json({ ok: true });
         })
-    } else if (req.user.email) { //一般使用者就會跑這邊 //req.session.email
+    } else if (req.user.email) { //一般使用者就會跑這邊
 
         User.findOne({
             where: {

@@ -1,4 +1,4 @@
-//controll
+//controller
 // 價格選項
 const basic_plan = document.getElementById('basic-plan');
 const basic_plan_sma = document.getElementById('basic-plan-sma');
@@ -13,7 +13,6 @@ basic_plan.addEventListener('click',()=>{
 pro.addEventListener('click',()=>{
     price = 1000;
 });
-
 
 basic_plan_sma.addEventListener('click',()=>{
     price = 888;
@@ -54,8 +53,7 @@ register_form_small.addEventListener('submit',(event)=>{
         userRegister(register_info);
     }
     
-})
-
+});
 
 
 // model
@@ -78,15 +76,16 @@ function userRegister(register_info) {
     })
 };
 
+
 //view
 function renderMsg(msg){
     const renderMsg = document.getElementById('msg');
     renderMsg.innerHTML = '';
     renderMsg.appendChild(document.createTextNode(msg));
-}
+};
 
 function renderMsgSma(msg){
     const renderMsg = document.getElementById('msg-sma');
     renderMsg.innerHTML = '';
     renderMsg.appendChild(document.createTextNode(msg));
-}
+};

@@ -6,10 +6,12 @@ let index = 1;
 let student_amount;
 let per_class_booking_student;
 let all_student_list;
-
+// const token = document.cookie.split('=')[2];
+const token = document.cookie.split('=')[3];
+console.log(token)
 init();
 
-// controll
+// controller
 function init() {
     getAllClass();
     checkLogIn();
@@ -59,7 +61,7 @@ const overlay_statement = document.querySelector('.overlay-statement');
 const add_btn = document.getElementById('add-btn');
 add_btn.addEventListener('click',()=>{
     overlay_statement.style.display = 'block';
-})
+});
 
 // 確認新增按鈕
 const confirm_btn = document.getElementById('close-btn');
@@ -106,9 +108,7 @@ confirm_btn.addEventListener('click',()=>{
 const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
 close_btn_for_img_statement.addEventListener('click',()=>{
     overlay_statement.style.display = 'none';
-})
-
-
+});
 
 const delete_btn = document.getElementById('delete-btn');
 delete_btn.addEventListener('click',()=>{
@@ -129,6 +129,7 @@ delete_btn.addEventListener('click',()=>{
         }
     }
 });
+
 
 // view
 function renderClass(classid,zh_name){
@@ -181,6 +182,7 @@ function renderStudentList(data, selected_day){
             statement_page.removeChild(student_list[i]);
         };
     };
+
     for(let i=0; i<data.length;i++){ // 六日方案888的學員不能顯示在增加名單裡面
         if(selected_day === 6 || selected_day===7){
             if(data[i].plan === 888){
@@ -223,13 +225,19 @@ function renderErrMsg(msg){
     const add_msg = document.querySelector('.add-msg');
     add_msg.innerHTML = '';
     add_msg.appendChild(document.createTextNode(msg));
-}
+};
 
 
 // model
 function checkLogIn(){
     const url = '/api/user';
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
         if(api_data.data === null) {
@@ -242,6 +250,10 @@ function logout(){
     const url = '/api/user';
     fetch(url,{
         method: "DELETE",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     }).then((res)=>{
         return res.json();
     }).then((data)=>{
@@ -260,12 +272,17 @@ function getAllClass() {
 
 function checkStudent(classId){
     const url = `/api/booking/student/${classId}`
-    fetch(url)
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
     .then((res)=>{
         return res.json();
     })
     .then((api_data)=>{
-
         const data = api_data.data;
         if(data === null){
             student_amount = 0;
@@ -285,8 +302,10 @@ function deleteStudent(checked, callback){
         const booking_info = {'bookingId':checked[i]}
         fetch(url,{
             method:"DELETE",
+            credentials: 'include',
             headers:{
                 "Content-Type":"application/json",
+                'Authorization': `Bearer ${token}`
             },
             body:JSON.stringify(booking_info)
         }).then((res)=>{
@@ -300,13 +319,17 @@ function deleteStudent(checked, callback){
 
 function getStudentList(){
     const url = '/api/users';
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json()
     }).then((api_data)=>{
-        console.log(api_data);
         const data = api_data.data
         all_student_list = data;
-        // renderStudentList(data);
     })
 };
 
@@ -329,8 +352,10 @@ function booking(checkedUser, cb){
         const url = '/api/booking'
         fetch(url,{
             method:"POST",
+            credentials: 'include',
             headers:{
                 'Content-Type':'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(class_info),
         }).then((res)=>{

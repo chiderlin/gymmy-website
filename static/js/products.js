@@ -1,9 +1,10 @@
 let check_login = false;
 let check_active;
 let check_plan;
+
+
+// controller
 checkLogIn();
-
-
 const basic_plan = document.getElementById('basic-plan');
 const pro_plan = document.getElementById('pro-plan');
 const contact  = document.getElementById('contact');
@@ -17,7 +18,7 @@ pro_plan.addEventListener('click',()=>{
 
 contact.addEventListener('click',()=>{
     customer_service_box.style.display = 'block';
-})
+});
 
 
 function checkPay(){
@@ -40,6 +41,8 @@ function checkPay(){
     }
 };
 
+
+//view
 function renderStatement(msg){
     const statement_msg_check = document.querySelectorAll('.statement-msg');
     const statement_page = document.querySelector('.statement-page');
@@ -56,10 +59,17 @@ function renderStatement(msg){
     statement_page.insertBefore(statement_msg,close_btn);
 };
 
+
 //model
 function checkLogIn(){
     const url = '/api/user';
-    fetch(url).then((res)=>{
+    fetch(url,{
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
 

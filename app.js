@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 require('dotenv/config');
-const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
@@ -10,22 +9,10 @@ app.set('views', './templates');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/static'));
 app.use(express.json()); // Parse application/json
-app.set('trust proxy', 1) // express-session
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: false }));
-app.use(session({
-    secret: process.env.SECRET_KEY,
-    name: 'sessionId',
-    resave: false, // 設false才會刪除sessionId的cookie
-    saveUninitialized: false, // 設false才會刪除sessionId的cookie
-    cookie: {
-        secure: false,
-        httpOnly: true,
-        }, 
-    })
-)
 
 const classes = require('./apis/classes');
 const user = require('./apis/user');
