@@ -197,6 +197,7 @@ function getMember() {
     }).then((res) => {
         return res.json();
     }).then((data) => {
+        console.log(data)
         member_info = data;
         if (data !== null) {
             renderMemberInfo(data);
