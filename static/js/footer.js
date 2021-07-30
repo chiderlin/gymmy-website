@@ -2,12 +2,12 @@
 // 後台登入
 const backside_login_link = document.querySelector('#backside-login');
 backside_login_link.addEventListener('click',()=>{
-    checkLogIn();
+    checkLogIn_footer();
 })
 
 
 // model
-function checkLogIn() {
+function checkLogIn_footer() {
     const url = '/api/user';
     fetch(url,{
         method: "GET",
@@ -24,7 +24,7 @@ function checkLogIn() {
         if (api_data.data !== null) {
             let check_auth = api_data.data.auth
             if(check_auth === 2){
-                logOut()  
+                logOut_footer()  
             } else {
                 // 使用者 auth 1 直接過去
                 window.location.href = '/backside-login'
@@ -37,7 +37,7 @@ function checkLogIn() {
 };
 
 
-function logOut() {
+function logOut_footer() {
     const url = '/api/user';
     fetch(url, {
         method: "DELETE",
