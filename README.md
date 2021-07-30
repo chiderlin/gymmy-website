@@ -20,6 +20,9 @@
 - jwt 會員系統
 - ORM 資料庫串接
 
+## 實體關係圖(ER Model)
+![model](./github-png/ER-Model.png)
+
 ## Demo
 web: https://gymmy.club
 
