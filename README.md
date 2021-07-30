@@ -12,13 +12,17 @@
 
 ## 使用技術
 - 使用Trello做專案進度管理 （Link : https://reurl.cc/VEZjzy)
-- 雲服務多使用AWS的RDS、S3、Cloudfront
+- 雲服務使用AWS的RDS、S3、Cloudfront
 - 前端除了 HTML, CSS, JS 之外另搭配Bootstrap
-- 後端改用node.js express後端框架
-- Tappay訂閱制付款(Cron自動排程實作每月付款機制)、額外增加Paypal金流串接訂閱制付款
+- 後端node.js express框架
+- Tappay訂閱制付款(Cron自動排程實作每月付款機制)、Paypal金流串接訂閱制付款
 - google第三方登入api串接
 - jwt 會員系統
 - ORM 資料庫串接
+- 部署nginx反向代理、Docker
+- SSL憑證實踐HTTPS
+- RESTful API 設計架構
+- MVC 設計模式
 
 ## 實體關係圖(ER Model)
 ![model](./github-png/ER-Model.png)
