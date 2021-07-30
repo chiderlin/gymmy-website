@@ -52,12 +52,14 @@ function checkLogIn() {
     }).then((res) => {
         return res.json();
     }).then((api_data) => {
+        console.log(api_data);
         if(api_data.error === true){
             return;
         }
         if (api_data.data !== null) {
-            login_status = true;
-            login_user_info = api_data; //為了會員中心的網址跳轉，把資料變成全域變數
+            check_login = true;
+            check_active = api_data.data.active;
+            check_plan = api_data.data.plan
         }
     })
 };
