@@ -1,6 +1,5 @@
 let price;
 let member_info;
-let check_active;
 
 
 // controller
@@ -153,7 +152,7 @@ function checkLogIn() {
         return res.json();
     }).then((api_data) => {
         console.log(api_data)
-        check_active = api_data.data.active
+
         if (api_data.data === null) {
             window.location.href = '/'
         }
@@ -198,6 +197,7 @@ function getMember() {
     }).then((res) => {
         return res.json();
     }).then((data) => {
+        console.log(data)
         member_info = data;
         if (data !== null) {
             renderMemberInfo(data);
@@ -218,16 +218,8 @@ function getBooking() {
     }).then((api_data) => {
         console.log(api_data)
         const data = api_data.data;
-        console.log(check_active)
-        // if(data === '請重新登入'){
-        //     renderStatementMsg('請重新登入，三秒後自動登出');
-        //     overlay_statement.style.display = 'block';
-        //     setTimeout(() => {
-        //         logOut()
-        //     }, 3000);
-        //     return 
-        // }
-        if (data.length !== 0 && data !== "未登入") {
+
+        if (data.length !== 0 && data !== '未登入') {
             for (let i = 0; i < data.length; i++) {
                 // 判斷時間 
                 const class_time = data[i].class_time.substring(0, 10)

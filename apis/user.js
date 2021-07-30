@@ -223,8 +223,8 @@ router.post('/user/google-login', (req, res) => {
             audience: CLIENT_ID,
         });
         const payload = ticket.getPayload();
-        user.name = payload.name;
         user.email = payload.email
+        user.name = payload.name;
     };
     verify()
         .then(() => {
@@ -236,6 +236,7 @@ router.post('/user/google-login', (req, res) => {
                 return JSON.stringify(result, null, 4);
             }).then((data) => {
                 data = JSON.parse(data);
+                console.log(data)
                 if (data === null) {
                     User.create({
                         name: user.name,
@@ -252,14 +253,15 @@ router.post('/user/google-login', (req, res) => {
                         return res.json({ ok: true });
                     })
                 } else {
-                    const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
-                    res.cookie('jwt', token, {
-                        secure: false,
-                        httpOnly: false,
-                        maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
-                    });
-                    res.cookie('jwt', token)
-                    return res.json({ ok: true });
+                        user.userId = data.id                        
+                        const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
+                        res.cookie('jwt', token, {
+                            secure: false,
+                            httpOnly: false,
+                            maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+                        });
+                        res.cookie('jwt', token)
+                        return res.json({ ok: true });
                 }
             })
         }).catch((e) => {

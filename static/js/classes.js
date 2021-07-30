@@ -35,7 +35,7 @@ function getClassList() {
         }
         setTimeout(() => {
             checkRender();
-        }, 2000);
+        }, 1000);
     }).catch((err) => {
         console.log(err);
     })

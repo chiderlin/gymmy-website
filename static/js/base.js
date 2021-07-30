@@ -18,12 +18,31 @@ const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
 // const token = document.cookie.split('=')[2]; // localhost是2
-const token = document.cookie.split('=')[3]; // linux是3
-console.log(token)
+// const token = document.cookie.split('=')[3] || document.cookie.split('=')[2]; // linux是3
+// console.log(document.cookie)
+// console.log(document.cookie.split('='))
+// console.log(token)
+let token;
+function getJwtToken(){
+    document.cookie.split('; ').find(row=>{
+        let jwt = row.startsWith('jwt')
+        if(jwt){
+            console.log(row);
+            token = row.split('=')[1];
+            console.log(token)
+        } else {
+            token = null
+            console.log(token)
+        }
+    })
+}
+
+
 
 // controller
 init();
 function init() {
+    getJwtToken()
     checkLogIn()
 };
 
@@ -179,7 +198,7 @@ function onSuccess(googleUser) {
         if (data.ok === true) {
             window.location.reload();
             signOut();
-            loginNavBar();
+            // loginNavBar();
         }
     })
 
@@ -242,7 +261,7 @@ function login(email, pwd) {
         if (data.ok === true) {
             console.log(data);
             window.location.reload(); // 通過的話 重新load頁面
-            loginNavBar();
+            // loginNavBar();
         }
         if (data.error === true) {
             renderErrorMsg(data.message);
@@ -287,20 +306,6 @@ function sendEmail(customer_data){
 
 
 // view
-function loginNavBar() {
-    // big screen
-    classes_big.classList.remove('hide'); // 本月課程
-    member_center_big.classList.remove('hide'); // 會員中心
-    logout_big.classList.remove('hide'); // 登出系統
-    member_plan_big.classList.add('hide'); // 會員方案
-    login_register_big.classList.add('hide'); // 登入/註冊
-    // small screen
-    classes_burger.classList.remove('hide'); // 本月課程
-    member_center_burger.classList.remove('hide'); // 會員中心
-    logout_burger.classList.remove('hide'); // 登出系統
-    member_plan_burger.classList.add('hide'); // 會員方案
-    login_register_burger.classList.add('hide'); // 登入/註冊
-};
 
 function initRenderMenu(api_data) {
     if(api_data.error === true){
@@ -361,3 +366,21 @@ function renderStatement(msg){
     statement_page.appendChild(statement_msg);
     statement_page.insertBefore(statement_msg,close_btn);
 };
+
+
+// =============================
+
+// function loginNavBar() {
+//     // big screen
+//     classes_big.classList.remove('hide'); // 本月課程
+//     member_center_big.classList.remove('hide'); // 會員中心
+//     logout_big.classList.remove('hide'); // 登出系統
+//     member_plan_big.classList.add('hide'); // 會員方案
+//     login_register_big.classList.add('hide'); // 登入/註冊
+//     // small screen
+//     classes_burger.classList.remove('hide'); // 本月課程
+//     member_center_burger.classList.remove('hide'); // 會員中心
+//     logout_burger.classList.remove('hide'); // 登出系統
+//     member_plan_burger.classList.add('hide'); // 會員方案
+//     login_register_burger.classList.add('hide'); // 登入/註冊
+// };

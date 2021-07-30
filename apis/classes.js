@@ -19,7 +19,7 @@ router.get('/class', (req, res) => {
             for (let i = 0; i < data.length; i++) {
                 // 把時間覆蓋過去
                 data[i].start_time = new Date(data[i].start_time).toLocaleString('chinese', { hour12: false });
-                data[i].end_time = new Date(data[i].end_time).toLocaleString('chinese', { hour12: false });
+                data[i].end_time = new Date(data[i].end_time).toLocaleString('chinese', { hour12: false });            
             }
             const all_data = {
                 data: data,
@@ -50,6 +50,7 @@ router.get('/class/:classId', (req, res) => {
             } else {
                 data = data.replace(/(?:\\[rn])+/g, '');
                 data = JSON.parse(data);
+                data.img = data.img.split(',')[0]
                 return res.json(data);
             }
         })

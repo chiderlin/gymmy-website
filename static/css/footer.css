@@ -17,3 +17,7 @@
 .link-secondary{
     color: #b9b5b5;
 }
+
+.cursor{
+    cursor: pointer;
+}

@@ -1,12 +1,28 @@
-
 const login_form = document.getElementById('login-form');
 // const token = document.cookie.split('=')[2]; // localhost是2
-const token = document.cookie.split('=')[3]; // linux是3
-console.log(token)
-
+// const token = document.cookie.split('=')[3] || document.cookie.split('=')[2]; // linux是3
+// console.log(document.cookie)
+// console.log(document.cookie.split('='))
+// console.log(token)
+function getJwtToken(){
+    document.cookie.split('; ').find(row=>{
+        let jwt = row.startsWith('jwt')
+        if(jwt){
+            console.log(row);
+            token = row.split('=')[1];
+            console.log(token)
+            // break;
+        } else {
+            token = null
+            console.log(token)
+        }
+    })
+}
 
 // controller
+getJwtToken();
 loginStatus();
+
 
 login_form.addEventListener('submit', (event)=>{
     event.preventDefault();
@@ -16,7 +32,6 @@ login_form.addEventListener('submit', (event)=>{
     login(email, pwd)
 
 });
-
 
 // model
 function login(email, pwd){
@@ -33,7 +48,7 @@ function login(email, pwd){
     }).then((data)=>{
         if(data.ok === true) {
             window.location.reload();
-            loginStatus();
+            // loginStatus();
         } 
         if(data.error === true){
             renderError(data.message);

@@ -302,6 +302,7 @@ function paypalPaid(subscriptionID) {
 function renderErrMsg(msg){
     const error_msg = document.querySelectorAll('.msg');
     console.log(error_msg);
+    // 在這裡判斷使用的大小螢幕，選擇要render的對象
     if(divBlock_status === 'none'){
         error_msg[1].innerHTML = ''
         error_msg[1].appendChild(document.createTextNode(msg))
