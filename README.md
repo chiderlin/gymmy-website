@@ -1,13 +1,13 @@
 # gymmy-website 健身房預定課程網站
 
 ## 網站功能
-### 前台：
+### 前台： (支援RWD)
 1. 查看健身房課程
 2. 付款(訂閱制)成為會員
 3. 預定課程
 4. 會員中心查看預定課程/取消預定課程
 5. 查看歷史課程
-#### 後台：
+### 後台：
 1. 預定課程管理系統
 
 ## 使用技術
@@ -37,14 +37,14 @@ CCV: 123
 ### 1.首頁
 ![index](./github-png/1-1index.jpeg)
 
-#### 首頁RWD:
-![index](./github-png/1-2index.jpeg)
+<!-- #### 首頁RWD:
+![index](./github-png/1-2index.jpeg) -->
 
 ### 2.方案頁面
 ![product](./github-png/1-3product.jpeg)
 
-#### 方案頁面RWD:
-![product](./github-png/1-4product.jpeg)
+<!-- #### 方案頁面RWD:
+![product](./github-png/1-4product.jpeg) -->
 
 ### 3.登入頁面
 ![login](./github-png/2-1login.png)
@@ -52,8 +52,8 @@ CCV: 123
 ### 4.註冊頁面
 ![register](./github-png/3-1register.jpeg)
 
-#### 註冊頁面RWD:
-![register](./github-png/3-2register.jpeg)
+<!-- #### 註冊頁面RWD:
+![register](./github-png/3-2register.jpeg) -->
 
 ### 5.付款頁面-Tappay
 ![payment](./github-png/4-1payment.jpeg)
@@ -61,8 +61,8 @@ CCV: 123
 ### 5.付款頁面-Paypal
 ![payment](./github-png/4-3payment.jpeg)
 
-#### 付款頁面RWD:
-![payment](./github-png/4-2payment.jpeg)
+<!-- #### 付款頁面RWD:
+![payment](./github-png/4-2payment.jpeg) -->
 
 ### 6.付款完成頁面
 ![thankyou](./github-png/5-1thankyou.png)
@@ -73,23 +73,23 @@ CCV: 123
 ### 8.所有課程頁面
 ![classes](./github-png/7-1classes.jpeg)
 
-#### 所有課程頁面RWD:
-![classes](./github-png/7-2classes.jpeg)
+<!-- #### 所有課程頁面RWD:
+![classes](./github-png/7-2classes.png) -->
 
 ### 9.個別課程介紹
-![class](./github-png/8-1classes.jpeg)
+![class](./github-png/8-1class.jpeg)
 
-#### 個別課程頁面RWD:
-![class](./github-png/8-2classes.jpeg)
+<!-- #### 個別課程頁面RWD:
+![class](./github-png/8-2class.jpeg) -->
 
 ### 10.預定課程成功訊息頁面
-![booking](./github-png/9-2classes.png)
+![booking](./github-png/9-1booking.png)
 
 ### 11.預定完成後=> 會員中心頁面顯示預定的課程
 ![member](./github-png/10-1update-mem.jpeg)
 
-### 會員中心頁面RWD:
-![member](./github-png/10-2update-mem.jpeg)
+<!-- ### 會員中心頁面RWD:
+![member](./github-png/10-2update-mem.jpeg) -->
 
 ### 12.後台登入頁面
 ![backside](./github-png/11-1backside-login.jpeg)
