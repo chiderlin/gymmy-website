@@ -25,7 +25,7 @@
 - MVC 設計模式
 
 ## 實體關係圖(ER Model)
-![model](./github-png/ER-Model.png)
+![model](./github-png/ER_model.png)
 
 ## Demo
 web: https://gymmy.club
