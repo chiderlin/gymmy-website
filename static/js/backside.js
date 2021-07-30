@@ -8,6 +8,7 @@ let per_class_booking_student;
 let all_student_list;
 // const token = document.cookie.split('=')[2];
 const token = document.cookie.split('=')[3];
+console.log(document.cookie.split('='))
 console.log(token)
 init();
 
