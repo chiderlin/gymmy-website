@@ -260,7 +260,6 @@ function login(email, pwd) {
     }).then((data) => {
         if (data.ok === true) {
             console.log(data);
-            window.location.reload(); // 通過的話 重新load頁面
             loginNavBar();
         }
         if (data.error === true) {
@@ -307,6 +306,7 @@ function sendEmail(customer_data){
 
 // view
 function loginNavBar() {
+    
     // big screen
     classes_big.classList.remove('hide'); // 本月課程
     member_center_big.classList.remove('hide'); // 會員中心
@@ -319,6 +319,7 @@ function loginNavBar() {
     logout_burger.classList.remove('hide'); // 登出系統
     member_plan_burger.classList.add('hide'); // 會員方案
     login_register_burger.classList.add('hide'); // 登入/註冊
+    window.location.reload(); // 通過的話 重新load頁面
 };
 
 function initRenderMenu(api_data) {
