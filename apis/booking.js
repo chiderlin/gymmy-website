@@ -8,7 +8,7 @@ const auth = require('../middleware/auth.js')
 
 
 // 後台 顯示每堂課學員人數 ＆ classes page 累計每堂課人數（顯示可預約或已額滿）
-router.get('/booking/student/:classId',auth, (req, res) => {
+router.get('/booking/student/:classId', (req, res) => {
     const classId = req.params.classId;
     if(!classId){
         return res.status(400).json({error:true,message:'課程id不可為空值'})
@@ -97,10 +97,7 @@ router.get('/booking', auth, (req, res) => {
                 return res.json({ data: null });
             }
         })
-    } 
-    else if(req.user.email){
-        return res.json({ data: '請重新登入' })
-    }else {
+    } else {
         return res.json({ data: '未登入' })
     }
 });

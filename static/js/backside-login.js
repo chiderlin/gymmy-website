@@ -2,6 +2,7 @@
 const login_form = document.getElementById('login-form');
 // const token = document.cookie.split('=')[2]; // localhost是2
 const token = document.cookie.split('=')[3]; // linux是3
+console.log(document.cookie.split('='))
 console.log(token)
 
 
