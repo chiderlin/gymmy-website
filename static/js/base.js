@@ -17,16 +17,32 @@ const login_register_burger = burger_menu[3]
 const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
-let check_auth;
 // const token = document.cookie.split('=')[2]; // localhost是2
-const token = document.cookie.split('=')[3] || document.cookie.split('=')[2]; // linux是3
-console.log(document.cookie)
-console.log(document.cookie.split('='))
-console.log(token)
+// const token = document.cookie.split('=')[3] || document.cookie.split('=')[2]; // linux是3
+// console.log(document.cookie)
+// console.log(document.cookie.split('='))
+// console.log(token)
+let token;
+function getJwtToken(){
+    document.cookie.split('; ').find(row=>{
+        let jwt = row.startsWith('jwt')
+        if(jwt){
+            console.log(row);
+            token = row.split('=')[1];
+            console.log(token)
+        } else {
+            token = null
+            console.log(token)
+        }
+    })
+}
+
+
 
 // controller
 init();
 function init() {
+    getJwtToken()
     checkLogIn()
 };
 
@@ -226,7 +242,6 @@ function checkLogIn() {
         if (api_data.data !== null) {
             login_status = true;
             login_user_info = api_data; //為了會員中心的網址跳轉，把資料變成全域變數
-            check_auth = api_data.data.auth
         }
     })
 };

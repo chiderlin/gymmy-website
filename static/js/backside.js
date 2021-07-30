@@ -7,14 +7,29 @@ let student_amount;
 let per_class_booking_student;
 let all_student_list;
 // const token = document.cookie.split('=')[2];
-const token = document.cookie.split('=')[3] || document.cookie.split('=')[2]; // linux是3
-console.log(document.cookie)
-console.log(document.cookie.split('='))
-console.log(token)
+// const token = document.cookie.split('=')[3] || document.cookie.split('=')[2]; // linux是3
+// console.log(document.cookie)
+// console.log(document.cookie.split('='))
+// console.log(token)
+let token;
+function getJwtToken(){
+    document.cookie.split('; ').find(row=>{
+        let jwt = row.startsWith('jwt')
+        if(jwt){
+            console.log(row);
+            token = row.split('=')[1];
+            console.log(token)
+        } else {
+            token = null
+            console.log(token)
+        }
+    })
+}
 init();
 
 // controller
 function init() {
+    getJwtToken();
     getAllClass();
     checkLogIn();
     getStudentList();

@@ -8,7 +8,7 @@ const auth = (req,res,next)=>{
     // }
     const authHeader = req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : ''
     // console.log(authHeader)
-    if(authHeader === 'undefined'){
+    if(authHeader === 'null'){
         return res.json({data:null})
     } else {
         jwt.verify(authHeader, process.env.ACCESS_TOKEN_SECRET,(err,user)=>{

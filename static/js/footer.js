@@ -17,7 +17,7 @@ function checkLogIn_footer() {
         }
     }).then((res) => {
         return res.json();
-    }).then(async(api_data) => {
+    }).then((api_data) => {
         if(api_data.error === true){
             return;
         }
