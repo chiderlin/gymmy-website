@@ -25,38 +25,7 @@ if (divBlock_status === 'none') {
             placeholder: " 123"
         }
     };
-
-    TPDirect.card.setup({
-        fields: fields_sma,
-        styles: {
-            'input': {
-                'color': 'gray'
-            },
-            'input.ccv': {
-                'font-size': '16px'
-            },
-            'input.expiration-date': {
-                'font-size': '16px'
-            },
-            'input.card-number': {
-                'font-size': '16px'
-            },
-            ':focus': {
-                'color': 'black'
-            },
-            '.valid': {
-                'color': 'green'
-            },
-            '.invalid': {
-                'color': 'red'
-            },
-            '@media screen and (max-width: 400px)': {
-                'input': {
-                    'color': 'orange'
-                }
-            }
-        }
-    });
+    tappaySetUp(fields_sma);
 } else {
     let fields_big = {
         number: {
@@ -72,8 +41,12 @@ if (divBlock_status === 'none') {
             placeholder: " 123"
         }
     };
+    tappaySetUp(fields_big);
+};
+
+function tappaySetUp(fields){
     TPDirect.card.setup({
-        fields: fields_big,
+        fields: fields,
         styles: {
             'input': {
                 'color': 'gray'
@@ -103,7 +76,7 @@ if (divBlock_status === 'none') {
             }
         }
     });
-};
+}
 
 const small_tappay_radio = document.getElementById('small-tappay-radio');
 const small_paypal_radio = document.getElementById('small-paypal-radio');
