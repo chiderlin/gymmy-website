@@ -35,7 +35,6 @@ function checkBookingBtn(weekday){
         //判斷有沒有繳費
         // 呼叫booking api
         if(check_login) {
-            console.log(check_login)
             if(check_active === 'yes') {
                 if(student_amount === 15) {
                     renderStatement('課程人數已額滿');
@@ -112,12 +111,12 @@ function getClassData(){
         return res.json();
     }).then((api_data)=>{
         class_info = api_data;
-        // let weekday_ = class_info.weekday;
+        const weekday = class_info.weekday;
         const class_name_zh = api_data.class_name_zh;
         const desc = api_data.desc;
         const img = api_data.img;
         renderClass(class_name_zh, desc, img);
-        checkBookingBtn(class_info.weekday)
+        checkBookingBtn(weekday)
     }).catch((err)=>{
         console.log(err);
     });

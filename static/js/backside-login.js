@@ -47,7 +47,6 @@ function login(email, pwd){
     }).then((data)=>{
         if(data.ok === true) {
             window.location.reload();
-            // loginStatus();
         } 
         if(data.error === true){
             renderError(data.message);

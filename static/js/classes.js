@@ -15,7 +15,7 @@ function getClassList() {
     const url = '/api/class';
     fetch(url).then((res) => {
         return res.json();
-    }).then(async (api_data) => {
+    }).then((api_data) => {
         const data = api_data.data;
         class_data = data;
         for (let i = 0; i < class_data.length; i++) {//再一起render

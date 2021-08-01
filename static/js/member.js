@@ -317,7 +317,7 @@ function uploadPlan(plan_option){
         },
         body: JSON.stringify(plan)
     }).then((res)=>{
-        console.log(res);
+        // console.log(res);
     })
 };
 
@@ -419,7 +419,6 @@ function renderBookingClass(data, btn_or_not) {
     const btn_box = document.createElement('div');
     const btn = document.createElement('button');
 
-    // btn.onclick = cancelBookingProcess();
     btn_box.className = 'status';
     btn.className = 'btn btn-sm class-btn';
     btn.value = data.bookingId;
@@ -505,6 +504,5 @@ function checkRender() {
 
 function imgLoadingCircle(){
     const img_circle = document.querySelector('.img-circle');
-    console.log(img_circle);
     img_circle.style.display = 'block';
 };

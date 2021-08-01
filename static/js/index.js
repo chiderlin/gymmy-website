@@ -52,7 +52,6 @@ function checkLogIn() {
     }).then((res) => {
         return res.json();
     }).then((api_data) => {
-        console.log(api_data);
         if(api_data.error === true){
             return;
         }

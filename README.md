@@ -15,7 +15,7 @@
 - 雲服務使用AWS的RDS、S3、Cloudfront
 - 前端除了 HTML, CSS, JS 之外另搭配Bootstrap
 - 後端node.js express框架
-- Tappay訂閱制付款(Cron自動排程實作每月付款機制)、Paypal金流串接訂閱制付款
+- Tappay訂閱制付款(Cron自動排程實作每月付款機制)、Paypal金流串接訂閱制付款 (Cron實作： https://github.com/chiderlin/cron-for-payment)
 - google第三方登入api串接
 - jwt 會員系統
 - ORM 資料庫串接
