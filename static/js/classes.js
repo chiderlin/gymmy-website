@@ -249,6 +249,13 @@ function renderSmallClass(renderBox) {
 function renderBookingStatus(msg, class_block) {
     const status = document.createElement('div');
     status.className = 'status'
+    checkStatusBackgroundColor(status, msg)
+
+    status.appendChild(document.createTextNode(msg));
+    class_block.appendChild(status);
+};
+
+function checkStatusBackgroundColor(status, msg){
     if (msg === '已額滿') {
         status.style.backgroundColor = 'red';
     } else if (msg === '可預約') {
@@ -256,8 +263,7 @@ function renderBookingStatus(msg, class_block) {
     } else if (msg === '不可預定') {
         status.style.backgroundColor = 'orange';
     }
-    status.appendChild(document.createTextNode(msg));
-    class_block.appendChild(status);
+     
 };
 
 function checkRender() {

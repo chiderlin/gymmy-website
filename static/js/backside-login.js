@@ -11,7 +11,6 @@ function getJwtToken(){
             console.log(row);
             token = row.split('=')[1];
             console.log(token)
-            // break;
         } else {
             token = null
             console.log(token)

@@ -71,7 +71,7 @@ function selectClass(){
 // 查詢按鈕，fetch booking get (where classId=後台classId，關聯UserId)，選取user-name & email 
 const class_btn = document.querySelector('.class-btn');
 class_btn.addEventListener('click',(e)=>{
-    checkStudent(selected_classId)
+    bookedStudent(selected_classId)
 });
 
 // 新增按鈕
@@ -82,7 +82,7 @@ add_btn.addEventListener('click',()=>{
 });
 
 // 確認新增按鈕
-const confirm_btn = document.getElementById('close-btn');
+const confirm_btn = document.getElementById('check-btn');
 confirm_btn.addEventListener('click',()=>{
     let checkedUser = [];
     const checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
@@ -110,10 +110,10 @@ confirm_btn.addEventListener('click',()=>{
         }
 
         //post資料到後端，在booking新增此學員到此課程
-        //前端reload，在查看一次該課程，學員已新增
         booking(checkedUser,(res)=>{
             if(res.ok === true){
-                window.location.reload();
+                bookedStudent(selected_classId) // 直接更新表單顯示出來，
+                emptySelected(checkboxes) //清空student list選過的資料＆顯示的訊息
             }
         })
     } else { //新增的地方沒有選取任何學員
@@ -121,6 +121,15 @@ confirm_btn.addEventListener('click',()=>{
         return ;
     }
 });
+
+function emptySelected(checkboxes){
+    overlay_statement.style.display = 'none';
+    for(let i=0; i<checkboxes.length; i++){
+        checkboxes[i].checked = false
+    }
+    const add_msg = document.querySelector('.add-msg');
+    add_msg.innerHTML = ''
+}
 
 // 關閉按鈕
 const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
@@ -141,7 +150,7 @@ delete_btn.addEventListener('click',()=>{
         if(window.confirm("確定要刪除此預約課程嗎?") == true) {
             deleteStudent(checked, (del)=>{
                 if(del.ok === true) {
-                    window.location.reload();
+                    bookedStudent(selected_classId) // 直接更新表單顯示出來，
                 }
             });
         }
@@ -158,7 +167,7 @@ function renderClass(classid,zh_name){
     select_class.appendChild(option);
 };
 
-function renderStudent(data){
+function renderBookedStudent(data){
     const member_box = document.querySelector('.member-box');
     const member_check = document.querySelectorAll('.member'); 
     if(member_check.length !==0){ //先check有無render的資料，有先清空
@@ -207,7 +216,7 @@ function renderStudentList(data, selected_day){
                 continue;
             }
         }
-        const close_btn = document.querySelector('.close-btn')
+        const check_btn = document.querySelector('.check-btn')
         const member = document.createElement('div');
         const checkbox = document.createElement('input');
         const num = document.createElement('div');
@@ -226,7 +235,7 @@ function renderStudentList(data, selected_day){
         member.appendChild(num);
         member.appendChild(username);
         member.appendChild(email);
-        statement_page.insertBefore(member, close_btn)
+        statement_page.insertBefore(member, check_btn)
     }
 };
 
@@ -288,7 +297,7 @@ function getAllClass() {
     });
 };
 
-function checkStudent(classId){
+function bookedStudent(classId){
     const url = `/api/booking/student/${classId}`
     fetch(url,{
         method: "GET",
@@ -308,7 +317,7 @@ function checkStudent(classId){
             student_amount = api_data.data.length
         }
         per_class_booking_student = data;
-        renderStudent(data); // 因為要清空原本的list所以不管data有沒有null都要跑
+        renderBookedStudent(data); // 因為要清空原本的list所以不管data有沒有null都要跑
 
     })
 };
