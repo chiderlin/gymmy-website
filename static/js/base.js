@@ -234,7 +234,6 @@ function checkLogIn() {
     }).then((res) => {
         return res.json();
     }).then((api_data) => {
-        console.log(api_data)
         initRenderMenu(api_data);
         if(api_data.error === true){
             return;
@@ -259,7 +258,6 @@ function login(email, pwd) {
         return res.json();
     }).then((data) => {
         if (data.ok === true) {
-            console.log(data);
             window.location.reload(); // 通過的話 重新load頁面
             // loginNavBar();
         }

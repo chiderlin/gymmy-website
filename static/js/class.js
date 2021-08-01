@@ -21,7 +21,7 @@ async function init() {
 function checkBookingBtn(weekday){
     const overlay_login = document.querySelector('.overlay-login');
     const booking_btn = document.getElementById('booking-btn');
-    const today_weekday = new Date().getDay();
+    let today_weekday = new Date().getDay();
     if(today_weekday ===0){
         today_weekday = 7;
     }
@@ -111,7 +111,6 @@ function getClassData(){
         return res.json();
     }).then((api_data)=>{
         class_info = api_data;
-
         const weekday = class_info.weekday;
         const class_name_zh = api_data.class_name_zh;
         const desc = api_data.desc;
@@ -172,14 +171,12 @@ function getBooking(cb){
                 const class_time = data[i].class_time.substring(0, 10)
                 const class_month = new Date(class_time).getMonth()+1
                 const current_month = new Date().getMonth()+1
-                // console.log(current_month)
                 if(class_month === current_month) {
                     current_month_class_amount.push(data[i])
                 }
             }
             cb(current_month_class_amount.length)
         }
-        // return cb(api_data.data.length)
     });
 };
 
@@ -211,8 +208,7 @@ function renderClass(class_name_zh, desc, img){
     booking_btn.className = 'btn btn-lg btn-hover';
     booking_btn.id = 'booking-btn';
     
-    // desc = desc.replace(' ','');
-    // desc = desc.replaceAll('。', '。\n\n')
+
     let list_desc = Array.from(desc);
     let str_desc = '';
     for(let i=0; i< list_desc.length; i++) {

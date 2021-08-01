@@ -11,7 +11,6 @@ function getJwtToken(){
             console.log(row);
             token = row.split('=')[1];
             console.log(token)
-            // break;
         } else {
             token = null
             console.log(token)
@@ -48,7 +47,6 @@ function login(email, pwd){
     }).then((data)=>{
         if(data.ok === true) {
             window.location.reload();
-            // loginStatus();
         } 
         if(data.error === true){
             renderError(data.message);
