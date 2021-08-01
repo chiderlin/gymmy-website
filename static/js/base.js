@@ -258,8 +258,8 @@ function login(email, pwd) {
         return res.json();
     }).then((data) => {
         if (data.ok === true) {
-            // window.location.reload(); // 通過的話 重新load頁面
-            loginNavBar(data);
+            window.location.reload(); // 通過的話 重新load頁面
+            // loginNavBar();
         }
         if (data.error === true) {
             renderErrorMsg(data.message);
@@ -365,18 +365,18 @@ function renderStatement(msg){
     statement_page.insertBefore(statement_msg,close_btn);
 };
 
-function loginNavBar() {
-    // big screen
-    classes_big.classList.remove('hide'); // 本月課程
-    member_center_big.classList.remove('hide'); // 會員中心
-    logout_big.classList.remove('hide'); // 登出系統
-    member_plan_big.classList.add('hide'); // 會員方案
-    login_register_big.classList.add('hide'); // 登入/註冊
-    // small screen
-    classes_burger.classList.remove('hide'); // 本月課程
-    member_center_burger.classList.remove('hide'); // 會員中心
-    logout_burger.classList.remove('hide'); // 登出系統
-    member_plan_burger.classList.add('hide'); // 會員方案
-    login_register_burger.classList.add('hide'); // 登入/註冊
-    window.location.reload()
-};
+// function loginNavBar() {
+//     // big screen
+//     classes_big.classList.remove('hide'); // 本月課程
+//     member_center_big.classList.remove('hide'); // 會員中心
+//     logout_big.classList.remove('hide'); // 登出系統
+//     member_plan_big.classList.add('hide'); // 會員方案
+//     login_register_big.classList.add('hide'); // 登入/註冊
+//     // small screen
+//     classes_burger.classList.remove('hide'); // 本月課程
+//     member_center_burger.classList.remove('hide'); // 會員中心
+//     logout_burger.classList.remove('hide'); // 登出系統
+//     member_plan_burger.classList.add('hide'); // 會員方案
+//     login_register_burger.classList.add('hide'); // 登入/註冊
+//     window.location.reload()
+// };
