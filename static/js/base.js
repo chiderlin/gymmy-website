@@ -365,9 +365,6 @@ function renderStatement(msg){
     statement_page.insertBefore(statement_msg,close_btn);
 };
 
-
-// =============================
-
 // function loginNavBar() {
 //     // big screen
 //     classes_big.classList.remove('hide'); // 本月課程
@@ -381,4 +378,5 @@ function renderStatement(msg){
 //     logout_burger.classList.remove('hide'); // 登出系統
 //     member_plan_burger.classList.add('hide'); // 會員方案
 //     login_register_burger.classList.add('hide'); // 登入/註冊
+//     window.location.reload()
 // };
