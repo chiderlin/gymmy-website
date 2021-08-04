@@ -10,13 +10,17 @@
     background-size:cover;
     background-repeat: no-repeat;
     background-color: #000000;
-    position: absolute;
+    position: relative;
     left:0;
     display:flex;
     justify-content:center;
     align-items:center;
     font-size: 50px;
     overflow:hidden;
+}
+
+.btn-format {
+    position:absolute;
 }
 
 .banner-c > video {
@@ -87,6 +91,7 @@
     width:500px;
     height:50px;
     background-color: #FFA042;
+    z-index: 105;
 }
 
 .news-announce {

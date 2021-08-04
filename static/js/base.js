@@ -17,11 +17,6 @@ const login_register_burger = burger_menu[3]
 const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
-// const token = document.cookie.split('=')[2]; // localhost是2
-// const token = document.cookie.split('=')[3] || document.cookie.split('=')[2]; // linux是3
-// console.log(document.cookie)
-// console.log(document.cookie.split('='))
-// console.log(token)
 let token;
 function getJwtToken(){
     document.cookie.split('; ').find(row=>{
@@ -92,6 +87,15 @@ openbtn.addEventListener('click', () => {
 closebtn.addEventListener('click', () => {
     burger_overlay.style.height = '0%';
 });
+
+//漢堡本月課程
+classes_burger.addEventListener('click',()=>{
+    window.location.href = '/classes'
+});
+//漢堡會員方案
+member_plan_burger.addEventListener('click',()=>{
+    window.location.href = '/products'
+})
 
 
 const overlay_login = document.querySelector('.overlay-login');
