@@ -236,7 +236,6 @@ router.post('/user/google-login', (req, res) => {
                 return JSON.stringify(result, null, 4);
             }).then((data) => {
                 data = JSON.parse(data);
-                console.log(data)
                 if (data === null) {
                     User.create({
                         name: user.name,

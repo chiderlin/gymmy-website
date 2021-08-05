@@ -1,13 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const auth = (req,res,next)=>{
-    // console.log("cookie:",req.cookies.jwt);
-    // const token = req.cookies.jwt
-    // if(token === undefined){
-    //     return res.json({data:null});
-    // }
     const authHeader = req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : ''
-    // console.log(authHeader)
     if(authHeader === 'null'){
         return res.json({data:null})
     } else {

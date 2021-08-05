@@ -91,10 +91,8 @@ function cancelBookingProcess() {
                     }
                 });
             }
-
         })
     }
-
 };
 
 // 查詢天數選單

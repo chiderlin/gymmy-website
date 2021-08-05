@@ -15,7 +15,6 @@ function orderInfo(){
         return res.json()
     }).then((api_data)=>{
         const data = api_data.data;
-        console.log(data);
         if(data === null) {
             window.location.href = '/';
         } else {

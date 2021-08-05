@@ -31,7 +31,6 @@ register_form_big.addEventListener('submit',(event)=>{
     const name_big = document.getElementById('name-big').value;
     const email_big = document.getElementById('email-big').value;
     const pwd_big = document.getElementById('pwd-big').value;
-    // const phone_big = document.getElementById('phone-big').value;
     if(price === undefined){
         renderMsg('請選擇方案');
     } else {
@@ -51,7 +50,6 @@ register_form_small.addEventListener('submit',(event)=>{
     const name_sma = document.getElementById('name-small').value;
     const email_sma = document.getElementById('email-small').value;
     const pwd_sma = document.getElementById('pwd-small').value;
-    // const phone_sma = document.getElementById('phone-small').value;
     if(price === undefined){
         renderMsgSma('請選擇方案');
     } else {

@@ -6,26 +6,8 @@ let index = 1;
 let student_amount;
 let per_class_booking_student;
 let all_student_list;
-// const token = document.cookie.split('=')[2];
-// const token = document.cookie.split('=')[3] || document.cookie.split('=')[2]; // linux是3
-// console.log(document.cookie)
-// console.log(document.cookie.split('='))
-// console.log(token)
 let token;
-function getJwtToken(){
-    document.cookie.split('; ').find(row=>{
-        let jwt = row.startsWith('jwt')
-        if(jwt){
-            console.log(row);
-            token = row.split('=')[1];
-            console.log(token)
-            // break;
-        } else {
-            token = null
-            console.log(token)
-        }
-    })
-}
+
 init();
 
 // controller
@@ -34,6 +16,18 @@ function init() {
     getAllClass();
     checkLogIn();
     getStudentList();
+};
+
+function getJwtToken(){
+    document.cookie.split('; ').find(row=>{
+        let jwt = row.startsWith('jwt')
+        if(jwt){
+            token = row.split('=')[1];
+            // break;
+        } else {
+            token = null
+        }
+    })
 };
 
 function selectDay() {
@@ -86,10 +80,8 @@ const confirm_btn = document.getElementById('check-btn');
 confirm_btn.addEventListener('click',()=>{
     let checkedUser = [];
     const checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
-    console.log(checkboxes);
     for(let i=0; i<checkboxes.length; i++){
         const userId = parseInt(checkboxes[i].value);
-        console.log(per_class_booking_student);
         if(per_class_booking_student !== null){
             for(let j=0; j<per_class_booking_student.length; j++){
                 if(per_class_booking_student[j].userId === userId){
@@ -129,7 +121,7 @@ function emptySelected(checkboxes){
     }
     const add_msg = document.querySelector('.add-msg');
     add_msg.innerHTML = ''
-}
+};
 
 // 關閉按鈕
 const close_btn_for_img_statement = document.getElementById('close-btn-for-img-statement');
@@ -202,7 +194,6 @@ function renderBookedStudent(data){
 
 function renderStudentList(data, selected_day){
     const student_list = document.querySelectorAll('.student-list');
-    console.log(student_list)
     const statement_page = document.querySelector('.statement-page');
     if(student_list !== null){ //先check有無render的資料，有先清空
         for(let i=0; i<student_list.length; i++){
@@ -325,7 +316,6 @@ function bookedStudent(classId){
 function deleteStudent(checked, callback){
     const url = '/api/booking';
     for(let i=0; i<checked.length; i++){
-        console.log(checked[i])
         const booking_info = {'bookingId':checked[i]}
         fetch(url,{
             method:"DELETE",

@@ -18,20 +18,6 @@ const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
 let token;
-function getJwtToken(){
-    document.cookie.split('; ').find(row=>{
-        let jwt = row.startsWith('jwt')
-        if(jwt){
-            console.log(row);
-            token = row.split('=')[1];
-            console.log(token)
-        } else {
-            token = null
-            console.log(token)
-        }
-    })
-}
-
 
 
 // controller
@@ -39,6 +25,17 @@ init();
 function init() {
     getJwtToken()
     checkLogIn()
+};
+
+function getJwtToken(){
+    document.cookie.split('; ').find(row=>{
+        let jwt = row.startsWith('jwt')
+        if(jwt){
+            token = row.split('=')[1];
+        } else {
+            token = null
+        }
+    })
 };
 
 // back to top button
@@ -95,7 +92,7 @@ classes_burger.addEventListener('click',()=>{
 //漢堡會員方案
 member_plan_burger.addEventListener('click',()=>{
     window.location.href = '/products'
-})
+});
 
 
 const overlay_login = document.querySelector('.overlay-login');
@@ -176,14 +173,13 @@ function sendEmailProcess(){
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
-        console.log('User signed out.');
+        // console.log('User signed out.');
     });
 };
 
 function onSuccess(googleUser) {
-    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    // console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
     var id_token = googleUser.getAuthResponse().id_token;
-    console.log(id_token);
     const token = {
         'id_token': id_token
     }
@@ -299,7 +295,6 @@ function sendEmail(customer_data){
     })
     .then(res=>res.json())
     .then(data => {
-        console.log(data)
         if(data.ok === true){
             sendEmailProcess();
         }
@@ -369,18 +364,3 @@ function renderStatement(msg){
     statement_page.insertBefore(statement_msg,close_btn);
 };
 
-// function loginNavBar() {
-//     // big screen
-//     classes_big.classList.remove('hide'); // 本月課程
-//     member_center_big.classList.remove('hide'); // 會員中心
-//     logout_big.classList.remove('hide'); // 登出系統
-//     member_plan_big.classList.add('hide'); // 會員方案
-//     login_register_big.classList.add('hide'); // 登入/註冊
-//     // small screen
-//     classes_burger.classList.remove('hide'); // 本月課程
-//     member_center_burger.classList.remove('hide'); // 會員中心
-//     logout_burger.classList.remove('hide'); // 登出系統
-//     member_plan_burger.classList.add('hide'); // 會員方案
-//     login_register_burger.classList.add('hide'); // 登入/註冊
-//     window.location.reload()
-// };
