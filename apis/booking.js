@@ -22,7 +22,6 @@ router.get('/booking/student/:classId', (req, res) => {
     }).then((result) => {
         return JSON.stringify(result, null, 4);
     }).then((data) => {
-        console.log(data);
         if (data !== '[]') {
             data = JSON.parse(data);
             for (let i = 0; i < data.length; i++) {
@@ -83,11 +82,9 @@ router.get('/booking', auth, (req, res) => {
                         'teacher': data[i].teacher,
                         'room': data[i].room
                     }
-                    // const class_time = new Date(data[i].class_time.substring(0,10)).getMonth()+1;
-                    // const current_mon = new Date().getMonth()+1;
-                    // if(class_time === current_mon || class_time>current_mon) { 
+
                     list_of_class.push(booking_data)
-                    // }
+
                 }
                 const class_data = {
                     data: list_of_class
@@ -122,7 +119,6 @@ router.delete('/booking',auth, (req, res) => {
 
 router.post('/booking', auth, (req, res) => {
     const class_info = req.body.data;
-    console.log(class_info)
     if (!class_info) {
         return res.status(400).json({ error: true, message: '提供正確post資料' });
     }
@@ -162,7 +158,6 @@ router.post('/booking', auth, (req, res) => {
     }
     if (weekday < current_day) { //下禮拜的課
         const calculation＿date = 7 - current_day + weekday;
-        // class_date = current.setDate(current.getDate()+calculation＿date);
         class_date = moment().add(calculation＿date, 'days').format('YYYY-MM-DD')
 
     } else if (weekday === current_day) {
@@ -170,7 +165,6 @@ router.post('/booking', auth, (req, res) => {
 
     } else if (weekday > current_day) { //本週課程
         const calculation＿date = weekday - current_day
-        // class_date = current.setDate(current.getDate()+calculation＿date);
         class_date = moment().add(calculation＿date, 'days').format('YYYY-MM-DD')
     }
 

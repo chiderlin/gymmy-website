@@ -34,11 +34,23 @@ web: https://gymmy.club
 
 密碼： 123
 
+#### Tappay 付款卡號
+
 Credit Card: 4242 4242 4242 4242
 
 Date: 01/23
 
 CCV: 123
+
+#### Paypal 付款帳號
+
+帳號1：sb-tqykd6657530@personal.example.com
+
+帳號2：sb-tfbtd6657481@personal.example.com
+
+帳號3：sb-eu43ya6701843@personal.example.com
+
+密碼：z1237788z
 
 ## 頁面操作瀏覽
 ### 1.首頁

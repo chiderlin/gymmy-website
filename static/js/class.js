@@ -54,7 +54,6 @@ function checkBookingBtn(weekday){
                     }
                 }
                 booking((res)=>{
-                    console.log(res);
                     if(res.ok === true){
                         renderStatement('完成預約');
                         overlay_statement.style.display = 'block';
@@ -89,7 +88,6 @@ function checkLogIn(){
     }).then((res)=>{
         return res.json();
     }).then((api_data)=>{
-        console.log(api_data);
         if(api_data.data !== null) {
             check_login = true;
             check_active = api_data.data.active;

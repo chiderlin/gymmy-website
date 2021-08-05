@@ -121,16 +121,13 @@ if (big_tappay_radio.checked === true) {
 big_tappay.addEventListener('submit', (event) => {
     event.preventDefault();
     TPDirect.card.getPrime((res) => {
-        console.log(res);
         if (res.status !== 0) {
             // render錯誤訊息
             renderErrMsg('信用卡驗證不正確')
-            console.log(res.status);
             return;
         }
         const phone_big = document.getElementById('phone-big').value;
         const prime = res.card.prime;
-        console.log(register_user)
         if (register_user !== null) {
             uploadPhone(phone_big, (res) => {
                 sendPrime(prime, phone_big);
@@ -143,11 +140,9 @@ big_tappay.addEventListener('submit', (event) => {
 small_tappay.addEventListener('submit', (event) => {
     event.preventDefault();
     TPDirect.card.getPrime((res) => {
-        console.log(res);
         if (res.status !== 0) {
             // render錯誤訊息
             renderErrMsg('信用卡驗證不正確')
-            console.log(res.status);
             return;
         }
         const phone_small = document.getElementById('phone-small').value;
@@ -214,7 +209,6 @@ function uploadPhone(phone, cb) {
     }).then((res) => {
         return res.json()
     }).then((data) => {
-        console.log(data);
         if(data.error === true){
             renderErrMsg(data.message)
         }
@@ -227,7 +221,6 @@ function uploadPhone(phone, cb) {
 function sendPrime(prime, phone) {
     register_user.phone = phone // 一開始phone是null，改上填好的
     const prime_data = { 'prime': prime, 'info': register_user }
-    console.log(prime_data);
     const url = '/api/payment/pay-by-prime';
     fetch(url, {
         method: 'POST',
@@ -240,7 +233,6 @@ function sendPrime(prime, phone) {
     }).then((res) => {
         return res.json();
     }).then((data) => {
-        console.log(data);
         if (data.ok === true) {
             window.location.href = '/thankyou'
         }
@@ -264,9 +256,7 @@ function paypalPaid(subscriptionID) {
     }).then((res) => {
         return res.json()
     }).then((data) => {
-        console.log(data);
         window.location.href = '/thankyou';
-        // logOut_pay(); //不確定需不需要
     })
 };
 
@@ -274,7 +264,6 @@ function paypalPaid(subscriptionID) {
 // view 
 function renderErrMsg(msg){
     const error_msg = document.querySelectorAll('.msg');
-    console.log(error_msg);
     // 在這裡判斷使用的大小螢幕，選擇要render的對象
     if(divBlock_status === 'none'){
         error_msg[1].innerHTML = ''
@@ -303,10 +292,7 @@ paypal.Buttons({
     },
     onApprove: function (data, actions) {
         //TODO: 呼叫/paypal
-        const url = '/api/payment/paypal'
-        const userId = { 'id': register_user.id };
         paypalPaid(data.subscriptionID)
-        //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
     }
 }).render('#paypal-button-container-P-888'); // Renders the PayPal button
 
@@ -325,9 +311,6 @@ paypal.Buttons({
         });
     },
     onApprove: function (data, actions) {
-        //   alert(data.subscriptionID); // You can add optional success message for the subscriber here
-        const url = '/api/payment/paypal'
-        const userId = { 'id': register_user.id };
         paypalPaid(data.subscriptionID)
 
     }
@@ -349,9 +332,6 @@ paypal.Buttons({
         });
     },
     onApprove: function (data, actions) {
-        // alert(data.subscriptionID);
-        const url = '/api/payment/paypal'
-        const userId = { 'id': register_user.id };
         paypalPaid(data.subscriptionID)
     }
 }).render('#small-paypal-btn-888');
@@ -371,8 +351,6 @@ paypal.Buttons({
         });
     },
     onApprove: function (data, actions) {
-        // alert(data.subscriptionID);
-
         paypalPaid(data.subscriptionID)
     }
 }).render('#small-paypal-btn-1000');

@@ -63,7 +63,6 @@ router.get('/payment', auth, (req, res) => {
 // 取得Prime => 付款
 router.post('/payment/pay-by-prime', auth, (req, res) => {
     const email = req.user.email
-    console.log(email);
     // find data
     User.findOne({ // 註冊過
         where: {
@@ -73,7 +72,6 @@ router.post('/payment/pay-by-prime', auth, (req, res) => {
     }).then((result) => {
         return JSON.stringify(result, null, 4);
     }).then((find_data) => {
-        console.log(find_data);
         find_data = JSON.parse(find_data);
         const userId = find_data.id;
 
@@ -125,7 +123,6 @@ router.post('/payment/paypal', auth, (req, res) => {
     }).then((result) => {
         return JSON.stringify(result, null, 4);
     }).then((find_data) => {
-        console.log(find_data);
         find_data = JSON.parse(find_data);
         const userId = find_data.id;
         if (find_data.Payment === null) { // 還沒付款才可以寫入資料庫
@@ -175,7 +172,6 @@ function pay_by_prime(payload, callback) {
             'Content-Type': 'application/json',
         },
     }).then((result) => {
-        console.log(result.data);
         const data = result.data;
         if (data.status === 0) {
             // 1.付款成功，寫入Payments資料庫
