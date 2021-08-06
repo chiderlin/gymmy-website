@@ -50,6 +50,8 @@ class IPNController {
                     const next_payment_date = body.next_payment_date;
                     const time_created = body.time_created;
                     let test = new Date(next_payment_date).toLocaleString('chinese', { hour12: false });
+                    console.log("status:",status)
+                    console.log("amount:",amount)
                     break;
                 default:
                     console.log('Unhandled transaction type: ', transactionType);
