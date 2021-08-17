@@ -77,15 +77,12 @@ add_btn.addEventListener('click',()=>{
 
 // 確認新增按鈕
 const confirm_btn = document.getElementById('check-btn');
-console.log(confirm_btn)
 confirm_btn.addEventListener('click',()=>{
     let checkedUser = [];
     const checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
-    console.log(checkboxes)
     for(let i=0; i<checkboxes.length; i++){
         const userId = parseInt(checkboxes[i].value);
         if(per_class_booking_student !== null){
-            console.log(per_class_booking_student)
             for(let j=0; j<per_class_booking_student.length; j++){
                 if(per_class_booking_student[j].userId === userId){
                     // booking之前先check這個人是否已經在上面列表
@@ -96,12 +93,9 @@ confirm_btn.addEventListener('click',()=>{
         }
         checkedUser.push(userId)
     }
-    console.log(checkedUser)
     if(checkboxes.length !==0){
-        console.log(checkboxes)
         // booking之前先check課堂人數是否滿15人
         if(student_amount+checkboxes.length>15 || student_amount===15){
-            console.log(student_amount+checkboxes.length)
             renderErrMsg('每堂課最多預定15人');
             return 
         }
@@ -109,7 +103,6 @@ confirm_btn.addEventListener('click',()=>{
         //post資料到後端，在booking新增此學員到此課程
         booking(checkedUser,(res)=>{
             if(res.ok === true){
-                console.log(res)
                 bookedStudent(selected_classId) // 直接更新表單顯示出來，
                 emptySelected(checkboxes) //清空student list選過的資料＆顯示的訊息
                 return 
@@ -361,7 +354,6 @@ function getStudentList(){
 };
 
 function booking(checkedUser, cb){
-    console.log(checkedUser)
     for(let i=0;i<checkedUser.length;i++){
         const class_info= {
             'data':{
@@ -389,7 +381,6 @@ function booking(checkedUser, cb){
         }).then((res)=>{
             return res.json();
         }).then((api_data)=>{
-            console.log(api_data)
             return cb(api_data);
         });
 

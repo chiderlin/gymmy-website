@@ -17,7 +17,6 @@
 - 後端node.js express框架
 - Tappay訂閱制付款(Cron自動排程實作每月付款機制)、Paypal金流串接訂閱制付款 (Cron實作： https://github.com/chiderlin/cron-for-payment)
 - google第三方登入api串接
-- jwt 會員系統
 - ORM 資料庫串接
 - 部署nginx反向代理、Docker
 - SSL憑證實踐HTTPS

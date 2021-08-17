@@ -119,7 +119,6 @@ router.delete('/booking',auth, (req, res) => {
 
 router.post('/booking', auth, (req, res) => {
     const class_info = req.body.data;
-    console.log(class_info)
     if (!class_info) {
         return res.status(400).json({ error: true, message: '提供正確post資料' });
     }
