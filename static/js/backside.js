@@ -93,7 +93,6 @@ confirm_btn.addEventListener('click',()=>{
         }
         checkedUser.push(userId)
     }
-
     if(checkboxes.length !==0){
         // booking之前先check課堂人數是否滿15人
         if(student_amount+checkboxes.length>15 || student_amount===15){
@@ -106,6 +105,10 @@ confirm_btn.addEventListener('click',()=>{
             if(res.ok === true){
                 bookedStudent(selected_classId) // 直接更新表單顯示出來，
                 emptySelected(checkboxes) //清空student list選過的資料＆顯示的訊息
+                return 
+            }
+            if(res.error === true){
+                renderErrMsg(res.message);
             }
         })
     } else { //新增的地方沒有選取任何學員
