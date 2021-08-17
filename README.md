@@ -12,6 +12,7 @@
 
 ## 使用技術
 - 使用Trello做專案進度管理 （Link : https://reurl.cc/VEZjzy)
+- 爬蟲使用python爬取WorldGym健身房的課程
 - 雲服務使用AWS的RDS、S3、Cloudfront
 - 前端除了 HTML, CSS, JS 之外另搭配Bootstrap
 - 後端node.js express框架
