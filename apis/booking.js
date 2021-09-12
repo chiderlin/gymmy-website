@@ -14,6 +14,19 @@ router.get('/booking/student/:classId', (req, res) => {
         return res.status(400).json({error:true,message:'課程id不可為空值'})
     }
     const student_list = []
+    // async function booking(){
+    //     try {
+    //         const book = await Booking.findAll({where: {classId: classId},include: User})
+    //         console.log(book)
+    //         const book2 = JSON.stringify(book, null, 4)
+    //         console.log(typeof(book2));
+    //         console.log(123)
+    //     } catch(err){
+    //         console.log(err)
+    //     }
+
+    // }
+    // booking()
     Booking.findAll({
         where: {
             classId: classId,
