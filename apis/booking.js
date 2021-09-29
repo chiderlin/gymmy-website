@@ -4,7 +4,7 @@ const db = require('../db_module.js');
 const Booking = db.Booking;
 const User = db.User;
 const moment = require('moment');
-const auth = require('../middleware/auth.js')
+// const auth = require('../middleware/auth.js')
 
 
 // 後台 顯示每堂課學員人數 ＆ classes page 累計每堂課人數（顯示可預約或已額滿）
@@ -68,7 +68,7 @@ router.get('/booking/student/:classId', (req, res) => {
 });
 
 // 會員中心 所有預約的課程 => 前端做時間判斷，提取被顯示在網頁上的預約課程
-router.get('/booking', auth, (req, res) => {
+router.get('/booking', (req, res) => {
     if (req.user.userId) { 
         let list_of_class = []
         Booking.findAll({
