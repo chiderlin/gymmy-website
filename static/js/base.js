@@ -180,7 +180,7 @@ function signOut() {
 function onSuccess(googleUser) {
     // console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
     var id_token = googleUser.getAuthResponse().id_token;
-    const token = {
+    const id_token_json = {
         'id_token': id_token
     }
     const URL = '/api/user/google-login';
@@ -191,7 +191,7 @@ function onSuccess(googleUser) {
             'Content-Type': 'application/json',
             // 'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(token)
+        body: JSON.stringify(id_token_json)
     }).then((res) => {
         return res.json()
     }).then((data) => {

@@ -195,7 +195,7 @@ router.delete('/user', (req, res) => {
 });
 
 
-router.post('/google-login', (req, res) => {
+router.post('/user/google-login', (req, res) => {
     let token = req.body.id_token;
     // console.log(token);
     let user = {}
