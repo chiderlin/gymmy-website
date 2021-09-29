@@ -17,26 +17,26 @@ const login_register_burger = burger_menu[3]
 const logout_burger = burger_menu[4]
 let login_status = false;
 let login_user_info;
-let token;
+// let token;
 
 
 // controller
 init();
 function init() {
-    getJwtToken()
+    // getJwtToken()
     checkLogIn()
 };
 
-function getJwtToken(){
-    document.cookie.split('; ').find(row=>{
-        let jwt = row.startsWith('jwt')
-        if(jwt){
-            token = row.split('=')[1];
-        } else {
-            token = null
-        }
-    })
-};
+// function getJwtToken(){
+//     document.cookie.split('; ').find(row=>{
+//         let jwt = row.startsWith('jwt')
+//         if(jwt){
+//             token = row.split('=')[1];
+//         } else {
+//             token = null
+//         }
+//     })
+// };
 
 // back to top button
 const back_to_top = document.querySelector('.top');
@@ -186,10 +186,10 @@ function onSuccess(googleUser) {
     const URL = '/api/user/google-login';
     fetch(URL, {
         method: "POST",
-        credentials: 'include',
+        // credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(token)
     }).then((res) => {
@@ -225,15 +225,10 @@ function renderButton() {
 // module
 function checkLogIn() {
     const url = '/api/user';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res) => {
+    fetch(url).then((res) => {
         return res.json();
     }).then((api_data) => {
+        console.log(api_data)
         initRenderMenu(api_data);
         if(api_data.error === true){
             return;
@@ -273,10 +268,10 @@ function logOut() {
     const url = '/api/user';
     fetch(url, {
         method: "DELETE",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
     }).then((res) => {
         return res.json();
     }).then((data) => {

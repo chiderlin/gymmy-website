@@ -9,13 +9,7 @@ backside_login_link.addEventListener('click',()=>{
 // model
 function checkLogIn_footer() {
     const url = '/api/user';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res) => {
+    fetch(url).then((res) => {
         return res.json();
     }).then((api_data) => {
         if(api_data.error === true){
@@ -41,10 +35,10 @@ function logOut_footer() {
     const url = '/api/user';
     fetch(url, {
         method: "DELETE",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
     }).then((res) => {
         return res.json();
     }).then((data) => {

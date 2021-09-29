@@ -140,13 +140,7 @@ function activeProcess() {
 // model
 function checkLogIn() {
     const url = '/api/user';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res) => {
+    fetch(url).then((res) => {
         return res.json();
     }).then((api_data) => {
         console.log(api_data)
@@ -168,10 +162,10 @@ function uploadImg() {
     const url = "/api/member/img-upload"
     fetch(url, {
         method: "POST",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // },
         body: form,
     }).then((res) => {
         return res.json();
@@ -186,13 +180,7 @@ function uploadImg() {
 
 function getMember() {
     const url = '/api/member/info'
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res) => {
+    fetch(url).then((res) => {
         return res.json();
     }).then((data) => {
         console.log(data)
@@ -205,13 +193,7 @@ function getMember() {
 
 function getBooking() {
     const url = '/api/booking';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res) => {
+    fetch(url).then((res) => {
         return res.json();
     }).then((api_data) => {
         console.log(api_data)
@@ -274,10 +256,10 @@ function logOut() {
     const url = '/api/user';
     fetch(url, {
         method: "DELETE",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
     }).then((res) => {
         return res.json();
     }).then((data) => {
@@ -290,10 +272,10 @@ function deleteBooking(bookingId, callback) {
     const booking_info = { 'bookingId': bookingId }
     fetch(url, {
         method: "DELETE",
-        credentials: 'include',
+        // credentials: 'include',
         headers: {
             "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
+            // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(booking_info)
     }).then((res) => {
@@ -308,10 +290,10 @@ function uploadPlan(plan_option){
     const plan = {'plan': plan_option}
     fetch(url,{
         method: "PUT",
-        credentials: 'include',
+        // credentials: 'include',
         headers:{
             "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
+            // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(plan)
     }).then((res)=>{

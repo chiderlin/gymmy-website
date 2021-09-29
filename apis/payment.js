@@ -110,7 +110,7 @@ router.post('/payment/pay-by-prime', (req, res) => {
 // 1.先確認是不是註冊過
 // 2.建立payment資料
 // 3.更新user active狀態 
-router.post('/payment/paypal', auth, (req, res) => {
+router.post('/payment/paypal', (req, res) => {
     const sub_id = req.body.sub_id;
     // const email = req.user.email
     const email = req.session.email

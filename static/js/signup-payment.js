@@ -181,13 +181,7 @@ function switchPaypalBtn() {
 // model
 function getUser() {
     const url = '/api/user';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res) => {
+    fetch(url).then((res) => {
         return res.json();
     }).then((api_data) => {
         register_user = api_data.data;
@@ -200,10 +194,10 @@ function uploadPhone(phone, cb) {
     const phone_info = { 'phone': phone };
     fetch(url, {
         method: "PUT",
-        credentials: 'include',
+        // credentials: 'include',
         headers: {
             "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
+            // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(phone_info)
     }).then((res) => {
@@ -224,10 +218,10 @@ function sendPrime(prime, phone) {
     const url = '/api/payment/pay-by-prime';
     fetch(url, {
         method: 'POST',
-        credentials: 'include',
+        // credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(prime_data),
     }).then((res) => {
@@ -247,10 +241,10 @@ function paypalPaid(subscriptionID) {
     const sub_id = { 'sub_id': subscriptionID }
     fetch(url, {
         method: "POST",
-        credentials: 'include',
+        // credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(sub_id)
     }).then((res) => {

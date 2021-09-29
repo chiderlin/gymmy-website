@@ -69,12 +69,13 @@ router.get('/booking/student/:classId', (req, res) => {
 
 // 會員中心 所有預約的課程 => 前端做時間判斷，提取被顯示在網頁上的預約課程
 router.get('/booking', (req, res) => {
+    console.log("booking:",req.session.userid)
     // if (req.user.userId) {
     if (req.session.userid) { 
         let list_of_class = []
         Booking.findAll({
             where: {
-                UserId: req.user.userid
+                UserId: req.session.userid
             },
             order: [
                 ['class_date', 'asc'],

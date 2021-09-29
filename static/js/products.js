@@ -63,13 +63,7 @@ function renderStatement(msg){
 //model
 function checkLogIn(){
     const url = '/api/user';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res)=>{
+    fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
 

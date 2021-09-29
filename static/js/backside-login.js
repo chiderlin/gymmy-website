@@ -2,7 +2,7 @@ const login_form = document.getElementById('login-form');
 
 
 // controller
-getJwtToken();
+// getJwtToken();
 loginStatus();
 
 
@@ -15,16 +15,16 @@ login_form.addEventListener('submit', (event)=>{
 
 });
 
-function getJwtToken(){
-    document.cookie.split('; ').find(row=>{
-        let jwt = row.startsWith('jwt')
-        if(jwt){
-            token = row.split('=')[1];
-        } else {
-            token = null
-        }
-    })
-};
+// function getJwtToken(){
+//     document.cookie.split('; ').find(row=>{
+//         let jwt = row.startsWith('jwt')
+//         if(jwt){
+//             token = row.split('=')[1];
+//         } else {
+//             token = null
+//         }
+//     })
+// };
 
 // model
 function login(email, pwd){
@@ -53,13 +53,7 @@ function login(email, pwd){
 
 function loginStatus() {
     const url = '/api/user';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res)=>{
+    fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
         if(api_data.data !== null){

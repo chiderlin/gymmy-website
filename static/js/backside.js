@@ -6,29 +6,29 @@ let index = 1;
 let student_amount;
 let per_class_booking_student;
 let all_student_list;
-let token;
+// let token;
 
 init();
 
 // controller
 function init() {
-    getJwtToken();
+    // getJwtToken();
     getAllClass();
     checkLogIn();
     getStudentList();
 };
 
-function getJwtToken(){
-    document.cookie.split('; ').find(row=>{
-        let jwt = row.startsWith('jwt')
-        if(jwt){
-            token = row.split('=')[1];
-            // break;
-        } else {
-            token = null
-        }
-    })
-};
+// function getJwtToken(){
+//     document.cookie.split('; ').find(row=>{
+//         let jwt = row.startsWith('jwt')
+//         if(jwt){
+//             token = row.split('=')[1];
+//             // break;
+//         } else {
+//             token = null
+//         }
+//     })
+// };
 
 function selectDay() {
     // 如果有選過的話 先清空option選項(週一～週日)
@@ -252,13 +252,7 @@ function renderErrMsg(msg){
 // model
 function checkLogIn(){
     const url = '/api/user';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res)=>{
+    fetch(url).then((res)=>{
         return res.json();
     }).then((api_data)=>{
         if(api_data.data === null) {
@@ -271,10 +265,10 @@ function logout(){
     const url = '/api/user';
     fetch(url,{
         method: "DELETE",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
     }).then((res)=>{
         return res.json();
     }).then((data)=>{
@@ -293,13 +287,7 @@ function getAllClass() {
 
 function bookedStudent(classId){
     const url = `/api/booking/student/${classId}`
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
+    fetch(url)
     .then((res)=>{
         return res.json();
     })
@@ -322,10 +310,10 @@ function deleteStudent(checked, callback){
         const booking_info = {'bookingId':checked[i]}
         fetch(url,{
             method:"DELETE",
-            credentials: 'include',
+            // credentials: 'include',
             headers:{
                 "Content-Type":"application/json",
-                'Authorization': `Bearer ${token}`
+                // 'Authorization': `Bearer ${token}`
             },
             body:JSON.stringify(booking_info)
         }).then((res)=>{
@@ -339,13 +327,7 @@ function deleteStudent(checked, callback){
 
 function getStudentList(){
     const url = '/api/users';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res)=>{
+    fetch(url).then((res)=>{
         return res.json()
     }).then((api_data)=>{
         const data = api_data.data
@@ -372,10 +354,10 @@ function booking(checkedUser, cb){
         const url = '/api/booking'
         fetch(url,{
             method:"POST",
-            credentials: 'include',
+            // credentials: 'include',
             headers:{
                 'Content-Type':'application/json',
-                'Authorization': `Bearer ${token}`
+                // 'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(class_info),
         }).then((res)=>{

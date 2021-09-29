@@ -8,7 +8,7 @@ const { OAuth2Client, JWT } = require('google-auth-library');
 // const CLIENT_ID = '316396796608-q5iv25epumdt98ur8ljs428a2qfsufu6.apps.googleusercontent.com'
 const CLIENT_ID = '316396796608-1hfr0qr4pmpbgll2gh3d8ce2o9ofhjmb.apps.googleusercontent.com' // localhost
 const client = new OAuth2Client(CLIENT_ID);
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 // const auth = require('../middleware/auth.js')
 
 // GET ALL USERS
@@ -59,39 +59,34 @@ router.get('/user', (req, res) => {
             return res.json({ 'data': null });
         } else {
             try {
-                sequelize.sync().then(() => {
-                    User.findOne({
-                        where: {
-                            email: req.session.email,
+                User.findOne({
+                    where: {
+                        email: req.session.email,
+                    }
+                }).then((result) => {
+                    return JSON.stringify(result, null, 4);
+                }).then((data) => {
+                    console.log(data);
+                    data = JSON.parse(data);
+                    const id = data.id;
+                    const name = data.name;
+                    const email = data.email;
+                    const price = data.plan;
+                    const phone = data.phone;
+                    const auth = data.auth;
+                    const active = data.active;
+                    const mem_info = {
+                        'data': {
+                            'id': id,
+                            'name': name,
+                            'email': email,
+                            'phone': phone,
+                            'plan': price,
+                            'auth': auth,
+                            'active': active,
                         }
-                    }).then((result) => {
-                        return JSON.stringify(result, null, 4);
-                    }).then((data) => {
-                        console.log(data);
-                        data = JSON.parse(data);
-                        const id = data.id;
-                        const name = data.name;
-                        const email = data.email;
-                        const price = data.plan;
-                        const phone = data.phone;
-                        const auth = data.auth;
-                        const active = data.active;
-                        const mem_info = {
-                            'data': {
-                                'id': id,
-                                'name': name,
-                                'email': email,
-                                'phone': phone,
-                                'plan': price,
-                                'auth': auth,
-                                'active': active,
-                            }
-                        }
-                        return res.json(mem_info);
-                    })
-                }).catch((e) => {
-                    e = e.toString();
-                    return res.status(500).json({ 'error': true, 'message': e });
+                    }
+                    return res.json(mem_info);
                 })
             } catch (e) {
                 e = e.toString();
@@ -110,44 +105,36 @@ router.post('/user', async (req, res) => {
     const plan = req.body.price;
     try {
         const hashPwd = await bcrypt.hash(req.body.pwd, 10)
-        sequelize.sync().then(() => {
-            User.findOne({
-                where: {
+        
+        User.findOne({
+            where: {
+                email: email,
+            }
+        }).then((result) => {
+            return JSON.stringify(result, null, 4);
+        }).then((data) => {
+            data = JSON.parse(data);
+            if (data === null) {
+                // 記錄在session
+                // insert data
+                User.create({
+                    name: name,
                     email: email,
-                }
-            }).then((result) => {
-                return JSON.stringify(result, null, 4);
-            }).then((data) => {
-                data = JSON.parse(data);
-                if (data === null) {
-                    // 記錄在session
-                    // insert data
-                    sequelize.sync().then(() => {
-                        // 在這邊新增資料
-                        User.create({
-                            name: name,
-                            email: email,
-                            password: hashPwd,
-                            phone: phone,
-                            plan: plan,
-                            auth: 2,
-                            active: 'no',
-                        }).then(() => {
-                            
-                            req.session.email = email;
-                            return res.json({ 'ok': true });
-                        })
-                    }).catch((err) => {
-                        console.log(err);
-                    })
-                } else {
-                    return res.status(400).json({ 'error': true, 'message': '此帳號已註冊過' });
-                }
-            })
-        }).catch((e) => {
-            e = e.toString();
-            return res.status(500).json({ 'error': true, 'message': e });
+                    password: hashPwd,
+                    phone: phone,
+                    plan: plan,
+                    auth: 2,
+                    active: 'no',
+                }).then(() => {
+                    req.session.email = email;
+                    return res.json({ 'ok': true });
+                })
+                
+            } else {
+                return res.status(400).json({ 'error': true, 'message': '此帳號已註冊過' });
+            }
         })
+        
     } catch (e) {
         e = e.toString();
         return res.status(500).json({ 'error': true, 'message': e });

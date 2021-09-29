@@ -5,13 +5,7 @@ orderInfo()
 
 function orderInfo(){
     const url = '/api/payment';
-    fetch(url,{
-        method: "GET",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    }).then((res)=>{
+    fetch(url).then((res)=>{
         return res.json()
     }).then((api_data)=>{
         const data = api_data.data;
@@ -36,10 +30,10 @@ function logOut() {
     const url = '/api/user';
     fetch(url, {
         method: "DELETE",
-        credentials: 'include',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+        // credentials: 'include',
+        // headers: {
+        //     'Authorization': `Bearer ${token}`
+        // }
     }).then((res) => {
         return res.json();
     }).then((data) => {
