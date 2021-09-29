@@ -3,7 +3,20 @@ const app = express();
 require('dotenv/config');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
+const session = require('express-session');
+app.set('trust proxy', 1) // express-session
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    name: 'sessionId',
+    resave: false, // 設false才會刪除sessionId的cookie
+    saveUninitialized: false, // 設false才會刪除sessionId的cookie
+    // store: new MemoryStore(),
+    cookie: {
+        secure: false,
+        httpOnly: false,
+        }, 
+    })
+)
 
 app.set('views', './templates');
 app.set('view engine', 'ejs');

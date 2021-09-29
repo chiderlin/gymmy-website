@@ -69,11 +69,12 @@ router.get('/booking/student/:classId', (req, res) => {
 
 // 會員中心 所有預約的課程 => 前端做時間判斷，提取被顯示在網頁上的預約課程
 router.get('/booking', (req, res) => {
-    if (req.user.userId) { 
+    // if (req.user.userId) {
+    if (req.session.userid) { 
         let list_of_class = []
         Booking.findAll({
             where: {
-                UserId: req.user.userId
+                UserId: req.user.userid
             },
             order: [
                 ['class_date', 'asc'],
@@ -112,7 +113,7 @@ router.get('/booking', (req, res) => {
     }
 });
 
-router.delete('/booking',auth, (req, res) => {
+router.delete('/booking', (req, res) => {
     // 要傳該bookingId近來才可以取消課程/刪除課程
     const bookingId = req.body.bookingId;
     if(!bookingId){
@@ -130,7 +131,7 @@ router.delete('/booking',auth, (req, res) => {
     });
 });
 
-router.post('/booking', auth, (req, res) => {
+router.post('/booking', (req, res) => {
     const class_info = req.body.data;
     if (!class_info) {
         return res.status(400).json({ error: true, message: '提供正確post資料' });
@@ -200,11 +201,11 @@ router.post('/booking', auth, (req, res) => {
         }).then(() => {
             return res.json({ ok: true });
         })
-    } else if (req.user.email) { //一般使用者就會跑這邊
+    } else if (req.session.email) { //一般使用者就會跑這邊
 
         User.findOne({
             where: {
-                email: req.user.email,
+                email: req.session.email,
             },
             include: Booking,
         }).then((result) => {

@@ -7,7 +7,7 @@ const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 const multer = require('multer'); //檔案處理
 const fs = require('fs');
-const auth = require('../middleware/auth.js')
+// const auth = require('../middleware/auth.js')
 
 const storage = multer.diskStorage({
     destination: (req, res, callback) => {
@@ -35,7 +35,7 @@ const upload = multer({
 
 
 const mybucket = 'gymmy';
-router.post('/member/img-upload', upload.single('img'), auth, function (req, res, next) {
+router.post('/member/img-upload', upload.single('img'), function (req, res, next) {
     if(!req.file){
         return res.status(400).json({error:true, message:'沒有選取檔案'})
     }
@@ -55,7 +55,7 @@ router.post('/member/img-upload', upload.single('img'), auth, function (req, res
             })
             User.findOne({
                 where: {
-                    email: req.user.email,
+                    email: req.session.email,
                 },
                 include: Member,
             }).then((result) => {
@@ -99,10 +99,10 @@ router.post('/member/img-upload', upload.single('img'), auth, function (req, res
 
 
 // for member頁面取得資料
-router.get('/member/info', auth, (req, res) => {
+router.get('/member/info', (req, res) => {
     User.findOne({
         where: {
-            email: req.user.email,
+            email: req.session.email,
         },
         include: Member,
     }).then((result) => {

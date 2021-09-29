@@ -4,11 +4,12 @@ const axios = require('axios');
 const db = require('../db_module.js');
 const Payment = db.Payment;
 const User = db.User;
-const auth = require('../middleware/auth.js')
+// const auth = require('../middleware/auth.js')
 
 // 第一次付款，thankyou頁面的編號
-router.get('/payment', auth, (req, res) => {
-    const email = req.user.email
+router.get('/payment', (req, res) => {
+    // const email = req.user.email
+    const email = req.session.email
     User.findOne({
         where: {
             email: email,
@@ -61,8 +62,9 @@ router.get('/payment', auth, (req, res) => {
 });
 
 // 取得Prime => 付款
-router.post('/payment/pay-by-prime', auth, (req, res) => {
-    const email = req.user.email
+router.post('/payment/pay-by-prime', (req, res) => {
+    // const email = req.user.email
+    const email = req.session.email
     // find data
     User.findOne({ // 註冊過
         where: {
@@ -110,7 +112,8 @@ router.post('/payment/pay-by-prime', auth, (req, res) => {
 // 3.更新user active狀態 
 router.post('/payment/paypal', auth, (req, res) => {
     const sub_id = req.body.sub_id;
-    const email = req.user.email
+    // const email = req.user.email
+    const email = req.session.email
     if(!sub_id){
         return res.status(400).json({error:true, message:'請提供paypal交易id'})
     }

@@ -5,15 +5,15 @@ const db = require('../db_module.js');
 const User = db.User;
 const axios = require('axios');
 const { OAuth2Client, JWT } = require('google-auth-library');
-const CLIENT_ID = '316396796608-q5iv25epumdt98ur8ljs428a2qfsufu6.apps.googleusercontent.com'
-// const CLIENT_ID = '316396796608-1hfr0qr4pmpbgll2gh3d8ce2o9ofhjmb.apps.googleusercontent.com' // localhost
+// const CLIENT_ID = '316396796608-q5iv25epumdt98ur8ljs428a2qfsufu6.apps.googleusercontent.com'
+const CLIENT_ID = '316396796608-1hfr0qr4pmpbgll2gh3d8ce2o9ofhjmb.apps.googleusercontent.com' // localhost
 const client = new OAuth2Client(CLIENT_ID);
 const jwt = require('jsonwebtoken');
-const auth = require('../middleware/auth.js')
+// const auth = require('../middleware/auth.js')
 
 // GET ALL USERS
-router.get('/users', auth, (req, res) => {
-    if (req.user.email === 'admin@admin.com') {
+router.get('/users', (req, res) => {
+    if (req.session.email === 'admin@admin.com') {
         User.findAll()
             .then((result) => {
                 return JSON.stringify(result, null, 4);
@@ -38,8 +38,10 @@ router.get('/users', auth, (req, res) => {
                         user_list.push(user_info)
                     }
                 }
-                return res.json({ data: user_list });
+                return res.json({ 'data': user_list });
             })
+    } else {
+        return res.json({ 'data': req.session.email });
     }
 
 });
@@ -47,35 +49,56 @@ router.get('/users', auth, (req, res) => {
 
 
 // CHECK STATUS(login check)
-router.get('/user', auth, (req, res) => {
-    User.findOne({
-        where: {
-            email: req.user.email,
-        }
-    }).then((result) => {
-        return JSON.stringify(result, null, 4);
-    }).then((data) => {
-        data = JSON.parse(data);
-        const id = data.id;
-        const name = data.name;
-        const email = data.email;
-        const price = data.plan;
-        const phone = data.phone;
-        const auth = data.auth;
-        const active = data.active;
-        const mem_info = {
-            'data': {
-                'id': id,
-                'name': name,
-                'email': email,
-                'phone': phone,
-                'plan': price,
-                'auth': auth,
-                'active': active,
+router.get('/user', (req, res) => {
+    // console.log(req.session.email)
+    if (req.session.email === undefined) {
+        return res.json({ 'data': null });
+    } else {
+        // 查詢db比對
+        if (req.session.email === null) {
+            return res.json({ 'data': null });
+        } else {
+            try {
+                sequelize.sync().then(() => {
+                    User.findOne({
+                        where: {
+                            email: req.session.email,
+                        }
+                    }).then((result) => {
+                        return JSON.stringify(result, null, 4);
+                    }).then((data) => {
+                        console.log(data);
+                        data = JSON.parse(data);
+                        const id = data.id;
+                        const name = data.name;
+                        const email = data.email;
+                        const price = data.plan;
+                        const phone = data.phone;
+                        const auth = data.auth;
+                        const active = data.active;
+                        const mem_info = {
+                            'data': {
+                                'id': id,
+                                'name': name,
+                                'email': email,
+                                'phone': phone,
+                                'plan': price,
+                                'auth': auth,
+                                'active': active,
+                            }
+                        }
+                        return res.json(mem_info);
+                    })
+                }).catch((e) => {
+                    e = e.toString();
+                    return res.status(500).json({ 'error': true, 'message': e });
+                })
+            } catch (e) {
+                e = e.toString();
+                return res.status(500).json({ 'error': true, 'message': e });
             }
         }
-        return res.json(mem_info);
-    })
+    }
 });
 
 
@@ -83,83 +106,58 @@ router.get('/user', auth, (req, res) => {
 router.post('/user', async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
-    const pwd = req.body.pwd;
+    const phone = req.body.phone;
     const plan = req.body.price;
-    const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
-    if(!name){
-        return res.status(400).json({ error: true, message: '使用者名稱不可為空值' });
-    }
-    if(!email){
-        return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
-    }
-    if(!pwd){
-        return res.status(400).json({ error: true, message: '密碼不可為空值' });
-    }
-    if(!plan){
-        return res.status(400).json({ error: true, message: '方案不可為空值' });
-    }
-    if(!regex_email.test(email)){
-        return res.status(400).json({ error: true, message: 'email格式錯誤' });
-    }
-
     try {
-        const hashPwd = await bcrypt.hash(pwd, 10)
-        User.findOne({
-            where: {
-                email: email,
-            }
-        }).then((result) => {
-            return JSON.stringify(result, null, 4);
-        }).then((data) => {
-            data = JSON.parse(data);
-            if (data === null) {
-                // insert data
-                const payload = {
-                    name: name,
-                    email: email
-                }
-                const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1 days' }) // 註冊
-                User.create({
-                    name: name,
+        const hashPwd = await bcrypt.hash(req.body.pwd, 10)
+        sequelize.sync().then(() => {
+            User.findOne({
+                where: {
                     email: email,
-                    password: hashPwd,
-                    plan: plan,
-                    auth: 2,
-                    active: 'no',
-                }).then(() => {
-                    res.cookie('jwt', token, {
-                        secure: false,
-                        httpOnly: false,
-                        maxAge: 1000 * 60 * 60 * 24 // 1 days
-                    });
-                    return res.json({ ok: true , token});
-                })
-            } else {
-                return res.status(400).json({ error: true, message: '此帳號已註冊過' });
-            }
+                }
+            }).then((result) => {
+                return JSON.stringify(result, null, 4);
+            }).then((data) => {
+                data = JSON.parse(data);
+                if (data === null) {
+                    // 記錄在session
+                    // insert data
+                    sequelize.sync().then(() => {
+                        // 在這邊新增資料
+                        User.create({
+                            name: name,
+                            email: email,
+                            password: hashPwd,
+                            phone: phone,
+                            plan: plan,
+                            auth: 2,
+                            active: 'no',
+                        }).then(() => {
+                            
+                            req.session.email = email;
+                            return res.json({ 'ok': true });
+                        })
+                    }).catch((err) => {
+                        console.log(err);
+                    })
+                } else {
+                    return res.status(400).json({ 'error': true, 'message': '此帳號已註冊過' });
+                }
+            })
+        }).catch((e) => {
+            e = e.toString();
+            return res.status(500).json({ 'error': true, 'message': e });
         })
     } catch (e) {
         e = e.toString();
-        return res.status(500).json({ error: true, message: e });
+        return res.status(500).json({ 'error': true, 'message': e });
     }
 });
-
 
 // LOGIN
 router.patch('/user', (req, res) => {
     const email = req.body.email;
     const pwd = req.body.password;
-    const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
-    if(!email){
-        return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
-    }
-    if(!pwd){
-        return res.status(400).json({ error: true, message: '密碼不可為空值' });
-    }
-    if(!regex_email.test(email)){
-        return res.status(400).json({ error: true, message: 'email格式錯誤' });
-    }
-
     try {
         User.findOne({
             where: {
@@ -173,61 +171,61 @@ router.patch('/user', (req, res) => {
                 const userid = data.id;
                 const comparePwd = data.password
                 bcrypt.compare(pwd, comparePwd).then((compare) => {
-
+                    // console.log(res); bool
                     if (compare) {
-                        const payload = {
-                            userId: userid,
-                            email: email
-                        }
-                        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '3 days' });
-                        res.cookie('jwt', token, {
-                            secure: false,
-                            httpOnly: false,
-                            maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
-                        });
-                        return res.json({ ok: true, token });
+                        req.session.email = email;
+                        req.session.userid = userid;
+                        return res.json({ 'ok': true });
                     } else {
-                        return res.status(400).json({ error: true, message: '帳號或密碼錯誤' });
+                        return res.status(400).json({ 'error': true, 'message': '帳號或密碼錯誤' });
                     }
                 })
 
             } else {
-                return res.status(400).json({ error: true, message: '帳號或密碼錯誤' });
+                return res.status(400).json({ 'error': true, 'message': '帳號或密碼錯誤' });
             }
         })
     } catch (e) {
         e = e.toString();
-        return res.status(500).json({ error: true, message: e });
+        return res.status(500).json({ 'error': true, 'message': e });
     }
 });
 
 
 // LOGOUT
-router.delete('/user', auth, (req, res) => {
-    res.clearCookie('jwt');
-    return res.json({ ok: true });
+router.delete('/user', (req, res) => {
+    // req.session.email = null;
+    // res.clearCookie('sessionId');
+    req.session.destroy((err) => {
+        if (err) {
+            throw err;
+        } else {
+            res.clearCookie('sessionId');
+            res.clearCookie('jwt-token');
+            return res.json({ 'ok': true });
+        }
+    })
 });
 
 
-router.post('/user/google-login', (req, res) => {
+router.post('/google-login', (req, res) => {
     let token = req.body.id_token;
-    let user = {};
-
-    if(!token){
-        return res.status(400).json({ error: true, message: '無token' });
-    };
-
+    // console.log(token);
+    let user = {}
     async function verify() {
         const ticket = await client.verifyIdToken({
             idToken: token,
-            audience: CLIENT_ID,
+            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+            // Or, if multiple clients access the backend:
+            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         });
         const payload = ticket.getPayload();
-        user.email = payload.email
         user.name = payload.name;
+        user.email = payload.email
     };
     verify()
         .then(() => {
+
             User.findOne({
                 where: {
                     email: user.email,
@@ -243,84 +241,376 @@ router.post('/user/google-login', (req, res) => {
                         auth: 2,
                         active: 'no',
                     }).then(() => {
-                        const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
-                        res.cookie('jwt', token, {
-                            secure: false,
-                            httpOnly: false,
-                            maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
-                        });
-                        return res.json({ ok: true });
+                        req.session.email = user.email;
+                        res.cookie('jwt-token', token)
+                        return res.json({ 'ok': true });
                     })
                 } else {
-                        user.userId = data.id                        
-                        const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
-                        res.cookie('jwt', token, {
-                            secure: false,
-                            httpOnly: false,
-                            maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
-                        });
-                        res.cookie('jwt', token)
-                        return res.json({ ok: true });
+                    req.session.userid = data.id;
+                    req.session.email = user.email;
+                    res.cookie('jwt-token', token)
+                    return res.json({ 'ok': true });
                 }
             })
-        }).catch((e) => {
-            e = e.toString();
-            return res.json({ error: true, message: e });
-        })
+        }).catch(console.error);
 });
 
 
-router.put('/user/plan', auth, (req, res) => {
+router.put('/user/plan',(req,res)=>{
     const plan = req.body.plan;
-    const email = req.user.email
-    if(!plan){
-        return res.json({ error: true, message: '方案不可為空值' });
-    }
-
     User.findOne({
         where: {
-            email: email,
+            email: req.session.email,
         }
-    }).then((user) => {
+    }).then((user)=>{
         user.update({
             plan: plan,
         })
-    }).then(() => {
-        return res.json({ ok: true });
-    }).catch((e) => {
+    }).then(()=>{
+        return res.json({'ok':true});
+    }).catch((e)=>{
         e = e.toString();
-        return res.json({ error: true, message: e });
+        return res.json({'error':true, 'message':e});
     })
-
+    
 });
 
-router.put('/user/phone', auth, (req, res) => {
+router.put('/user/phone',(req,res)=>{
     const phone = req.body.phone;
-    const email = req.user.email
-    const regex_phone = /^09\d{8}$/ 
-    if(!phone){
-        return res.json({ error: true, message: '手機號碼不可為空值' });
-    }
-    if(!regex_phone.test(phone)){
-        return res.json({ error: true, message: '手機號碼格式錯誤' });
-    }
-    
     User.findOne({
         where: {
-            email: email,
+            email: req.session.email,
         }
-    }).then((user) => {
+    }).then((user)=>{
         user.update({
             phone: phone,
         })
-    }).then(() => {
-        return res.json({ ok: true });
-    }).catch((e) => {
+    }).then(()=>{
+        return res.json({'ok':true});
+    }).catch((e)=>{
         e = e.toString();
-        return res.json({ error: true, message: e });
+        return res.json({'error':true, 'message':e});
     })
-
+    
 });
 
 
 module.exports = router;
+
+
+
+
+
+// // GET ALL USERS
+// router.get('/users', auth, (req, res) => {
+//     if (req.user.email === 'admin@admin.com') {
+//         User.findAll()
+//             .then((result) => {
+//                 return JSON.stringify(result, null, 4);
+//             })
+//             .then((api_data) => {
+//                 const user_list = []
+//                 api_data = JSON.parse(api_data);
+//                 for (let i = 0; i < api_data.length; i++) {
+//                     const active = api_data[i].active;
+//                     if (active === 'yes') { //沒有開通就不要顯示在後台
+//                         const userId = api_data[i].id;
+//                         const name = api_data[i].name;
+//                         const email = api_data[i].email;
+//                         const plan = api_data[i].plan;
+//                         const user_info = {
+//                             'userId': userId,
+//                             'name': name,
+//                             'email': email,
+//                             'plan': plan,
+//                             'active': active,
+//                         }
+//                         user_list.push(user_info)
+//                     }
+//                 }
+//                 return res.json({ data: user_list });
+//             })
+//     }
+
+// });
+
+
+
+// // CHECK STATUS(login check)
+// router.get('/user', auth, (req, res) => {
+//     User.findOne({
+//         where: {
+//             email: req.user.email,
+//         }
+//     }).then((result) => {
+//         return JSON.stringify(result, null, 4);
+//     }).then((data) => {
+//         data = JSON.parse(data);
+//         const id = data.id;
+//         const name = data.name;
+//         const email = data.email;
+//         const price = data.plan;
+//         const phone = data.phone;
+//         const auth = data.auth;
+//         const active = data.active;
+//         const mem_info = {
+//             'data': {
+//                 'id': id,
+//                 'name': name,
+//                 'email': email,
+//                 'phone': phone,
+//                 'plan': price,
+//                 'auth': auth,
+//                 'active': active,
+//             }
+//         }
+//         return res.json(mem_info);
+//     })
+// });
+
+
+// // REGISTER 
+// router.post('/user', async (req, res) => {
+//     const name = req.body.name;
+//     const email = req.body.email;
+//     const pwd = req.body.pwd;
+//     const plan = req.body.price;
+//     const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
+//     if(!name){
+//         return res.status(400).json({ error: true, message: '使用者名稱不可為空值' });
+//     }
+//     if(!email){
+//         return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
+//     }
+//     if(!pwd){
+//         return res.status(400).json({ error: true, message: '密碼不可為空值' });
+//     }
+//     if(!plan){
+//         return res.status(400).json({ error: true, message: '方案不可為空值' });
+//     }
+//     if(!regex_email.test(email)){
+//         return res.status(400).json({ error: true, message: 'email格式錯誤' });
+//     }
+
+//     try {
+//         const hashPwd = await bcrypt.hash(pwd, 10)
+//         User.findOne({
+//             where: {
+//                 email: email,
+//             }
+//         }).then((result) => {
+//             return JSON.stringify(result, null, 4);
+//         }).then((data) => {
+//             data = JSON.parse(data);
+//             if (data === null) {
+//                 // insert data
+//                 const payload = {
+//                     name: name,
+//                     email: email
+//                 }
+//                 const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1 days' }) // 註冊
+//                 User.create({
+//                     name: name,
+//                     email: email,
+//                     password: hashPwd,
+//                     plan: plan,
+//                     auth: 2,
+//                     active: 'no',
+//                 }).then(() => {
+//                     res.cookie('jwt', token, {
+//                         secure: false,
+//                         httpOnly: false,
+//                         maxAge: 1000 * 60 * 60 * 24 // 1 days
+//                     });
+//                     return res.json({ ok: true , token});
+//                 })
+//             } else {
+//                 return res.status(400).json({ error: true, message: '此帳號已註冊過' });
+//             }
+//         })
+//     } catch (e) {
+//         e = e.toString();
+//         return res.status(500).json({ error: true, message: e });
+//     }
+// });
+
+
+// // LOGIN
+// router.patch('/user', (req, res) => {
+//     const email = req.body.email;
+//     const pwd = req.body.password;
+//     const regex_email = /(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)/
+//     if(!email){
+//         return res.status(400).json({ error: true, message: '電子郵件不可為空值' });
+//     }
+//     if(!pwd){
+//         return res.status(400).json({ error: true, message: '密碼不可為空值' });
+//     }
+//     if(!regex_email.test(email)){
+//         return res.status(400).json({ error: true, message: 'email格式錯誤' });
+//     }
+
+//     try {
+//         User.findOne({
+//             where: {
+//                 email: email,
+//             }
+//         }).then((result) => {
+//             return JSON.stringify(result, null, 4);
+//         }).then((data) => {
+//             data = JSON.parse(data);
+//             if (data !== null) {
+//                 const userid = data.id;
+//                 const comparePwd = data.password
+//                 bcrypt.compare(pwd, comparePwd).then((compare) => {
+
+//                     if (compare) {
+//                         const payload = {
+//                             userId: userid,
+//                             email: email
+//                         }
+//                         const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '3 days' });
+//                         res.cookie('jwt', token, {
+//                             secure: false,
+//                             httpOnly: false,
+//                             maxAge: 1000 * 60 * 60 * 24 * 3 // 3 days
+//                         });
+//                         return res.json({ ok: true, token });
+//                     } else {
+//                         return res.status(400).json({ error: true, message: '帳號或密碼錯誤' });
+//                     }
+//                 })
+
+//             } else {
+//                 return res.status(400).json({ error: true, message: '帳號或密碼錯誤' });
+//             }
+//         })
+//     } catch (e) {
+//         e = e.toString();
+//         return res.status(500).json({ error: true, message: e });
+//     }
+// });
+
+
+// // LOGOUT
+// router.delete('/user', auth, (req, res) => {
+//     res.clearCookie('jwt');
+//     return res.json({ ok: true });
+// });
+
+
+// router.post('/user/google-login', (req, res) => {
+//     let token = req.body.id_token;
+//     let user = {};
+
+//     if(!token){
+//         return res.status(400).json({ error: true, message: '無token' });
+//     };
+
+//     async function verify() {
+//         const ticket = await client.verifyIdToken({
+//             idToken: token,
+//             audience: CLIENT_ID,
+//         });
+//         const payload = ticket.getPayload();
+//         user.email = payload.email
+//         user.name = payload.name;
+//     };
+//     verify()
+//         .then(() => {
+//             User.findOne({
+//                 where: {
+//                     email: user.email,
+//                 }
+//             }).then((result) => {
+//                 return JSON.stringify(result, null, 4);
+//             }).then((data) => {
+//                 data = JSON.parse(data);
+//                 if (data === null) {
+//                     User.create({
+//                         name: user.name,
+//                         email: user.email,
+//                         auth: 2,
+//                         active: 'no',
+//                     }).then(() => {
+//                         const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
+//                         res.cookie('jwt', token, {
+//                             secure: false,
+//                             httpOnly: false,
+//                             maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+//                         });
+//                         return res.json({ ok: true });
+//                     })
+//                 } else {
+//                         user.userId = data.id                        
+//                         const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
+//                         res.cookie('jwt', token, {
+//                             secure: false,
+//                             httpOnly: false,
+//                             maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+//                         });
+//                         res.cookie('jwt', token)
+//                         return res.json({ ok: true });
+//                 }
+//             })
+//         }).catch((e) => {
+//             e = e.toString();
+//             return res.json({ error: true, message: e });
+//         })
+// });
+
+
+// router.put('/user/plan', auth, (req, res) => {
+//     const plan = req.body.plan;
+//     const email = req.user.email
+//     if(!plan){
+//         return res.json({ error: true, message: '方案不可為空值' });
+//     }
+
+//     User.findOne({
+//         where: {
+//             email: email,
+//         }
+//     }).then((user) => {
+//         user.update({
+//             plan: plan,
+//         })
+//     }).then(() => {
+//         return res.json({ ok: true });
+//     }).catch((e) => {
+//         e = e.toString();
+//         return res.json({ error: true, message: e });
+//     })
+
+// });
+
+// router.put('/user/phone', auth, (req, res) => {
+//     const phone = req.body.phone;
+//     const email = req.user.email
+//     const regex_phone = /^09\d{8}$/ 
+//     if(!phone){
+//         return res.json({ error: true, message: '手機號碼不可為空值' });
+//     }
+//     if(!regex_phone.test(phone)){
+//         return res.json({ error: true, message: '手機號碼格式錯誤' });
+//     }
+    
+//     User.findOne({
+//         where: {
+//             email: email,
+//         }
+//     }).then((user) => {
+//         user.update({
+//             phone: phone,
+//         })
+//     }).then(() => {
+//         return res.json({ ok: true });
+//     }).catch((e) => {
+//         e = e.toString();
+//         return res.json({ error: true, message: e });
+//     })
+
+// });
+
+
+// module.exports = router;
