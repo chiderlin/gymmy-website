@@ -50,7 +50,7 @@ CCV: 123
 
 帳號3：sb-eu43ya6701843@personal.example.com
 
-密碼：z1237788z
+密碼：?
 
 ## 頁面操作瀏覽
 ### 1.首頁
