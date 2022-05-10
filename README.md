@@ -28,6 +28,7 @@
 ![model](./github-png/ER_model.png)
 
 ## Demo
+### 已停止維護
 web: https://gymmy.club
 
 測試帳號： 123@123.com (或自行註冊)
