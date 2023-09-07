@@ -25,9 +25,7 @@
 - MVC 設計模式
 
 ## web scraping:
-<img src="./github-png/class_webScrapingProcess.png" align="left" height="250" />
-
-
+<img src="./github-png/class_webScrapingProcess.png" height="250" />
 
 ## 實體關係圖(ER Model)
 ![model](./github-png/ER_model.png)
